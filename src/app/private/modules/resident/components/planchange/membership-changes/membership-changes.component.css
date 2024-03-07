@@ -1,0 +1,50 @@
+.warn{
+    font-size: 11px;
+    position: relative;
+    padding: 5px 9px !important;
+    border: 1px solid transparent !important;
+    border-radius: .25rem !important;
+    margin-bottom: 0rem !important;
+    overflow-wrap: break-word;
+}
+table.dataTable tbody td {
+    font-size: 14px;
+}
+  
+thead {
+    background-color: #343a40;
+    color: white;
+}
+.box{
+    max-width: 200px;
+  min-width: 150px;
+  color: -internal-light-dark(black, white);
+  display: inline-block;
+  -moz-appearance: auto;
+  background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
+  cursor: text;
+  margin: 0em;
+  font: 384 -14.6667px;
+  height: 33px;
+  border-style: inset;
+  border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+}
+.opacity{ 
+    opacity: 0.2;
+}
+
+.msg{
+padding: 90px 0px 100px 0px;
+}
+
+.customvalidation{
+    color: red;
+    margin: 1em;
+}
+
+::ng-deep ngb-datepicker {
+    width: auto !important;
+    height: auto !important;
+    overflow: hidden;
+    /* overflow-y: scroll !important; */
+  }

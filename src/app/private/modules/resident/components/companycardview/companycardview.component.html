@@ -1,0 +1,66 @@
+<div class="row  row-cols-1 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
+    <div class="col pb-4 pt-4" *ngFor="let clist of companyList">
+        <div class="rounded d-flex justify-content-center"
+            [ngClass]="clist?.companyStatus == 0  ? 'card-new' : 'card' ">
+            <div class="review a" [ngClass]="getStatusColor(clist?.companyStatus)">
+                <div class="row">
+                    <div class="col-8 col-md-8 pl-4 pr-0 status-font">{{getstatusText(clist.companyStatus)}}</div>
+                    <div *ngIf="clist?.companyStatusChangeDate" class="col-4 row-cols-md-4 pl-md-0 pr-md-2 status-font">
+                        {{clist.companyStatusChangeDate | date:globalDateFormat || '-'}}</div>
+                    <div *ngIf="!clist?.companyStatusChangeDate"
+                        class="col-4 row-cols-md-4 pl-md-0 pr-md-2 status-font">
+                        {{clist.createdAt |
+                        date:globalDateFormat ||
+                        '-'}}</div>
+                </div>
+            </div>
+            <div class="h-100 d-inline-block">
+                <div class="kv-avatar image-upload pic d-flex">
+                    <div class="fit-img">
+                        <img *ngIf="clist?.logoImgUrl" class="card-img-top img-fluid"
+                            [src]="logoFileSource + clist.logoImgUrl" (error)="onImgError($event)" alt="user image">
+                        <img *ngIf="!clist?.logoImgUrl" class="card-img-top img-fluid"
+                            src="/assets/images/blPlaceholder.png" alt="user image">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pr-2 pl-2">
+                <h5 class="card-title card-text" [title]="clist.companyName">{{clist.companyName || '-'}}</h5>
+                <div class="data mt-2">
+                    Committee Status:
+                    <div>{{getCommitteeText(clist.committeeStatus)}} {{+clist.committeeStatus ?
+                        (formatDate(clist.selectionDate) | date:globalDateFormat || '-') : ''}}</div>
+                </div>
+                <hr>
+                <div class="data">{{clist.companyOnboardingStatus ? "Onboarded": "Needs Onboarding"}} | {{
+                    clist.companyVisibility ? "Published" : "Stealth" }}
+                </div>
+            </div>
+            <div class="card-body pt-0 pb-3 pl-2">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <button class="btn biolabBtn btn-lg learn-button"
+                            routerLink="/resident-companies/{{clist.id}}/company" routerLinkActive="active">
+                            LEARN MORE
+                        </button>
+                    </div>
+                    <div class="col-1 mr-3">
+                        <a [ngClass]="{ 'disabled-openCR':clist.wl }"
+                            *ngIf="clist.wl"
+                            routerLink="/invoice-waitlist/waitlist">
+                            <i class="fas fa-clock text-muted reqfas" title="Open Change requests"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card text-center m-5" *ngIf="companyList.length == 0">
+    <div class="card-header">
+        Data not Found
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">No Applications available to Display.</h5>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="container-fluid row pl-3">
+    <h2><span class="ml-0"> {{ this.companyName || "-" }} </span></h2>
+</div>
+<br>
+<p class="text-dark">Your privacy is important to us. Select which fields below you would like to share
+    with our sponsors and partners</p>
+<form [formGroup]="form">
+    <div class="mt-3">
+        <div class="row">
+            <div class="col-md-4 col-sm-6">
+                <div class="mb-3"><strong>IP</strong></div>
+                <div class="form-group form-check">
+                    <input type="checkbox"  name="patentsFiledAndGranted"  formControlName="patentsFiledAndGranted" (change)="updatePrivacydetails($event)" class="form-check-input" id="exampleCheck1"  >
+                    <label class="form-check-label" for="exampleCheck1">Patents filed & granted</label>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox"  name="sharePitchDeck"  formControlName="sharePitchDeck" (change)="updatePrivacydetails($event)" class="form-check-input" id="exampleCheck2"  >
+                    <label class="form-check-label" for="exampleCheck2">Share Pitch Deck</label>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox"  name="clinicalTrialInformation"  formControlName="clinicalTrialInformation" (change)="updatePrivacydetails($event)" class="form-check-input" id="exampleCheck9"  >
+                    <label class="form-check-label" for="exampleCheck9">Clinical Trial Information</label>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="mb-3"><strong>Funding</strong></div>
+                <div class="form-group form-check">
+                    <input type="checkbox" name="fundingSource" formControlName="fundingSource" (change)="updatePrivacydetails($event)" class="form-check-input" id="exampleCheck3"  >
+                    <label class="form-check-label" for="exampleCheck3">Funding Source</label>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" name="fundingAmount" formControlName="fundingAmount" (change)="updatePrivacydetails($event)" class="form-check-input" id="exampleCheck4"  >
+                    <label class="form-check-label" for="exampleCheck4">Funding Amount</label>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="mb-3"><strong>Team</strong></div>
+                <div class="form-group form-check">
+                    <input type="checkbox"  name="companySize" formControlName="companySize" (change)="updatePrivacydetails($event)" class="form-check-input" id="exampleCheck5"  >
+                    <label class="form-check-label" for="exampleCheck5">Employees</label>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" name="advisoryBoard"  formControlName="advisoryBoard" (change)="updatePrivacydetails($event)" class="form-check-input" id="exampleCheck6"  >
+                    <label class="form-check-label" for="exampleCheck6">Advisory Board</label>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" name="partnershipWithAcademia"  formControlName="partnershipWithAcademia" (change)="updatePrivacydetails($event)"  class="form-check-input" id="exampleCheck7"  >
+                    <label class="form-check-label" for="exampleCheck7">Partnerships with Academia</label>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" name="partnershipsWithIndustry" formControlName="partnershipsWithIndustry" (change)="updatePrivacydetails($event)"  class="form-check-input" id="exampleCheck8"  >
+                    <label class="form-check-label" for="exampleCheck8">Partnerships with Industry</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

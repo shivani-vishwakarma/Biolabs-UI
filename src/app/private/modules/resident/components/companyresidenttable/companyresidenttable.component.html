@@ -1,0 +1,78 @@
+<table class="table table-striped table-bordered table-sm size row-border hover text-center" datatable id="idDataTable"
+    [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="width: 100%;">
+    <thead>
+        <tr>
+            <th>Company Name</th>
+            <th>Resident First Name</th>
+            <th>Resident Last Name</th>
+            <th>Title</th>
+            <th>Email ID</th>
+            <th>Phone Number</th>
+            <th>Member Onboarding</th>
+            <th>Member Onboarded Date</th>
+            <th class="hide">Member Onboarded Date</th>
+            <th>Member Offboarding</th>
+            <th>Member Offboarded Date</th>
+            <th class="hide">Member Offboarded Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of data; let i = index" [ngClass]="{'company-link' : item.showCompanyName} ">
+            <td>
+                <a title="Go to Company Profile" routerLink="/resident-companies/{{item.companyId}}/company"
+                    routerLinkActive="active">{{(item.companyName.length ? item.companyName[0].companyName : '-') ||
+                    '-'}}
+                </a>
+            </td>
+            <td>{{item.firstName}}</td>
+            <td>{{item.lastName}}<span class="admin">{{item.role == '4' ? '*' : ''}}</span></td>
+            <td>{{item.title}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.phoneNumber}}</td>
+            <td>
+                <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Onboarding Checklist"
+                routerLink="/member-tab/{{item.id}}/member-onboarding" >{{getChecklistStatusText(item?.memberOnboardChecklistStatus || 0)}}</a>
+                <label *ngIf="!defaultDataService.secureSites()">{{getChecklistStatusText(item?.memberOnboardChecklistStatus || 0)}}</label>
+            </td>
+            <td>
+                <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Onboarding Checklist"
+                    routerLink="/member-tab/{{item.id}}/member-onboarding" ><span class="hide">{{formatDate(item.memberOnboardChecklistDate) | date:'YYYYMMdd' ||
+                        '-'}}</span>{{formatDate(item.memberOnboardChecklistDate)|
+                        date:globalDateFormat }}</a>
+                <label *ngIf="!defaultDataService.secureSites()"><span class="hide">{{formatDate(item.memberOnboardChecklistDate) | date:'YYYYMMdd' ||
+                    '-'}}</span>{{formatDate(item.memberOnboardChecklistDate)|
+                    date:globalDateFormat }}</label>
+            </td>
+            <td class="hide">
+                <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Onboarding Checklist"
+                    routerLink="/member-tab/{{item.id}}/member-onboarding" >{{formatDate(item.memberOnboardChecklistDate)|
+                        date:globalDateFormat }}</a>
+                <label *ngIf="!defaultDataService.secureSites()">{{formatDate(item.memberOnboardChecklistDate)|
+                    date:globalDateFormat }}</label>
+            </td>
+            <td>
+                <!-- [queryParams]=
+                    "{role:item.role}" -->
+                <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Offboarding Checklist"
+                    routerLink="/member-tab/{{item.id}}/member-offboarding"  >{{getChecklistStatusText(item?.memberOffboardChecklistStatus || 0)}}</a>
+                <label *ngIf="!defaultDataService.secureSites()">{{getChecklistStatusText(item?.memberOffboardChecklistStatus || 0)}}</label>
+            </td>
+            <td>
+                <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Offboarding Checklist"
+                    routerLink="/member-tab/{{item.id}}/member-offboarding" ><span class="hide">{{formatDate(item.memberOffboardChecklistDate) | date:'YYYYMMdd' ||
+                        '-'}}</span>{{formatDate(item.memberOffboardChecklistDate)|
+                        date:globalDateFormat }}</a>
+                <label *ngIf="!defaultDataService.secureSites()"><span class="hide">{{formatDate(item.memberOffboardChecklistDate) | date:'YYYYMMdd' ||
+                    '-'}}</span>{{formatDate(item.memberOffboardChecklistDate)|
+                    date:globalDateFormat }}</label>
+            </td>
+            <td class="hide">
+                <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Offboarding Checklist"
+                    routerLink="/member-tab/{{item.id}}/member-offboarding" >{{formatDate(item.memberOffboardChecklistDate)|
+                        date:globalDateFormat }}</a>
+                <label *ngIf="!defaultDataService.secureSites()">{{formatDate(item.memberOffboardChecklistDate)|
+                    date:globalDateFormat }}</label>
+            </td>
+        </tr>
+    </tbody>
+</table>

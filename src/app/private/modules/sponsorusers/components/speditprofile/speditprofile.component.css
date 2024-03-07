@@ -1,0 +1,83 @@
+.borderr {
+    border-right-style: solid;
+    color: rgba(0, 0, 0, .1);
+}
+
+.verticalLine {
+    border-right: 1px solid rgba(0, 0, 0, .1);
+}
+
+.martop {
+    margin-top: 25%;
+}
+
+.kv-reqd {
+    color: red;
+    font-family: monospace;
+    font-weight: normal;
+}
+
+::ng-deep ngx-treeview.disableclick .form-inline .form-check-label {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+.image-upload>input {
+    display: none;
+}
+
+.image-upload-parent {
+    background-color: #e9ecef;
+}
+
+.image-upload img {
+    height: 250px;
+    width: auto;
+    cursor: pointer !important;
+    object-fit: contain;
+}
+
+.image-upload {
+    position: relative;
+    display: inline-block;
+}
+
+.image-upload-parent:hover:after {
+    cursor: pointer !important;
+    content:'Upload Image';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    background: url('/assets/images/icons/compose-solid.svg') center no-repeat;
+    background-size: 50px;
+    opacity: 0.4;
+}
+
+.image-upload-parent:hover img {
+    opacity: 0.4;
+}
+
+.bioBorder {
+    border: 3px solid #8080801f;
+    padding: 0px 10px;
+}
+
+.preview {
+    display: block;
+    text-align: center;
+}
+
+.viewImage {
+    background-color: #e9ecef;
+}
+
+.viewImage>img {
+    cursor: unset !important;
+}
+
+.text {
+    margin-top: 20px;
+    margin-left: 45px;
+}

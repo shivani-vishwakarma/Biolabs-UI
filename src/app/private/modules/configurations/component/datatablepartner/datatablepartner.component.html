@@ -1,0 +1,207 @@
+<!-- <div class="row">
+    <div class="col">
+        <button class="btn biolabBtn float-right add-raw x">Add
+            Row</button>
+    </div>
+</div>
+
+<table class="table table-striped table-bordered table-sm row-border hover text-center table_legenda" >
+        <thead>
+            <tr>
+                <th class="name">Name</th>
+                <th class="type">Industry Type</th>
+                <th class="link">Website Link</th>
+                <th class="start">Management Agreement Start Date </th>
+                <th class="end">Management Agreement End Date</th>
+                <th class="agre">Link to Management Agreement</th>
+                <th class="action"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+            </tr>
+        </tbody>
+    </table> -->
+
+
+
+<div class="row">
+    <div class="col" *ngIf="getRole() != 4">
+        <button (click)=addRow() class="btn biolabBtn float-right add-raw x"
+            [disabled]="(addRowVar || isEditEnabled )">Add
+            Row</button>
+    </div>
+</div>
+<form [formGroup]="partnersForm" class="mt-1 validation" (ngSubmit)="addPartner()">
+    <table class="table table-striped table-bordered table-sm row-border hover text-center table_legenda" style="width: 100%;" datatable
+        [dtOptions]="dtMemberOptions" [dtTrigger]="dtTrigger">
+        <thead>
+            <tr>
+                <th class="name">Name</th>
+                <th class="type">Industry/Type</th>
+                <th class="link">Website Link</th>
+                <th class="start">Management Agreement Start Date </th>
+                <th class="end">Management Agreement End Date</th>
+                <th class="agre">Link to Management Agreement</th>
+                <th class="action"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="addRowVar">
+                <td class="form-group grab">
+                    <input [ngClass]="{ 'is-invalid': submitted && partnersForm.controls.name.errors }"
+                        class="conferencename w-100" formControlName="name" type="text" name="name" />
+                </td>
+                <td class="form-group grab">
+                    <input class="conferencecapacity w-100" formControlName="industryType" type="text"
+                        [ngClass]="{ 'is-invalid': submitted && partnersForm.controls.industryType.errors }"
+                        name="industryType" />
+                </td>
+                <td class="form-group grab">
+                    <input [ngClass]="{ 'is-invalid': submitted && partnersForm.controls.websiteLink.errors }"
+                        class="conferencecapacity w-100" formControlName="websiteLink" type="text" name="websiteLink" />
+                </td>
+                <td class="form-group grab">
+                    <div class="input-group">
+                        <input formControlName="aggrementStartDate" class="form-control w-100" placeholder="DD Mon YYYY"
+                            name="d1" ngbDatepicker #d1="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d1.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+                </td>
+                <td class="form-group grab">
+                    <div class="input-group">
+                        <input formControlName="aggrementEndDate" class="form-control w-100" placeholder="DD Mon YYYY"
+                            name="d2" ngbDatepicker #d2="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+                </td>
+                <td class="form-group">
+                    <input [ngClass]="{ 'is-invalid': submitted && partnersForm.controls.linkToAggrement.errors }"
+                        class="conferencecapacity w-100" formControlName="linkToAggrement" type="text"
+                        name="linkToAggrement" />
+                </td>
+                <td class="form-group">
+                    <span class="margin-right cursor-pointer submit">
+                        <i class="fa fa-check" (click)="addPartner()"></i>
+                    </span>
+                    <span (click)="addRowVar = !addRowVar"><i class="fa fa-times cursor-pointer ml-2"></i></span>
+                </td>
+            </tr>
+            <tr *ngFor="let item of partnersData">
+                <td class="grab name">
+                    <span *ngIf="!item.editable">{{item.name}}</span>
+                    <input *ngIf="item.editable" [ngClass]="{ 'is-invalid': submitted && partnersForm.controls.name.errors }"
+                        class="conferencename w-100" formControlName="name" type="text" name="name" />
+                </td>
+                <td class="grab description">
+                    <span *ngIf="!item.editable">{{item.industryType}}</span>
+                    <input *ngIf="item.editable" formControlName="industryType" type="text"
+                        [ngClass]="{ 'is-invalid': submitted && partnersForm.controls.industryType.errors }"
+                        name="industryType" />
+                </td>
+                <td class="grab description">
+                    <a *ngIf="!item.editable" [href]="addhttp(item?.websiteLink)" target="_blank">
+                        {{item.websiteLink}}
+                    </a>
+                    <input *ngIf="item.editable" [ngClass]="{ 'is-invalid': submitted && partnersForm.controls.websiteLink.errors }"
+                         formControlName="websiteLink" type="text" name="websiteLink" />
+                </td>
+                <td class="grab description">
+                    <span *ngIf="!item.editable">
+                        {{formatDate(item.aggrementStartDate) | date: globalDateFormat}}
+                    </span>
+                    <div *ngIf="item.editable" class="input-group">
+                        <input formControlName="aggrementStartDate" class="form-control w-100" placeholder="DD Mon YYYY"
+                            name="d1" ngbDatepicker #d1="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d1.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+                </td>
+                <td class="grab description">
+                    <span *ngIf="!item.editable">
+                        {{formatDate(item.aggrementEndDate) | date: globalDateFormat}}
+                    </span>
+                    <div *ngIf="item.editable" class="input-group">
+                        <input formControlName="aggrementEndDate" class="form-control w-100" placeholder="DD Mon YYYY"
+                            name="d2" ngbDatepicker #d2="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+                </td>
+                <td class="grab description">
+                    <a *ngIf="!item.editable" [href]="addhttp(item?.linkToAggrement)" target="_blank">
+                        {{item.linkToAggrement}}
+                    </a>
+                    <input *ngIf="item.editable" [ngClass]="{ 'is-invalid': submitted && partnersForm.controls.linkToAggrement.errors }"
+                         formControlName="linkToAggrement" type="text"
+                        name="linkToAggrement" />
+                </td>
+                <td class="icon" *ngIf="getRole() != 4">
+                    <span class="margin-right cursor-pointer" *ngIf="!(addRowVar || isEditEnabled)">
+                        <li class="fa fa-edit" (click)="editEnable(item)"></li>
+                    </span>
+
+                    <span data-toggle="modal" data-target="#deletePartnerModal" (click)="setItemData(item)"
+                        *ngIf="!(addRowVar || isEditEnabled)">
+                        <li class="fa fa-trash ml-2"></li>
+                    </span>
+
+                    <span *ngIf="((addRowVar) || (isEditEnabled && item.id !== selectedItem.id))"
+                        class="margin-right">
+                        <li class="fa fa-edit disabled"></li>
+                    </span>
+
+                    <span *ngIf="((addRowVar) || (isEditEnabled && item.id !== selectedItem.id))"
+                        data-toggle="modal">
+                        <li class="fa fa-trash disabled ml-2"></li>
+                    </span>
+                    <span class="margin-right cursor-pointer submit" *ngIf="item.editable">
+                        <li class="fa fa-check" (click)="updatePartner(item.id, item)"></li>
+                    </span>
+                    <span class="margin-right cursor-pointer" *ngIf="item.editable">
+                        <i class="fas fa-times ml-2"
+                            (click)="item.editable = !item.editable; isEditEnabled = !isEditEnabled"></i>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<div class=" modal fade" id="deletePartnerModal" tabindex="-1" role="dialog" aria-labelledby="deletePartnerModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePartnerModalLabel">Delete Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the item?
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                <button type="button" class="btn biolabBtn btn-del" (click)="deletePartner()"
+                    data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

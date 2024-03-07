@@ -1,0 +1,118 @@
+table.dataTable tbody td thead {
+    font-size: 12px;
+}
+
+.invalid-feedback {
+    display: block;
+}
+
+.footer {
+    background-color: #969ca5;
+}
+
+thead {
+    background-color: #343a40;
+    color: white;
+}
+
+.table thead, .table th {
+    vertical-align: middle;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input {
+    width: 90%;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.width-100px {
+    width: 100px;
+}
+
+td {
+    overflow-wrap: break-word;
+}
+
+.table_legenda {
+    table-layout: fixed;
+    width: 100% !important;
+}
+
+table.dataTable .text-start {
+    text-align: start !important;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 14px;
+}
+
+.name {
+    width: 75px !important;
+}
+
+.link {
+    width: 80px !important;
+}
+
+.value {
+    width: 60 !important;
+}
+
+.poc {
+    width: 50 !important;
+}
+
+.title {
+    width: 50 !important;
+}
+
+.num {
+    width: 200 !important;
+}
+
+.email {
+    width: 200 !important;
+}
+
+.start {
+    width: 100px !important;
+}
+
+.end {
+    width: 100px !important;
+}
+
+.notes {
+    width: 150 !important;
+}
+
+.action {
+    width: 50px !important;
+}
+
+::ng-deep ngb-datepicker {
+    width: auto !important;
+    overflow-y: hidden !important;
+    height: auto !important;
+}
+
+/* .ellep {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+} */

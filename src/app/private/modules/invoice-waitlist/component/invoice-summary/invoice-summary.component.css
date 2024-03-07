@@ -1,0 +1,122 @@
+.fa-download {
+    font-size: 24px;
+    margin-right: 8px;
+}
+.csv {
+    color: #166d6d;
+    cursor: pointer;
+}
+.margin-right {
+    margin-right: 10px;
+  }
+  
+  .product-name {
+    max-width: 200px;
+    min-width: 150px;
+  }
+  
+  .description{
+    max-width: 400px;  
+    min-width: 150px;  
+  }
+  
+  .width-110px {
+    width: 110px;
+  }
+  
+  .width-100px {
+    width: 100px;
+  }
+  
+  .cursor-pointer{
+    cursor: pointer;
+  }
+  
+  .width-85px {
+    width: 85px;
+  }
+  
+  .width-60px{
+    width: 60px;
+  }
+  
+  .width-50px{
+    width: 50px;
+  }
+  
+  .invalid-feedback {
+    display: block;
+  }
+  
+  .footer{
+    background-color: #969ca5;
+  }
+  
+  thead {background-color: #343a40;color:white;}
+  
+  .width-150 {
+    width: 150px;
+  }
+  
+  .width-135 {
+    width: 135px;
+  }
+  /* added for table */
+  .addRow {
+    background-color: #0f9792;
+    color: white;
+    line-height: 1.0;
+  }
+  
+  :host ::ng-deep .dt-button {
+    border: 1px solid #1c948d !important;
+    background-color: #0f9792 !important;
+    line-height: 1.0 !important;
+    border: none !important;
+    color: white;
+  }
+  
+  input[type="date"] {
+    font-size: 14px;
+  }
+  
+  table.dataTable tbody td {
+    font-size: 14px;
+  }
+  
+  
+  :host ::ng-deep .dt-button:hover {
+    border: 1px solid #1c948d!important;
+    background-color: #0f9792 !important;
+    line-height: 1.0 !important;
+    border: none !important;
+    color: black;
+  }
+  .company{
+      background-color: #c7c4c4;
+  }
+  ::ng-deep .company-link, a{
+    color: #211f1fbf !important;
+    background-color: #c7c4c4 !important;
+  }
+
+  .widthDate{
+    width: 90px;
+  }
+  .align1{
+    margin-right: 127px;
+  }
+  .align2{
+    margin-right: 162px;
+  }
+  .lockDate{
+    display: table-cell; 
+    padding-right: 1.9rem;
+  }
+  .lockDateList{
+    list-style: none; 
+    display: table;
+  }
+  .lockDateListItem{
+    display: table-row;
+  }

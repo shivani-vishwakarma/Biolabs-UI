@@ -1,0 +1,166 @@
+.box {
+  margin-right: -5rem !important;
+}
+thead {background-color: #343a40;color:white;}
+.date {
+    margin-left: -21px;
+    width: 100%;
+}
+.passHelpTxt {
+  /* color: #249792; */
+  color: #dc3545;
+  font-size: 11px;
+}
+.width{
+  width: 60% !important;
+  height: 30px !important;
+}
+.logo{
+  height: 30px !important;
+}
+.x {
+  margin-bottom: 18px !important;
+}
+.inpwidth {
+  margin-left: -18px;
+}
+.d {
+    margin-left: 45px;
+}
+.datespace {
+  margin-left: 55px;
+}
+.mr {
+    margin-left: 10px;
+}
+.margin {
+    margin-top: 20px;
+}
+.mt-5 {
+    color: rgb(33, 142, 185);
+    font-size: 18px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.width-110px {
+    width: 110px;
+  } 
+  .width-100px {
+    width: 100px;
+  }
+  
+  .cursor-pointer{
+    cursor: pointer;
+  }
+  
+  .width-85px {
+    width: 85px;
+  }
+  
+  .width-60px{
+    width: 60px;
+  }
+  
+  .width-50px{
+    width: 50px;
+  }
+  
+  .invalid-feedback {
+    display: block;
+  }
+  
+  .footer{
+    background-color: #969ca5;
+  }
+  
+  thead {background-color: #343a40;color:white;}
+  
+  .width-150 {
+    width: 150px;
+  }
+  
+  .width-135 {
+    width: 135px;
+  }
+  /* added for table */
+  .addRow {
+    background-color: #0f9792;
+    color: white;
+    line-height: 1.0;
+  }
+  
+  :host ::ng-deep .dt-button {
+    border: 1px solid #1c948d !important;
+    background-color: #0f9792 !important;
+    line-height: 1.0 !important;
+    border: none !important;
+    color: white;
+  }
+  
+  table.dataTable tbody td {
+    font-size: 14px;
+  }
+  table.dataTable .text-start {
+    text-align: start;
+  }
+  
+  
+  :host ::ng-deep .dt-button:hover {
+    border: 1px solid #1c948d!important;
+    background-color: #0f9792 !important;
+    line-height: 1.0 !important;
+    border: none !important;
+    color: black;
+  }
+  input {
+    width: 55%;
+  }
+  
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+  .add-raw {
+    padding: 1px 10px;
+    margin: 4px -2px -14px -6px;
+  }
+  .manuf {
+    width: 150px !important;
+  }
+  .model {
+    width: 100px !important;
+  }
+  .qty {
+    width: 60px !important;
+  }
+  /* .w-10 {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+  } */
+  .value {
+    width: 60px !important;
+  }
+  .notes {
+    width: 350px !important;
+  }
+  .action {
+    width: 40px !important;
+  }
+  .no-data {
+    /* display: none; */
+    background-color: rgba(0,0,0,.05);
+    border: 1px solid #323232;
+    text-align: center;
+  }
+  .table_legenda {
+    table-layout: fixed;
+  }
+  td {
+    overflow-wrap: break-word;
+  }

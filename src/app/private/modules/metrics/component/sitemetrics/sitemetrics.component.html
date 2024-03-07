@@ -1,0 +1,485 @@
+<h4 class="match heading">Metrics Date Range</h4>
+<hr>
+<div class="row g-3 align-items-center validation">
+    <div class="col-auto datealign">
+        <label class="mr-2">Start Date:</label>
+    </div>
+    <div class="col-auto">
+        <div class="input-group">
+            <input class="col form-control nav-item inpwidth" aria-label=".form-control-lg example"
+                [(ngModel)]="metricsForm.startDate" placeholder="DD Mon YYYY" (change)="onDateChange('startDate')"
+                [ngClass]="{'is-invalid': !isDateValid.startDate || !metricsForm.endDate}"
+                (dateSelect)="onDateChange('startDate')" name="d1" ngbDatepicker #d1="ngbDatepicker">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary fa fa-calendar" (click)="d1.toggle()" type="button"></button>
+            </div>
+            <div class="invalid-feedback" *ngIf="metricsForm.startDate?.errors?.ngbDate.invalid">Invalid Date Format
+            </div>
+        </div>
+    </div>
+    <div class="col-auto datealign">
+        <label class="mr-2 ml-2">End Date:</label>
+    </div>
+    <div class="col-auto">
+        <div class="input-group">
+            <input class="col form-control nav-item inpwidth" aria-label=".form-control-lg example"
+                [(ngModel)]="metricsForm.endDate" placeholder="DD Mon YYYY"
+                [ngClass]="{'is-invalid': !isDateValid.endDate || !metricsForm.endDate}"
+                (change)="onDateChange('endDate')" (dateSelect)="onDateChange('endDate')" name="d2" ngbDatepicker
+                #d2="ngbDatepicker">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()" type="button"></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-auto ml-3">
+        <div class="input-group">
+            <button class="btn biolabBtn print" (click)="print()">Print</button>
+        </div>
+    </div>
+    <!-- <div class="col-auto">
+        <div class="input-group">
+            <button class="btn biolabBtn print" (click)="export()">Export</button>
+        </div>
+    </div> -->
+</div>
+<h4 class="mt-5 heading">Site Demographics</h4>
+<hr>
+<!-- <app-metrics></app-metrics> -->
+
+<div class="row tablefont">
+    <div class="col-12">
+        <table>
+            <tr>
+                <td>
+                    <b><label class="col-form-label">Open Date:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData &&
+                        siteDemographics.siteConfigData.length) ?
+                        (formatDate(siteDemographics.siteConfigData[0].openDate) | date: globalDateFormat) :
+                        '-'}}</span>
+                </td>
+                <td class="pl-4">
+                    <b><label class="col-form-label">Closing Date:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData &&
+                        siteDemographics.siteConfigData.length) ?
+                        (formatDate(siteDemographics.siteConfigData[0].closingDate) | date: globalDateFormat) :
+                        '-'}}</span>
+                </td>
+                <td class="pl-4" colspan="6">
+                    <b><label class="col-form-label">Site Address:</label></b>
+                    <span class="ml-2">{{metricsSelectedSiteDetail?.standardizedAddress}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b><label class="col-form-label">Total Site Sq Ft:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData &&
+                        siteDemographics.siteConfigData.length) ? siteDemographics.siteConfigData[0].totalSquarefeet :
+                        '-'}}</span>
+                </td>
+                <td class="pl-4">
+                    <b><label class="col-form-label">Total Office Sq Ft:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData &&
+                        siteDemographics.siteConfigData.length) ?
+                        siteDemographics.siteConfigData[0].totalOfficeSquarefeet : '-'}}</span>
+                </td>
+                <td class="pl-4">
+                    <b><label class="col-form-label">Total Lab Sq Ft:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData &&
+                        siteDemographics.siteConfigData.length) ? siteDemographics.siteConfigData[0].totalLabSquarefeet
+                        : '-'}}</span>
+                </td>
+                <td class="pl-5">
+                    <!-- <b><label class="col-form-label">Total Workstation Sq Ft:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData &&
+                        siteDemographics.siteConfigData.length) ?
+                        siteDemographics.siteConfigData[0].totalWorkstationSquarefeet : '-'}}</span> -->
+                </td>
+                <td rowspan="4" class="map">
+                    <a target="_blank" href="{{metricsSelectedSiteDetail?.googleMapUrl}}">
+                        <img src={{metricsSelectedSiteDetail?.siteMapBoxImgUrl}}
+                            onerror="this.src='/assets/images/maps/Tufts.png'" alt="Google Map Image" width="250"
+                            height="150" />
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b><label class="col-form-label">Total Workstation Sq Ft:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData &&
+                        siteDemographics.siteConfigData.length) ?
+                        siteDemographics.siteConfigData[0].totalWorkstationSquarefeet : '-'}}</span>
+                </td>
+                <td class="pl-4">
+                    <b><label class="col-form-label">Total Public Lab Bench Sq Ft:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData &&
+                        siteDemographics.siteConfigData.length) ?
+                        siteDemographics.siteConfigData[0].totalLabBenchSquarefeet : '-'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b><label class="col-form-label">Total Benches:</label></b>
+                    <span class="ml-2">{{productTypeData.benches || "-"}}</span>
+                </td>
+                <td class="pl-4">
+                    <b><label class="col-form-label">Total Offices:</label></b>
+                    <span class="ml-2">{{productTypeData.office || "-"}}</span>
+                </td>
+                <td class="pl-4">
+                    <b><label class="col-form-label">Total Workstations:</label></b>
+                    <span class="ml-2">{{productTypeData.workstations || "-"}}</span>
+                </td>
+                <td class="pl-5">
+                    <b><label class="col-form-label">Total Labs:</label></b>
+                    <span class="ml-2">{{productTypeData.labs || "-"}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b><label class="col-form-label">Conference Rooms:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.conferenceRooms &&
+                        siteDemographics.conferenceRooms.length && siteDemographics.conferenceRooms[0].count != 0) ?
+                        siteDemographics.conferenceRooms[0].count : '-'}}</span>
+                </td>
+                <td class="pl-4">
+                    <b><label class="col-form-label">Phone Rooms:</label></b>
+                    <span class="ml-2">{{(siteDemographics && siteDemographics.costConfigData &&
+                        siteDemographics.costConfigData.length) ? siteDemographics.costConfigData[0].phoneRooms :
+                        '-'}}</span>
+                </td>
+                <td class="pl-4">
+                </td>
+                <td class="pl-5">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- <div class="col-2">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyNwNpIGp-m28AFaUhzrwj3j4EYC1UTafMqA&usqp=CAU" alt="img" width="150" height="150">
+    </div> -->
+</div>
+<!-- <div class="row g-3 align-items-center">
+    <div class="col">
+        <b><label class="col-form-label">Open Date:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData && siteDemographics.siteConfigData.length) ? (formatDate(siteDemographics.siteConfigData[0].openDate) | date: globalDateFormat) : '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margin">Closing Date:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData && siteDemographics.siteConfigData.length) ? (formatDate(siteDemographics.siteConfigData[0].closingDate) | date: globalDateFormat) : '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margin">Site Address:</label></b>
+        <span class="ml-4">Lorem ipsum dolor.</span>
+    </div>
+    <div class="col-2"></div>
+</div>
+<div class="row g-3 align-items-center">
+    <div class="col">
+        <b><label class="col-form-label">Total Site Sq Ft:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData && siteDemographics.siteConfigData.length) ? siteDemographics.siteConfigData[0].totalSquarefeet : '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margin">Total Office Sq Ft:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData && siteDemographics.siteConfigData.length) ? siteDemographics.siteConfigData[0].totalOfficeSquarefeet : '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margins">Total Lab Sq Ft:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData && siteDemographics.siteConfigData.length) ? siteDemographics.siteConfigData[0].totalLabSquarefeet : '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label marginss">Total Workstation Sq Ft:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData && siteDemographics.siteConfigData.length) ? siteDemographics.siteConfigData[0].totalWorkstationSquarefeet : '-'}}</span>
+    </div>
+     <div class="col">
+        <b><label class="col-form-label marginss">Total Equipment Value:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData && siteDemographics.siteConfigData.length) ? (siteDemographics.siteConfigData[0].totalValueEquipment | currency: selectedSiteDetail.currencyCode || 'EUR'  ) : '-'}}</span>
+    </div> -->
+<!-- </div> -->
+<!-- <div class="row g-3 align-items-center">
+    <div class="col">
+        <b><label class="col-form-label">Total Equipment Value:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData && siteDemographics.siteConfigData.length) ? (siteDemographics.siteConfigData[0].totalValueEquipment | currency: selectedSiteDetail.currencyCode || 'EUR'  ) : '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margin"></label></b>
+        <span class="ml-2"></span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margins">Total Workstation Square ft. of  Space Available:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData && siteDemographics.siteConfigData.length) ? siteDemographics.siteConfigData[0].totalWorkstationSquarefeet : '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label marginss"></label></b>
+    </div>
+</div> -->
+<!-- <div class="row g-3 align-items-center">
+    <div class="col">
+        <b><label class="col-form-label">Conference Rooms:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.conferenceRooms && siteDemographics.conferenceRooms.length && siteDemographics.conferenceRooms[0].count != 0) ? siteDemographics.conferenceRooms[0].count : '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margin">Phone Rooms:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.costConfigData && siteDemographics.costConfigData.length) ? siteDemographics.costConfigData[0].phoneRooms : '-'}}</span>
+    </div>
+    <div class="col"></div>
+    <div class="col"></div>
+</div> -->
+<div class="row g-3 align-items-center tablefont">
+    <div class="col">
+        <b><label class="col-form-label">Total Equipment Value:</label></b>
+        <span class="ml-2">{{(siteDemographics && siteDemographics.siteConfigData &&
+            siteDemographics.siteConfigData.length) ? (siteDemographics.siteConfigData[0].totalValueEquipment |
+            currency: metricsSelectedSiteDetail.currencyCode || 'EUR' ) : '-'}}</span>
+    </div>
+    <div class="col">
+    </div>
+</div>
+<h4 class="mt-4 font">Standard Offering</h4>
+<div class="row g-3 align-items-center tablefont">
+    <div class="col">
+        <label class="col-form-label"><b>Benches</b>:
+            {{(siteDemographics && siteDemographics.costConfigData && siteDemographics.costConfigData.length) ?
+            (siteDemographics.costConfigData[0].labBench | currency: metricsSelectedSiteDetail.currencyCode || 'EUR' ):
+            '-'}}</label>
+    </div>
+    <div class="col">
+        <!-- (0 | currency: selectedSiteDetail.currencyCode || 'EUR') -->
+        <label class="col-form-label d margin"><b>Offices</b>:
+            {{(siteDemographics && siteDemographics.costConfigData && siteDemographics.costConfigData.length) ?
+            (siteDemographics.costConfigData[0].office | currency: metricsSelectedSiteDetail.currencyCode || 'EUR') :
+            '-'}}</label>
+    </div>
+    <div class="col">
+        <label class="col-form-label margina"><b>Workstations</b>:
+            {{(siteDemographics && siteDemographics.costConfigData && siteDemographics.costConfigData.length) ?
+            (siteDemographics.costConfigData[0].workstation | currency: metricsSelectedSiteDetail.currencyCode || 'EUR')
+            : '-'}}</label>
+    </div>
+    <div class="col">
+        <label class="col-form-label marginb"><b>Labs</b>:
+            {{(siteDemographics && siteDemographics.costConfigData && siteDemographics.costConfigData.length) ?
+            (siteDemographics.costConfigData[0].privateLab | currency: metricsSelectedSiteDetail.currencyCode || 'EUR')
+            : '-'}}</label>
+    </div>
+</div>
+<h4 class="mt-5 heading">Occupancy and Revenue</h4>
+<hr>
+<div class="row pt-3 pb-3">
+    <div class="col-md-5 col-sm-5 ">
+        <p>Total Occupancy by Revenue</p>
+        <div class="text-center py-5" *ngIf="!occupancyByRevenue.series || !occupancyByRevenue.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart *ngIf="occupancyByRevenue.series.length" [series]="occupancyByRevenue.series"
+            [chart]="occupancyByRevenue.chart" [xaxis]="occupancyByRevenue.xaxis" [fill]="occupancyByRevenue.fill"
+            [dataLabels]="occupancyByRevenue.dataLabels" [grid]="occupancyByRevenue.grid"
+            [stroke]="occupancyByRevenue.stroke" [yaxis]="occupancyByRevenue.yaxis" [title]="occupancyByRevenue.title">
+        </apx-chart>
+    </div>
+    <div class="col-md-1 col-sm-1 ">
+    </div>
+    <div class="col-md-5 col-sm-5">
+        <p>Total Occupancy by Percent</p>
+        <div class="text-center py-5" *ngIf="!occupancyByPercent.series || !occupancyByPercent.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart *ngIf="occupancyByPercent.series.length" [series]="occupancyByPercent.series"
+            [chart]="occupancyByPercent.chart" [xaxis]="occupancyByPercent.xaxis"
+            [dataLabels]="occupancyByPercent.dataLabels" [grid]="occupancyByPercent.grid"
+            [stroke]="occupancyByPercent.stroke" [yaxis]="occupancyByPercent.yaxis" [title]="occupancyByPercent.title">
+        </apx-chart>
+    </div>
+</div>
+<div class="row pt-3 pb-3">
+    <div class="col-md-5 col-sm-5 ">
+        <p>Occupancy by Type</p>
+        <div class="text-center py-5" *ngIf="!occupancyByRevenuetype.series || !occupancyByRevenuetype.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart class="legend-occupancy-align" #chart *ngIf="occupancyByRevenuetype.series.length" [series]="occupancyByRevenuetype.series"
+            [chart]="occupancyByRevenuetype.chart" [xaxis]="occupancyByRevenuetype.xaxis" [markers]="occupancyByRevenuetype.markers"
+            [yaxis]="occupancyByRevenuetype.yaxis" [dataLabels]="occupancyByRevenuetype.dataLabels"
+            [grid]="occupancyByRevenuetype.grid" [stroke]="occupancyByRevenuetype.stroke" [legend]="occupancyByRevenuetype.legend"
+            [title]="occupancyByRevenuetype.title"></apx-chart>
+    </div>
+    <div class="col-md-1 col-sm-1 ">
+    </div>
+    <div class="col-md-5 col-sm-5">
+        <p>Total Revenue by Type</p>
+        <div class="text-center py-5" *ngIf="!totalRevenueByTypeChart.series || !totalRevenueByTypeChart.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart class="legend-revenue-align" #percentTypeChart *ngIf="totalRevenueByTypeChart.series.length" [series]="totalRevenueByTypeChart.series"
+            [chart]="totalRevenueByTypeChart.chart" [xaxis]="totalRevenueByTypeChart.xaxis"
+            [yaxis]="totalRevenueByTypeChart.yaxis" [dataLabels]="totalRevenueByTypeChart.dataLabels"
+            [grid]="totalRevenueByTypeChart.grid" [stroke]="totalRevenueByTypeChart.stroke" [legend]="totalRevenueByTypeChart.legend"
+            [title]="totalRevenueByTypeChart.title"></apx-chart>
+    </div>
+</div>
+<div class="row pt-3 pb-3">
+    <div class="col-md-5 col-sm-5 ">
+        <p>Company Count by Size at End of Date Range</p>
+        <div class="text-center py-5"
+            *ngIf="!companySizeAtEndOfDateRange.series || !companySizeAtEndOfDateRange.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart *ngIf="companySizeAtEndOfDateRange.series.length" [series]="companySizeAtEndOfDateRange.series"
+            [chart]="companySizeAtEndOfDateRange.chart" [xaxis]="companySizeAtEndOfDateRange.xaxis"
+            [markers]="companySizeAtEndOfDateRange.markers" [stroke]="companySizeAtEndOfDateRange.stroke"
+            [plotOptions]="companySizeAtEndOfDateRange.plotOptions" [yaxis]="companySizeAtEndOfDateRange.yaxis"
+            [dataLabels]="companySizeAtEndOfDateRange.dataLabels" [title]="companySizeAtEndOfDateRange.title"
+            [fill]="companySizeAtEndOfDateRange.fill" [tooltip]="companySizeAtEndOfDateRange.tooltip"
+            [legend]="companySizeAtEndOfDateRange.legend"></apx-chart>
+    </div>
+    <div class="col-md-1 col-sm-1 ">
+    </div>
+    <div class="col-md-5 col-sm-5">
+    </div>
+</div>
+<h4 class="mt-5 heading">Companies and Applications</h4>
+<hr>
+<div class="row pt-3 pb-3">
+    <div class="col-md-5 col-sm-5 ">
+        <p>Total Current Companies</p>
+        <div class="text-center py-5" *ngIf="!currentCompanies.series || !currentCompanies.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart *ngIf="currentCompanies.series.length" [series]="currentCompanies.series"
+            [chart]="currentCompanies.chart" [xaxis]="currentCompanies.xaxis" [yaxis]="currentCompanies.yaxis"
+            [dataLabels]="currentCompanies.dataLabels" [grid]="currentCompanies.grid" [stroke]="currentCompanies.stroke"
+            [title]="currentCompanies.title"></apx-chart>
+    </div>
+    <div class="col-md-1 col-sm-1 ">
+    </div>
+    <div class="col-md-5 col-sm-5">
+        <p>Number of Graduate Companies in Total</p>
+        <div class="text-center py-5" *ngIf="!graduateCompanies.series || !graduateCompanies.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart *ngIf="graduateCompanies.series.length" [series]="graduateCompanies.series"
+            [chart]="graduateCompanies.chart" [xaxis]="graduateCompanies.xaxis" [yaxis]="graduateCompanies.yaxis"
+            [dataLabels]="graduateCompanies.dataLabels" [grid]="graduateCompanies.grid"
+            [stroke]="graduateCompanies.stroke" [title]="graduateCompanies.title"></apx-chart>
+    </div>
+</div>
+<div class="row pt-3 pb-3">
+    <div class="col-md-5 col-sm-5 ">
+        <div>
+            <label><b>Average Time from Application to Resident: </b>
+                <span>{{(averageData && averageData.avgTimefromAppltoResident
+                    && averageData.avgTimefromAppltoResident.length &&
+                    (averageData.avgTimefromAppltoResident[0].round || averageData.avgTimefromAppltoResident[0].round ==
+                    0)) ?
+                    averageData.avgTimefromAppltoResident[0].round + ' Days' : '-'}}</span>
+            </label>
+        </div>
+        <div>
+            <label><b>Average Time at BioLabs - Current Companies: </b><span>{{(averageData &&
+                    averageData.avgOfCurrentCompanies
+                    && averageData.avgOfCurrentCompanies.length
+                    && (averageData.avgOfCurrentCompanies[0].round || averageData.avgOfCurrentCompanies[0].round == 0))
+                    ?
+                    averageData.avgOfCurrentCompanies[0].round + ' Months' : '-'}}</span></label>
+        </div>
+        <div>
+            <label><b>Average Time at BioLabs - Graduated Companies: </b><span>{{(averageData &&
+                    averageData.avgOfGraduatedCompanies
+                    && averageData.avgOfGraduatedCompanies.length &&
+                    (averageData.avgOfGraduatedCompanies[0].round || averageData.avgOfGraduatedCompanies[0].round == 0))
+                    ?
+                    averageData.avgOfGraduatedCompanies[0].round + ' Months' : '-'}}</span></label>
+        </div>
+        <div>
+            <label><b>Active Clinical Trials (# trials): </b>
+                <span>{{(averageData && averageData.activeAndClinicalTrailParticipants &&
+                    averageData.activeAndClinicalTrailParticipants.length
+                    && (averageData.activeAndClinicalTrailParticipants[0].sumofactiveclinicaltrials
+                    || averageData.activeAndClinicalTrailParticipants[0].sumofactiveclinicaltrials == 0)) ?
+                    averageData.activeAndClinicalTrailParticipants[0].sumofactiveclinicaltrials : '-'}}</span>
+            </label>
+        </div>
+        <div>
+            <label><b>Clinical Trial Participants (# patients enrolled): </b>
+                <span>{{(averageData && averageData.activeAndClinicalTrailParticipants &&
+                    averageData.activeAndClinicalTrailParticipants.length
+                    && (averageData.activeAndClinicalTrailParticipants[0].sumofclinicaltrialparticipants
+                    || averageData.activeAndClinicalTrailParticipants[0].sumofclinicaltrialparticipants == 0)) ?
+                    averageData.activeAndClinicalTrailParticipants[0].sumofclinicaltrialparticipants : '-'}}</span>
+            </label>
+        </div>
+        <div>
+            <label><b>Jobs Added: </b>
+                <span>{{(averageData && averageData.hasOwnProperty('jobsAdded') &&
+                    (averageData.jobsAdded || averageData.jobsAdded == 0)) ? averageData.jobsAdded : '-'}}</span>
+            </label>
+        </div>
+    </div>
+    <div class="col-md-1 col-sm-1 ">
+    </div>
+    <div class="col-md-5 col-sm-5">
+        <p>Company Count by Industry Type</p>
+        <!-- length {{this.companyTypesAtEndOfDateRange.series | json}} -->
+        <div class="text-center py-5"
+            *ngIf="!companyTypesAtEndOfDateRange.series || !companyTypesAtEndOfDateRange.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart *ngIf="companyTypesAtEndOfDateRange.series.length" [series]="companyTypesAtEndOfDateRange.series"
+            [chart]="companyTypesAtEndOfDateRange.chart" [xaxis]="companyTypesAtEndOfDateRange.xaxis"
+            [markers]="companyTypesAtEndOfDateRange.markers" [stroke]="companyTypesAtEndOfDateRange.stroke"
+            [plotOptions]="companyTypesAtEndOfDateRange.plotOptions" [yaxis]="companyTypesAtEndOfDateRange.yaxis"
+            [dataLabels]="companyTypesAtEndOfDateRange.dataLabels" [title]="companyTypesAtEndOfDateRange.title"
+            [fill]="companyTypesAtEndOfDateRange.fill" [tooltip]="companyTypesAtEndOfDateRange.tooltip"
+            [legend]="companyTypesAtEndOfDateRange.legend"></apx-chart>
+    </div>
+</div>
+<div class="row pt-3 pb-3">
+    <div class="col-md-5 col-sm-5 ">
+        <p>Total Sum of Fundraising</p>
+        <div class="text-center py-5" *ngIf="!sumOfFundRaised.series || !sumOfFundRaised.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart *ngIf="sumOfFundRaised.series.length" [series]="sumOfFundRaised.series"
+            [chart]="sumOfFundRaised.chart" [xaxis]="sumOfFundRaised.xaxis" [yaxis]="sumOfFundRaised.yaxis"
+            [dataLabels]="sumOfFundRaised.dataLabels" [grid]="sumOfFundRaised.grid" [stroke]="sumOfFundRaised.stroke"
+            [title]="sumOfFundRaised.title"></apx-chart>
+    </div>
+    <div class="col-md-1 col-sm-1 ">
+    </div>
+    <div class="col-md-5 col-sm-5">
+        <p>Fundraising Stage at End Date</p>
+        <div class="text-center py-5" *ngIf="!fundingRaised.series || !fundingRaised.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart *ngIf="fundingRaised.series.length" [series]="fundingRaised.series" [chart]="fundingRaised.chart"
+            [xaxis]="fundingRaised.xaxis" [yaxis]="fundingRaised.yaxis" [dataLabels]="fundingRaised.dataLabels"
+            [grid]="fundingRaised.grid" [stroke]="fundingRaised.stroke" [title]="fundingRaised.title"></apx-chart>
+    </div>
+</div>
+<div class="row pt-3 pb-3">
+    <div class="col-md-5 col-sm-5 ">
+        <p>Number of Current Members</p>
+        <div class="text-center py-5" *ngIf="!numberOfMembers.series || !numberOfMembers.series.length">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <apx-chart *ngIf="numberOfMembers.series.length" [series]="numberOfMembers.series"
+            [chart]="numberOfMembers.chart" [xaxis]="numberOfMembers.xaxis" [yaxis]="numberOfMembers.yaxis"
+            [dataLabels]="numberOfMembers.dataLabels" [grid]="numberOfMembers.grid" [stroke]="numberOfMembers.stroke"
+            [title]="numberOfMembers.title"></apx-chart>
+    </div>
+    <div class="col-md-1 col-sm-1 ">
+    </div>
+    <div class="col-md-5 col-sm-5">
+    </div>
+</div>

@@ -1,0 +1,19 @@
+/* ::ng-deep .dropdown-menu {
+    width: auto !important;
+    height: 100% !important;
+    overflow-y: scroll !important;
+  } */
+
+  ::ng-deep ngb-datepicker {
+    height: 13rem !important;
+    overflow-y: scroll !important;
+    width: auto !important;
+    /* overflow-x: hidden; */
+}
+/* ngb-datepicker.dropdown-menu */
+/* {
+    height: 15rem !important;
+    overflow-y: scroll;
+    width: 100% !important;
+    overflow-x: hidden;
+} */

@@ -1,0 +1,412 @@
+<div class="row">
+    <div class="col">
+        <div class="input-group-prepend">
+            <label class="form-label mr-2 font18">Phone Rooms:</label>
+            <input class="form-control widthroom" [(ngModel)]="costConfigForm.phoneRooms"
+            maxlength="2" (change)="onInputChange('phoneRooms')" [textMask]="{mask: numberMask}">
+        </div>
+    </div>
+</div>
+<!-- <div class="row g-3 align-items-center">
+    <div class="col-2">
+        <label class="col-form-label">Phone Rooms:</label>
+    </div>
+    <div class="mr-3 col-2">
+        <input class="form-control widthroom" [(ngModel)]="costConfigForm.phoneRooms"
+            maxlength="2" (change)="onInputChange('phoneRooms')" [textMask]="{mask: numberMask}">
+    </div>
+</div> -->
+<label class="mt-4 font18">Conference Rooms:</label>
+<!-- <hr> -->
+<div class="row">
+    <div class="col-7">
+    </div>
+    <div class="col-5">
+        <div class="row">
+            <div class="col" *ngIf="getRole() != 4">
+                <button [disabled]="(addConferenceRowVar || isConferenceEditEnabled )" (click)=addConferenceRow() class="btn biolabBtn float-right add-raw x">Add Row</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- (ngSubmit)="onSubmit()" -->
+<form [formGroup]="addConferenceRoomForm" class="mt-2" (ngSubmit)="addConferenceRoom()">
+<table class="table table-striped table-bordered table-sm row-border hover text-center table_legenda" style="width: 100%;" datatable id="idDataTable"
+    [dtOptions]="dtOptions[0]" [dtTrigger]="dtTrigger1">
+    <thead>
+        <tr>
+            <th class="conname">Name</th>
+            <th class="concap">Capacity</th>
+            <th class="conspace">Space (Sq.Ft.)</th>
+            <th class="connote">Notes</th>
+            <th class="action"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngIf="addConferenceRowVar">
+            <td class="form-group">
+                <input class="conferencename w-100" formControlName="name"
+                    [ngClass]="{ 'is-invalid': submittedConference && addConferenceRoomForm.controls.name.errors }"
+                    type="text" name="name" />
+            </td>
+            <td class="form-group">
+                <input class="conferencecapacity w-100" formControlName="capacity"
+                    [ngClass]="{ 'is-invalid': submittedConference && addConferenceRoomForm.controls.capacity.errors }"
+                    type="number" name="capacity" />
+            </td>
+            <td class="form-group">
+                <input class="conferencecapacity w-100" formControlName="space" name="space"
+                    [ngClass]="{ 'is-invalid': submittedConference && addConferenceRoomForm.controls.space.errors }"
+                    type="number" />
+            </td>
+            <td class="form-group">
+                <textarea class="conferencenotes w-100" formControlName="notes" type="text" name="notes"
+                    [ngClass]="{ 'is-invalid': submittedConference && addConferenceRoomForm.controls.notes.errors }">
+                        </textarea>
+            </td>
+            <td class="form-group">
+                <span class="margin-right cursor-pointer submit">
+                    <i class="fa fa-check" (click)="addConferenceRoom()"></i>
+                </span>
+                <span (click)="addConferenceRowVar = !addConferenceRowVar"><i class="fa fa-times cursor-pointer"></i></span>
+            </td>
+        </tr>
+        <tr *ngFor="let item of conferenceRooms; let index=index">
+            <td class="form-group text-start">
+                <span *ngIf="!item.editable"> {{item.conference_rooms_name}}</span>
+                <input class="product-name w-100" *ngIf="item.editable" formControlName="name" 
+                    [ngClass]="{ 'is-invalid': submittedConference && addConferenceRoomForm.controls.name.errors }"
+                    type="text" name="name" />
+            </td>
+            <td class="form-group">
+                <span *ngIf="!item.editable"> {{item.conference_rooms_capacity}}</span>
+                <input class="product-name w-10" *ngIf="item.editable" formControlName="capacity" 
+                   type= "number"  [ngClass]="{ 'is-invalid': submittedConference && addConferenceRoomForm.controls.capacity.errors }"
+                    name="capacity" />
+            </td>
+            <td class="form-group">
+                <span *ngIf="!item.editable"> {{item.conference_rooms_space}}</span>
+                <input class="product-name w-10"  *ngIf="item.editable"
+                type= "number"  [ngClass]="{ 'is-invalid': submittedConference && addConferenceRoomForm.controls.space.errors }"
+                    formControlName="space"  name="space" />
+            </td>
+            <td class="description text-start">
+                <span *ngIf="!item.editable">{{item.conference_rooms_notes}}</span>
+                <textarea class="description w-100 ak" formControlName="notes" *ngIf="item.editable" maxlength="200"
+                [ngClass]="{ 'is-invalid': submittedConference && addConferenceRoomForm.controls.notes.errors }" type="text" name="notes">
+                </textarea>
+            </td>
+            <td *ngIf="getRole() != 4">
+                <span class="margin-right cursor-pointer" *ngIf="!(addConferenceRowVar || isConferenceEditEnabled)"
+                    (click)="conferenceEditEnable(item)">
+                    <li class="fa fa-edit"></li>
+                </span>
+                <span data-toggle="modal" data-target="#deleteModal"
+                    *ngIf="!(addConferenceRowVar || isConferenceEditEnabled)" (click)="setConferenceItemData(item)">
+                    <li class="fa fa-trash"></li>
+                </span>
+    
+                <span class="margin-right"
+                    *ngIf="((addConferenceRowVar) || (isConferenceEditEnabled && item.conference_rooms_id !== selectedConference.conference_rooms_id))">
+                    <li class="fa fa-edit disabled"></li>
+                </span>
+    
+                <span data-toggle="modal"
+                    *ngIf="((addConferenceRowVar) || (isConferenceEditEnabled && item.conference_rooms_id !== selectedConference.conference_rooms_id) )">
+                    <li class="fa fa-trash disabled"></li>
+                </span>
+    
+                <span class="margin-right cursor-pointer submit" *ngIf="item.editable">
+                    <li class="fa fa-check" (click)="updateConferenceRoom(item.conference_rooms_id, item)"></li>
+                </span>
+                <!-- <span class="margin-right cursor-pointer" data-toggle="modal" data-target="#editModal"
+                    *ngIf="item.editable">
+                    <li class="fa fa-check"></li>
+                </span> -->
+                <span class="margin-right cursor-pointer" *ngIf="item.editable"
+                    (click)="item.editable = !item.editable; isConferenceEditEnabled = !isConferenceEditEnabled">
+                    <i class="fas fa-times"></i>
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</form>
+<h4 class="mt-5 heading">Standard Offering</h4>
+<hr>
+<div class="row ">
+    <div class="col mr">
+        <div class="input-group-prepend ">
+            <label class="form-label align-items-center">Bench:</label>
+            <span class="input-group-text ml-2 logo" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                'INR')}}</span>
+            <input [textMask]="{mask: numberMask}" (change)="onInputChange('labBench')" [(ngModel)]="costConfigForm.labBench"
+                class="form-control width">
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-group-prepend">
+            <label class="form-label align-items-center">Workstation:</label>
+            <span class="input-group-text ml-2 logo" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                'INR')}}</span>
+            <input [textMask]="{mask: numberMask}" (change)="onInputChange('workstation')"
+                [(ngModel)]="costConfigForm.workstation" class="form-control width">
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-group-prepend">
+            <label class="form-label align-items-center">Membership:</label>
+            <span class="input-group-text ml-2 logo" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                'INR')}}</span>
+            <input [textMask]="{mask: numberMask}" (change)="onInputChange('membership')"
+                [(ngModel)]="costConfigForm.membership" class="form-control width">
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-group-prepend">
+            <label class="form-label align-items-center">Private office:</label>
+            <span class="input-group-text ml-2 logo" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                'INR')}}</span>
+            <input [textMask]="{mask: numberMask}" (change)="onInputChange('office')"
+                [(ngModel)]="costConfigForm.office" class="form-control width">
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-group-prepend">
+            <label class="form-label align-items-center">Private lab:</label>
+            <span class="input-group-text ml-2 logo" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                'INR')}}</span>
+            <input [textMask]="{mask: numberMask}" (change)="onInputChange('privateLab')"
+                [(ngModel)]="costConfigForm.privateLab" class="form-control width">
+        </div>
+    </div>
+</div>
+<!-- <div class="row g-3 align-items-center">
+    <div class="input-group col-2">
+        <span class="center-align">Bench:</span>
+        <div class="input-group-prepend pl-2 height">
+            <span class="input-group-text" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                'INR')}}</span>
+        </div>
+        <input [textMask]="{mask: numberMask}" (change)="onInputChange('bench')" [(ngModel)]="costConfigForm.bench" class="form-control">
+    </div>
+    <div class="input-group col-2">
+        <span class="center-align">Office:</span>
+        <div class="input-group-prepend pl-2 height">
+            <span class="input-group-text" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                'INR')}}</span>
+        </div>
+        <input [textMask]="{mask: numberMask}" (change)="onInputChange('office')"
+        [(ngModel)]="costConfigForm.office" class="form-control">
+    </div>
+    <div class="input-group col-3">
+        <span class="center-align">Workstation:</span>
+        <div class="input-group-prepend pl-2 height">
+            <span class="input-group-text" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                'INR')}}</span>
+        </div>
+        <input [textMask]="{mask: numberMask}" (change)="onInputChange('workstation')"
+        [(ngModel)]="costConfigForm.workstation" class="form-control">
+    </div>
+    <div class="input-group col-3">
+        <span class="center-align">Membership:</span>
+        <div class="input-group-prepend pl-2 height">
+            <span class="input-group-text" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                'INR')}}</span>
+        </div>
+        <input [textMask]="{mask: numberMask}" (change)="onInputChange('membership')"
+        [(ngModel)]="costConfigForm.membership" class="form-control">
+    </div>
+</div> -->
+
+<h4 class="mt-5 heading">Invoice Configuration</h4>
+<hr>
+<div class="row">
+    <div class="col-7">
+    </div>
+    <div class="col-5">
+        <div class="row">
+            <div class="col" *ngIf="getRole() != 4">
+                <button (click)=addRow() [disabled]="(addRowVar || isProductEditEnabled )" class="btn biolabBtn float-right add-raw">Add Row</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form [formGroup]="addProductForm" class="mt-2" (ngSubmit)="onSubmit()">
+    <table class="table table-striped table-bordered table-sm row-border hover text-center" style="width: 100%;" datatable id="idTable"
+        [dtOptions]="dtOptions[1]" [dtTrigger]="dtTrigger2">
+        <thead>
+            <tr>
+                <th class="name">Name</th>
+                <th class="dis">Description</th>
+                <th class="type">Type</th>
+                <th class="sqft">Sq. Footage</th>
+                <th class="quantity">Total Quantity</th>
+                <th class="ref">Recurrence</th>
+                <th class="cost">Cost</th>
+                <th class="act" *ngIf="getRole() != 4"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="addRowVar">
+                <td class="form-group">
+                    <input class="w-100" formControlName="name"
+                        [ngClass]="{ 'is-invalid': submitted && f.name.errors }" type="text" name="name" />
+                </td>
+                <td class="form-group">
+                    <textarea class="description w-100" formControlName="description" 
+                    [ngClass]="{ 'is-invalid': submitted && addProductForm.controls.description.errors }"
+                    type="text" name="description">
+                    </textarea>
+                </td>
+                <td class="form-group text-start">
+                    <select class="form-control" formControlName="productTypeId">
+                        <option value="" selected>Select</option>
+                        <option *ngFor="let type of productType; let index=index" [value]="type.id">
+                            {{type.productTypeName}}</option>
+                    </select>
+                </td>
+                <td class="form-group">
+                    <input class="product-name" formControlName="sqFootage"
+                        [ngClass]="{ 'is-invalid': submitted && f.sqFootage.errors }" type="number" name="sqFootage" />
+                </td>
+                <td class="form-group">
+                    <input class="product-name" formControlName="totalQuantity"
+                        [ngClass]="{ 'is-invalid': submitted && f.totalQuantity.errors }" type="number" name="totalQuantity" />
+                </td>
+                <td class="w-10 form-group">
+                    <input type="checkbox" formControlName="recurrence" name="recurrence" class="" />
+                </td>
+                <td class="form-group">
+                    <input class="w-10" formControlName="cost" [ngClass]="{ 'is-invalid': submitted && f.cost.errors }"
+                        type="number" name="cost" />
+                </td>
+                <td class="form-group">
+                    <span class="margin-right cursor-pointer submit">
+                        <i class="fa fa-check" (click)="onSubmit()"></i>
+                    </span>
+                    <span (click)="addRowVar = !addRowVar" (click)="dismissAddRow()"><i class="fa fa-times cursor-pointer ml-2"></i></span>
+                </td>
+            </tr>
+
+            <tr *ngFor="let item of data; let index=index">
+                <td class="form-group text-start">
+                    <span *ngIf="!item.editable"> {{item.product_name}}</span>
+                    <input *ngIf="item.editable" class="w-100" formControlName="name"
+                        [ngClass]="{ 'is-invalid': submitted && f.name.errors }" type="text" name="name" />
+                </td>
+                <td class="description text-start">
+                    <span *ngIf="!item.editable">{{item.product_description}}</span>
+                    <textarea class="description w-100" formControlName="description" *ngIf="item.editable"
+                        [ngClass]="{ 'is-invalid': submitted && f.description.errors }" type="text" name="description">
+                    </textarea>
+                </td>
+                <td class="form-group text-start">
+                    <span *ngIf="!item.editable">{{getProductTypeNameById(item.product_productTypeId)}}</span>
+                    <select *ngIf="item.editable" class="form-control" formControlName="productTypeId">
+                        <option value="">Select</option>
+                        <option *ngFor="let opt of productType; let index=index" [value]="opt.id"
+                            [selected]="opt.id == item.product_productTypeId">{{opt.productTypeName}}</option>
+                    </select>
+                </td>
+                <td class="form-group">
+                    <span *ngIf="!item.editable"> {{item.product_sqFootage}}</span>
+                    <input type="number" *ngIf="item.editable" formControlName="sqFootage"
+                        [ngClass]="{ 'is-invalid': submitted && f.sqFootage.errors }" type="number" name="sqFootage" />
+                </td>
+                <td class="form-group">
+                    <span *ngIf="!item.editable"> {{item.product_totalQuantity}}</span>
+                    <input type="number" class="product-name" *ngIf="item.editable" formControlName="totalQuantity"
+                        [ngClass]="{ 'is-invalid':  (submitted && f.totalQuantity.errors) }" type="number" name="totalQuantity" />
+                </td>
+                <td class="w-10">
+                    <span *ngIf="!item.editable">{{(item.product_recurrence) ? 'Yes' : 'No'}}</span>
+                    <input type="checkbox" class="text-center cursor-pointer" name="recurrence" *ngIf="item.editable"
+                        [checked]="item.product_recurrence" formControlName="recurrence" />
+                </td>
+                <td>
+                    <span *ngIf="!item.editable">{{item.product_cost | currency: selectedSiteDetail.currencyCode || 'EUR'}}</span>
+                    <input class="w-10" formControlName="cost" *ngIf="item.editable"
+                        [ngClass]="{ 'is-invalid': submitted && f.cost.errors }" type="number" name="cost" />
+                </td>
+                <td *ngIf="getRole() != 4">
+                    <span class="margin-right cursor-pointer" *ngIf="!(addRowVar || isProductEditEnabled)"
+                        (click)="editEnable(item)">
+                        <li class="fa fa-edit"></li>
+                    </span>
+
+                    <span data-toggle="modal" data-target="#deleteModal" *ngIf="!(addRowVar || isProductEditEnabled)"
+                        (click)="setItemData(item)">
+                        <li class="fa fa-trash"></li>
+                    </span>
+                    <span *ngIf="((addRowVar) || ((isProductEditEnabled && selectedItem) && item.product_id !== selectedItem.product_id))" class="margin-right" >
+                        <li class="fa fa-edit disabled"></li>
+                    </span>
+                    <span *ngIf="((addRowVar) || ((isProductEditEnabled && selectedItem) && item.product_id !== selectedItem.product_id))" data-toggle="modal" >
+                        <li class="fa fa-trash disabled"></li>
+                    </span>
+                    <span class="margin-right cursor-pointer" data-toggle="modal" data-target="#editModal"
+                        *ngIf="item.editable">
+                        <li class="fa fa-check"></li>
+                    </span>
+
+                    <span class="margin-right cursor-pointer" *ngIf="item.editable"
+                        (click)="item.editable = !item.editable; isProductEditEnabled = !isProductEditEnabled">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Update Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to edit this item? Editing it will affect all line items in current and future
+                invoices?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                    (click)="updateProduct()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </form> -->
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Item</h5>
+                <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ isConferenceSelected ? 'Are you sure you want to delete the item?' : "Are you sure you want to delete this item?
+                Deleting it will convert it's
+                corresponding line items to manual entries in invoices?" }}
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()" data-dismiss="modal">Close</button>
+                <button type="button" class="btn biolabBtn btn-del" data-dismiss="modal"
+                    (click)="deleteProduct()">Delete</button>
+            </div> -->
+            <div class="modal-footer">
+                <button type="button" class="btn biolabBtn" (click)="closeModal()" data-dismiss="modal">Close</button>
+                <button type="button" class="btn biolabBtn btn-del" (click)="deleteProduct()" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>

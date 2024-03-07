@@ -1,0 +1,125 @@
+div, .btn1, .btn, .btn2, button, p, input, a{
+  font-family: Raleway;
+}
+p{
+  font-size: 20px;
+}
+.fa-stack-2x{
+  color:#0f9792;
+}
+.map{
+  width: 100%;
+  height: 156px;
+}
+.wrap{
+  word-wrap: break-word;
+}
+.one{
+  color: #26294a;
+}
+.oneLight{
+  color: #373a5cd6;
+}
+.two{
+  color: #6baecf;
+}
+.twoLight{
+  color: #6baecf94;
+}
+.lightIndustry{
+  color: #0f979280;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  outline: black;
+  background-size: 100%, 100%;
+  /* border-radius: 50%; */
+  /* border: 1px solid black; */
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: #26294a;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: #26294a;
+}
+.controlArrow {
+  position: absolute;
+  bottom: 50%;
+  top: 50%;
+  right: 4px;
+}
+.ipsen {
+  background-color: #26294a;
+  text-align: center;
+  color: white;
+}
+.tufts {
+  background-color: #6baecf;
+  text-align: center;
+  color: white;
+}
+.eisai {
+  background-color: #d80c8c;
+  text-align: center;
+  color: white;
+}
+
+.siteMapBox {
+  text-align: center;
+  color: white;
+}
+
+.image-upload img {
+  object-fit: contain;
+}
+.modal-footer {
+  display: inline !important;
+  text-align: center;
+}
+
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+  .icon-font{
+    font-size: 13px;
+  }
+  .btn-font{
+    font-size: 10px;
+  }
+  .status-font{
+    font-size: 11px;
+  }
+  .img-length{
+    height: 125px;
+  }
+  
+}
+@media only screen and (max-width: 375px) {
+  .distance{
+    padding-left: 3rem !important;
+  }
+}
+.card-font{
+  font-size: 14px;
+}
+.card-btn{
+  font-size: 13px;
+}
+.next-card{
+  margin-top: 20px;
+}
+.recent-header{
+  font-size: 15px;
+}
+.length{
+  width: 102% !important;
+}

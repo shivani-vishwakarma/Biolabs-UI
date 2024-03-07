@@ -1,0 +1,203 @@
+
+<div class="row pt-3 pb-3">
+    <div class="col-md-6 col-sm-6 ">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    <i class="far fa-address-card"></i>
+                    {{company?.companyName || '-'}}
+                </h1>
+            </div>
+        </div>
+        <p class="mt-4" *ngIf="company">
+            {{company.technology}}
+        </p>
+        <div class="container">
+            <div *ngIf="company" class="row mt-5">
+                <div class="col-1">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="col">
+                    Formed on {{company?.startDate | date: globalDateFormat}}
+                </div>
+            </div>
+            <div class="row mt-3" *ngIf="company">
+                <div class="col-1">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="col">
+                    Company founded at {{ company?.foundedPlace || "-" }}
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-1">
+                    <i class="fas fa-flag"></i>
+                </div>
+                <div class="col">
+                    Started with BioLabs {{(formatDate(dateWithBiolab) | date: globalDateFormat) || "-"}}
+                </div>
+            </div>
+            <div class="row mt-3" *ngIf="company">
+                <div class="col-1"><i class="fas fa-users"></i></div>
+                <div class="col">Total Size 
+                    {{ privacyService.checkPermission('companySize',data)==true ? (company?.companySize || "-") : "Client declined to share" }}
+                    <!-- {{ company?.companySize || "-" }} -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <!-- no graph data section -->
+        <div class="text-center py-5" *ngIf="!stageGraph">
+            <i class="fa fa-5x fa-bar-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Company stage data can't be fetched at the moment</p>
+        </div>
+        <div id="chart" class="chartDiv" *ngIf="stageGraph">
+            <apx-chart [series]="stateTech.series" [chart]="stateTech.chart" [xaxis]="stateTech.xaxis"
+                [markers]="stateTech.markers" [stroke]="stateTech.stroke" [plotOptions]="stateTech.plotOptions"
+                [yaxis]="stateTech.yaxis" [dataLabels]="stateTech.dataLabels" [title]="stateTech.title"
+                [fill]="stateTech.fill" [tooltip]="stateTech.tooltip" [legend]="stateTech.legend">
+            </apx-chart>
+            <img src="assets/images/loader.gif" class="ajax-loader img-fluid" *ngIf="stageGraphLoader" />
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row pt-3 pb-3">
+    <div class="col-md-6 col-sm-6 ">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    <i class="far fa-file-alt"></i>
+                    Financials
+                </h1>
+            </div>
+        </div>
+        <div class="row pt-5">
+            <div class="col-6">
+                <p> Funding raised to-date </p>
+            </div>:
+            <div class="col">
+                <!-- {{ (company?.funding | currency: "USD":"symbol":"1.0-0") || "-" }} -->
+                {{ privacyService.checkPermission('fundingAmount',data)==true ? (company?.funding | currency: "USD":"symbol":"1.0-0") || "-": "Client declined to share" }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p> Funding Source </p>
+            </div>:
+            <div class="col">
+                <!-- {{ (fundingSourceName && fundingSourceName.join(", ")) || "-" }} -->
+                {{ privacyService.checkPermission('fundingSource',data)==true ? ((fundingSourceName && fundingSourceName.join(", ")) || "-") : "Client declined to share" }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Current User fees </p>
+            </div> :
+            <div class="col">
+                {{ (userFee | currency: selectedSiteDetail.currencyCode || 'EUR':"symbol":"1.0-0") || '-'}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Current Lab bench fees </p>
+            </div> :
+            <div class="col">
+                {{(labBenchFee | currency: selectedSiteDetail.currencyCode || 'EUR':"symbol":"1.0-0") || '-'}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Current Private lab fees </p>
+            </div> :
+            <div class="col">
+                {{(privateLabFee | currency: selectedSiteDetail.currencyCode || 'EUR':"symbol":"1.0-0") || '-'}}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <!-- no graph data section -->
+        <ng-container *ngIf=" (privacyService.checkPermission('fundingAmount',data)) ==true; else fundsChart" >
+            <div class="text-center py-5" *ngIf="!fundGraph">
+                <i class="fa fa-5x fa-chart-line pt-5 pb-2" aria-hidden="true"></i>
+                <p class="mb-1 font-italic">Funding data can't be fetched at the moment</p>
+            </div>
+            <div id="chart" *ngIf="fundGraph">
+                <apx-chart [series]="fund.series" [colors]="fund.colors" [chart]="fund.chart" [xaxis]="fund.xaxis"
+                    [markers]="fund.markers" [stroke]="fund.stroke" [yaxis]="fund.yaxis" [dataLabels]="fund.dataLabels"
+                    [title]="fund.title" [fill]="fund.fill" [tooltip]="fund.tooltip" [legend]="fund.legend">
+                </apx-chart>
+                <img src="assets/images/loader.gif" class="ajax-loader img-fluid" *ngIf="fundGraphLoader" />
+            </div>
+        </ng-container>
+        <ng-template #fundsChart>
+            <div class="text-center py-5">
+                <i class="fa fa-5x fa-chart-line pt-5 pb-2" aria-hidden="true"></i>
+                <p class="mb-1 font-italic">Client declined to share</p>
+            </div>
+        </ng-template>
+    </div>
+</div>
+<hr>
+<div class="row pt-3 pb-3">
+    <div class="col-md-6 col-sm-6 ">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    <i class="fas fas fa-calendar-alt"></i>
+                    Timeline
+                </h1>
+            </div>
+        </div>
+        <div class="text-center py-4" *ngIf="!feeds || feeds.length < 1">
+            <i class="fa fa-3x fa-feed pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Feeds data can't be fetched at the moment</p>
+        </div>
+        <div *ngIf="feeds && feeds.length" class="container">
+            <!-- <div class="row mt-3" *ngFor="let item of feeds; let index=index ">
+                <div class="col-1">
+                    <i class="far fa-newspaper"></i>
+                </div>
+              
+                <div class="col" *ngIf = "arrageFeeds(item?.feeds) || (!arrageFeeds(item?.feeds) && item?.beforevalue =='INITIALIZED_WITH_NULL')">
+                    <strong>{{item?.cdate | date: globalDateFormat}} : </strong>  {{item?.feeds}} to  <strong> {{item?.aftervalue}} </strong> 
+                </div>
+
+                <div class="col" *ngIf="!arrageFeeds(item?.feeds) && item?.beforevalue !=='INITIALIZED_WITH_NULL'">
+                    <strong>{{item?.cdate | date: globalDateFormat}} : </strong>  {{item?.feeds}} from <strong> {{item?.beforevalue}} </strong> to  <strong> {{item?.aftervalue}} </strong>  -->
+            <div class="row mt-0" *ngFor="let item of feeds; let index=index ">
+                <ng-container *ngIf="checkFeedsPermission(item?.feeds)==true">
+                    <div class="row mt-3">
+                    <div class="col" *ngIf="arrageFeeds(item?.feeds) || (!arrageFeeds(item?.feeds) && item?.beforevalue =='INITIALIZED_WITH_NULL')">
+                        <strong>{{item?.cdate | date:globalDateFormat}} : </strong> {{item?.feeds}} to <strong> {{item?.aftervalue}}
+                        </strong>
+                    </div>
+                    <div class="col" *ngIf="!arrageFeeds(item?.feeds) && item?.beforevalue !=='INITIALIZED_WITH_NULL'">
+                        <strong>{{item?.cdate | date:globalDateFormat}} : </strong> {{item?.feeds}}
+                        <span *ngIf="item.beforevalue == item.aftervalue">to <strong> {{item?.aftervalue}} </strong></span>
+                        <span *ngIf="item.beforevalue != item.aftervalue"> from <strong> {{item?.beforevalue}} </strong> to <strong>
+                                {{item?.aftervalue}} </strong></span>
+                    </div>
+                </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6">
+         <!-- no graph data section -->
+         <div class="text-center py-5" *ngIf="!analysisGraph">
+            <i class="fa fa-5x fa-line-chart pt-5 pb-2" aria-hidden="true"></i>
+            <p class="mb-1 font-italic">Overall analysis data can't be fetched at the moment</p>
+        </div>
+        <div id="chartother" *ngIf="analysisGraph">
+            <apx-chart [series]="other.series" [colors]="other.colors" [chart]="other.chart" [xaxis]="other.xaxis"
+                [markers]="other.markers" [stroke]="other.stroke" [yaxis]="other.yaxis" [dataLabels]="other.dataLabels"
+                [title]="other.title" [fill]="other.fill" [tooltip]="other.tooltip" [legend]="other.legend">
+            </apx-chart>
+            <img src="assets/images/loader.gif" class="ajax-loader img-fluid" *ngIf="analysisGraphLoader" />
+        </div>
+    </div>
+</div>
+
+<br><br>

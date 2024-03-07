@@ -1,0 +1,40 @@
+<div class="content-wrapper main">
+    <section>
+        <div>
+            <ul class="nav nav-tabs flex-row cus-tab tab-bar">
+                <li *ngIf="getRole() == 1 || getRole() == 2 || viewCompanyDetails()" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/configurations/siteconfigure"
+                    routerLinkActive="active"> Site  Configuration</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || getRole() == 2 || viewCompanyDetails()" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/configurations/configure"
+                        routerLinkActive="active">Cost Configuration</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || getRole() == 2 || viewCompanyDetails()" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/configurations/eventtraining"
+                    routerLinkActive="active"> Events and Training</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || getRole() == 2 || viewCompanyDetails()" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/configurations/partnersponsor"
+                    routerLinkActive="active"> Partners and Sponsors</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || getRole() == 2 || viewCompanyDetails()" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/configurations/onboarding"
+                        routerLinkActive="active">Onboarding</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || getRole() == 2 || viewCompanyDetails()" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/configurations/offboarding"
+                        routerLinkActive="active">Offboarding</a>
+                    <div class="eff-7"></div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<br>
+<router-outlet></router-outlet>

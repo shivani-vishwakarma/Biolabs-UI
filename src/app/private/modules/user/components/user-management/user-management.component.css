@@ -1,0 +1,23 @@
+/* @font-face {
+    font-family: 'Raleway';
+    src: url("/assets/Raleway-VariableFont_wght.ttf");
+  } */
+  
+  div, nav, a{
+    font-family: Raleway;
+  }
+
+.card-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.image-upload img {
+  object-fit: contain;
+}
+.card-img-top{
+  width: 100%;
+  height: 217px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  }

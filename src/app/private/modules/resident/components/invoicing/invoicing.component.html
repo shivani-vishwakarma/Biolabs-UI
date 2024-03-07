@@ -1,0 +1,342 @@
+<div class="row">
+    <div class="col-7">
+        <div class="button">
+            <i class="cursor-pointer arrow fas fa-long-arrow-alt-left" title="Go to previous company"
+                [ngClass]="{ 'previous' : !previosIndex , 'next' :  previosIndex} " (click)="previous(previosIndex)"
+                [style.pointer-events]="previosIndex ?'auto':'none'"
+                *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7 || getRole() == 8"></i>
+            <span class="pl-3 pr-3 size"> {{companyObj?.companyName || "-" }} </span>
+            <i class="cursor-pointer arrow fas fa-long-arrow-alt-right" title="Go to next company"
+                [ngClass]="{ 'previous' : !nextIndex , 'next' :  nextIndex} " (click)="next(nextIndex)"
+                [style.pointer-events]="nextIndex ?'auto':'none'"
+                *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7 || getRole() == 8"></i>
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="row">
+            <div [ngClass]="{ 'col-9 pr-0' : getRole() == 1 || getRole() == 2 || getRole() == 3 ,
+             'col-12' :  getRole() == 4 || getRole() == 5 || getRole() == 6 || getRole() == 7  || getRole() == 8} ">
+                <input type="month" [(ngModel)]="month" [value]="month" class="float-right"
+                    (change)="getInvoiceByMonth()" />
+            </div>
+            <div class="col-3" *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 3">
+                <button (click)=addRow() [disabled]="(addRowVar || oldMonthDte)" class="btn float-right addRow">Add
+                    Row</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <form [formGroup]="addInvoiceForm" class="mt-2" autocomplete="off">
+        <table class="table table-striped table-bordered table-sm row-border hover text-center" datatable
+            [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Qty</th>
+                    <th>Recurrence</th>
+                    <th>Current</th>
+                    <th>Unit Cost</th>
+                    <th>Monthly Cost</th>
+                    <th *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 3"></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr *ngIf="addRowVar">
+
+                    <td class="form-group">
+                        <input class="product-name" formControlName="productName" #typeaheadInput
+                            [ngClass]="{ 'is-invalid': submitted && f.productName.errors }" type="text"
+                            (selectItem)="setValueInRow($event)" name="productName" [ngbTypeahead]="getProducts"
+                            (focus)="focus$.next($any($event).target.value)"
+                            (click)="click$.next($any($event).target.value)" #instance="ngbTypeahead" />
+                    </td>
+                    <td class="form-group">
+                        <textarea class="description" formControlName="productDescription" type="text"
+                            name="productDescription">
+                    </textarea>
+                    </td>
+                    <td class="form-group">
+                        <!-- <input class="width-135" formControlName="startDate" [min]="minCalenderDate | date:'yyyy-MM-dd'"
+                        [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }" type="date" name="startDate" /> -->
+                        <div class="input-group width-150">
+                            <input formControlName="startDate" class="form-control" placeholder="DD Mon YYYY" name="d1"
+                                [(ngModel)]="modelStartDate" ngbDatepicker #d1="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary fa fa-calendar"
+                                    (click)="toggleDate($event, 'd1')" type="button"></button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="form-group">
+                        <!-- <input class="width-135" formControlName="endDate" [min]="minCalenderDate | date:'yyyy-MM-dd'"
+                        [ngClass]="{ 'is-invalid': submitted && f.endDate.errors }" endDate type="date"
+                        name="endDate" /> -->
+                         <div class="input-group width-150">
+                            <input formControlName="endDate" class="form-control" placeholder="DD Mon YYYY"
+                                [ngClass]="{ 'is-invalid': submitted && f.endDate.errors?.ngbDate.invalid}" name="d3"
+                                [(ngModel)]="modelEndDate" ngbDatepicker #d3="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary fa fa-calendar"
+                                    (click)="toggleDate($event, 'd3')" type="button"></button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="form-group">
+                        <input class="width-50px" formControlName="quantity"
+                            [ngClass]="{ 'is-invalid': submitted && f.quantity.errors }" type="number"
+                            name="quantity" />
+                    </td>
+                    <td class="width-65px form-group">
+                        <input type="checkbox" formControlName="recurrence" name="recurrence" class="" />
+                    </td>
+
+                    <td class="width-110px form-group">
+                        <input type="checkbox" formControlName="currentCharge" name="currentCharge" class="" />
+                    </td>
+                    <td class="form-group">
+                        <input class="w-75 no-spin" formControlName="cost"
+                            [ngClass]="{ 'is-invalid': submitted && f.cost.errors }" type="number" name="cost" />
+                    </td>
+
+                    <td class="form-group" *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 3">
+                        -
+                    </td>
+
+                    <td class="form-group d-flex" *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 3">
+                        <span class="mr-2 cursor-pointer submit">
+                            <i class="fa fa-check" *ngIf="!submitted || !isSubmit" (click)="onSubmit()"></i>
+                            <i class="fa fa-check" *ngIf="submitted && isSubmit"></i>
+                        </span>
+
+                        <span (click)="dismissAddRow()"><i class="fa fa-times cursor-pointer"></i></span>
+                    </td>
+                </tr>
+
+                <tr *ngFor="let item of data let index=index">
+                    <td class="product-name text-left form-group">
+                        <span *ngIf="!item.editable"> {{item.order_product_productName}}</span>
+                        <input *ngIf="item.editable" class="product-name" formControlName="productName" #typeaheadInput
+                            [ngClass]="{ 'is-invalid': submitted && f.productName.errors }" type="text"
+                            (selectItem)="setValueInRow($event)" name="productName" [ngbTypeahead]="getProducts"
+                            (focus)="focus$.next($any($event).target.value)"
+                            (click)="click$.next($any($event).target.value)" #instance="ngbTypeahead" />
+                    </td>
+                    <td class="description text-left form-group">
+                        <span *ngIf="!item.editable">{{item.order_product_productDescription}}</span>
+                        <textarea class="description" formControlName="productDescription" *ngIf="item.editable"
+                            [ngClass]="{ 'is-invalid': submitted && f.productDescription.errors }" type="text"
+                            name="productDescription"></textarea>
+                    </td>
+                    <td class="form-group widthDate">
+                        <span *ngIf="!item.editable">
+                            {{item.order_product_startDate | date: globalDateFormat}}
+                        </span>
+                        <!-- <input class="width-135" *ngIf="item.editable" formControlName="startDate"
+                        [min]="minCalenderDate | date:'yyyy-MM-dd'"
+                        [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }"
+                        value="{{f.startDate.value | date:'yyyy-MM-dd' }}" type="date" name="startDate" /> -->
+                        <!-- class="width-135" -->
+                        <div class="input-group width-150" *ngIf="item.editable">
+                            <input formControlName="startDate" class="form-control" placeholder="DD Mon YYYY"
+                                [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }" name="d2"
+                                [(ngModel)]="modelStartDate" [minDate]="minCalDate" ngbDatepicker #d2="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary fa fa-calendar"
+                                    (click)="toggleDate($event, 'd2')" type="button"></button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="form-group widthDate">
+
+                        <span *ngIf="!item.editable">
+                            {{item.order_product_endDate | date: globalDateFormat}}
+                        </span>
+                        <div class="input-group width-150" *ngIf="item.editable">
+                            <input formControlName="endDate" class="form-control" placeholder="DD Mon YYYY"
+                                [ngClass]="{ 'is-invalid': submitted && f.endDate.errors }" name="d4"
+                                [(ngModel)]="modelEndDate" [minDate]="minCalDate" ngbDatepicker #d4="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary fa fa-calendar"
+                                    (click)="toggleDate($event, 'd4')" type="button"></button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="form-group">
+                        <span *ngIf="!item.editable">{{item.order_product_quantity}}</span>
+                        <input class="width-50px" formControlName="quantity" *ngIf="item.editable"
+                            [ngClass]="{ 'is-invalid': submitted && f.quantity.errors }" type="number"
+                            name="quantity" />
+
+                    </td>
+                    <td class="width-65px form-group">
+                        <span *ngIf="!item.editable">{{(item.order_product_recurrence) ? 'Yes' : 'No'}}</span>
+                        <input type="checkbox" class="text-center cursor-pointer" name="recurrence"
+                            *ngIf="item.editable" [checked]="item.order_product_recurrence"
+                            formControlName="recurrence" />
+                    </td>
+                    <td class="width-110px form-group">
+                        <span *ngIf="!item.editable">{{(item.order_product_currentCharge) ? 'Yes' : 'No'}}</span>
+                        <input class="text-center cursor-pointer" formControlName="currentCharge" *ngIf="item.editable"
+                            type="checkbox" name="currentCharge" [checked]="item.order_product_currentCharge" />
+                    </td>
+                    <td class="form-group">
+                        <span *ngIf="!item.editable">{{item.order_product_cost | currency: selectedSiteDetail.currencyCode || 'EUR'}}</span>
+                        <input class="w-75 no-spin" formControlName="cost" *ngIf="item.editable"
+                            [ngClass]="{ 'is-invalid': submitted && f.cost.errors }" type="number" name="cost" />
+                    </td>
+
+                    <td class="form-group">
+                        <span *ngIf="!item.editable">{{item.actualCost | currency: selectedSiteDetail.currencyCode || 'EUR'}}</span>
+                        <span *ngIf="item.editable">-</span>
+                    </td>
+
+                    <td *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 3" class="width-60px d-flex form-group">
+                        <span class="mr-2 cursor-pointer" *ngIf="(!item.editable && !oldMonthDte)"
+                            (click)="editEnable(item, index)">
+                            <li class="fa fa-edit"></li>
+                        </span>
+
+                        <span data-toggle="modal" data-target="#deleteModal" *ngIf="(!item.editable && !oldMonthDte)"
+                            (click)="setItemData(item)">
+                            <li class="fa fa-trash"></li>
+                        </span>
+
+                        <span class="mr-2" *ngIf="(!item.editable && oldMonthDte)">
+                            <li class="fa fa-edit disabled"></li>
+                        </span>
+
+                        <span data-toggle="modal" *ngIf="(!item.editable && oldMonthDte)">
+                            <li class="fa fa-trash disabled"></li>
+                        </span>
+
+                        <span class="margin-right cursor-pointer" *ngIf="item.editable">
+                            <li class="fa fa-check" *ngIf="!submitted|| !isSubmit" (click)="updateProduct()"></li>
+                            <li class="fa fa-check" *ngIf="submitted && isSubmit"></li>
+                        </span>
+
+                        <span class="margin-right cursor-pointer" *ngIf="item.editable" (click)="dismissEditRow()">
+                            <i class="fas fa-times"></i>
+                        </span>
+
+                    </td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+                <tr *ngIf="data && (data.length > 0) ">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <td><b>{{total | currency: selectedSiteDetail.currencyCode || 'EUR'}}</b></td>
+                    <td *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 3"></td>
+                </tr>
+            </tfoot>
+
+        </table>
+
+    </form>
+    <div *ngIf="!isMonthGreater" class="row pt-3">
+        <div class="col">
+            <div class="float-right mr-3">
+                <div class="input-group">
+                    Retainer Paid To Date:
+                    <div class="input-group-prepend pl-2 height">
+                        <span class="input-group-text" id="basic-addon1">{{getCurrency(selectedSiteDetail.currencyCode ||
+                            'INR')}}</span>
+                    </div>
+                    <input [disabled]="!(getRole() == 1 || getRole() == 2)" class="lenght"
+                        [ngModelOptions]="{updateOn: 'blur'}" [(ngModel)]="retainerPaidToDate"
+                        (ngModelChange)="onRetainerBlur($event)" placeholder="0.00" appTwoDigitDecimaNumber />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-3" *ngIf="getRole() == 1 || getRole() == 2">
+        <div class="col">
+            <div class="float-right mralign">
+                <ul class="lockDateList">
+                    <li class="lockDateListItem"><span class="lockDate">
+                        Invoice Lock Date:</span> {{selectedFreezeDate | date: globalDateFormat}}</li>
+                    <li class="lockDateListItem"><span class="lockDate">
+                        Invoice Status:</span> {{oldMonthDte ? 'Locked' : 'Open'}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row pt-3">
+        <div class="col">
+            <div class="float-right mr-4">
+                <div class="input-group align1">
+                    Invoice freeze date :
+                    <div class="input-group-prepend pl-2 height">
+                        <span class="ml-3">{{selectedFreezeDate | date: globalDateFormat}}</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-0">
+        <div class="col">
+            <div class="float-right mr-4">
+                <div class="input-group align2">
+                    Invoice Status :
+                    <div class="input-group-prepend pl-2 height">
+                        <span class="ml-5">{{oldMonthDte ? 'Locked' : 'Open'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+<!-- <div class="float-right right pb-5">
+    <div class="row pt-3">
+        <div class="col">
+            <div class="input-group freeze">
+                Invoice freeze date : <span class="ml-3">{{selectedFreezeDate | date: globalDateFormat}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-0">
+        <div class="row col">
+            <div class="input-group status">
+                <div class="col-auto">Invoice Status : <span class="ml-5"> {{oldMonthDte ? 'Locked' : 'Open'}}</span>
+                </div>
+                <div class="col-auto"></div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- </div> -->
+<div class=" modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this item ?
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                <button type="button" class="btn biolabBtn btn-del" data-dismiss="modal"
+                    (click)="deleteItem()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

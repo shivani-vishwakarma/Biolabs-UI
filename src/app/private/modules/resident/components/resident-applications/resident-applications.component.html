@@ -1,0 +1,81 @@
+<div class="form-group">
+    <div class="row">
+        <div class="col">
+            <h5 class="drop-font"><strong> Company Status:</strong></h5>
+            <select [disabled]="manageuser" class="col form-control nav-item drop-font" [(ngModel)]="companyStatus" (ngModelChange)="getFilterData();"
+                aria-label=".form-control-lg example">
+                <option value="">Select status</option>
+                <option value="0">Applied-New</option>
+                <option value="5">Applied-Contacted</option>
+                <option value="1">Current Member</option>
+                <option value="2">On Hold</option>
+                <option value="3">Discontinued</option>
+                <option value="4">Graduated</option>
+            </select>
+        </div>
+        <div class="col">
+            <h5 class="drop-font"> <strong>Committee Status:</strong></h5>
+            <select [disabled]="manageuser" class="form-control nav-item drop-font" [(ngModel)]="committeeStatus" (ngModelChange)="getFilterData();"
+                aria-label=".form-control-lg example">
+                <option value="">Select status</option>
+                <option value="0">Unscheduled</option>
+                <option value="1">Scheduled</option>
+                <option value="2">Accepted</option>
+                <option value="3">Rejected</option>
+                <option value="4">Alternate</option>
+            </select>
+        </div>
+        <div class="col">
+            <h5 class="drop-font"><strong>Company Onboarding:</strong></h5>
+            <select [disabled]="manageuser" class="form-control nav-item drop-font" [(ngModel)]="companyOnboardingStatus"
+                (ngModelChange)="getFilterData();" aria-label=".form-control-lg example">
+                <option value="">Select status</option>
+                <option [ngValue]="true">Onboarded</option>
+                <option [ngValue]="false">Needs Onboarding</option>
+            </select>
+        </div>
+        <div class="col">
+            <h5 class="drop-font"> <strong>Company Visibility:</strong></h5>
+            <select [disabled]="manageuser" class="form-control nav-item drop-font" [(ngModel)]="companyVisibility" (ngModelChange)="getFilterData();"
+                aria-label=".form-control-lg example">
+                <option value="">Select status</option>
+                <option [ngValue]="true">Published</option>
+                <option [ngValue]="false">Stealth</option>
+            </select>
+        </div>
+        <div class="col-1">
+            <h5  class="drop-font"><strong>&nbsp;</strong></h5>
+            <button [disabled]="manageuser" class="btn biolabBtn drop-font marg" (click)="removefilter()">
+                <strong>Clear</strong>
+            </button>
+        </div>
+    </div>
+</div>
+
+<li class="nav-link">
+    <i class="fas fa-list" [ngClass]="{biolab: tableView}" title="Company Table View" (click)="tView()"></i>
+    <i class="fas fa-th" title="Company Card View" [ngClass]="{biolab: cardview}" (click)="cardView()"></i>
+    <i *ngIf="(this.getRole() === 1 || this.getRole() === 2)" class="fas fa-users icons"
+        [ngClass]="{biolab: manageuser}" title="Resident Table View" (click)="manageUser()"></i>
+</li>
+<div class="row justify-content-end pr-3" *ngIf="cardview">
+    <div class="text-muted justify-content-center my-auto drop-font"><strong>Sort By: </strong></div>
+    <button class="mr-1 ml-2 btn border"
+        [ngClass]="sortThrough.date ? 'sortButtonActive drop-font' : 'sortButton drop-font'"
+        (click)="sortData('date')">Date</button>
+    <button class="btn border" [ngClass]="sortThrough.alpha ? 'sortButtonActive drop-font' : 'sortButton drop-font'"
+        (click)="sortData('alpha')">A -> Z</button>
+</div>
+<div class="row mt-3">
+    <div class="col-auto companyTable" [hidden]="cardview || manageuser"> 
+        <app-companytable [companyList]="companyList"></app-companytable>
+    </div>
+</div>
+<div class="row">
+    <div class="col companyTablesRes" [hidden]="tableView || cardview">
+        <app-companyresidenttable></app-companyresidenttable>
+    </div>
+</div>
+<div [hidden]="tableView || manageuser"> 
+    <app-companycardview [companyList]="companyList"></app-companycardview>
+</div>

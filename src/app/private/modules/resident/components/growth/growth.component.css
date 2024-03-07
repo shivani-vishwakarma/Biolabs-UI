@@ -1,0 +1,22 @@
+p{
+    font-size: 20px;
+  }
+.graph{
+    width: 1660px;
+    height: 690px;
+}
+#chart {
+  max-width: 100%;
+  margin: 35px auto;
+}
+.chartDiv {
+  /* height: 400px; */
+  position: relative;
+}
+.ajax-loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -32px; /* -1 * image width / 2 */
+  margin-top: -32px; /* -1 * image height / 2 */
+}

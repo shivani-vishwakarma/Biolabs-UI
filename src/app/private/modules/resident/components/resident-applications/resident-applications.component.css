@@ -1,0 +1,365 @@
+h5 {
+  color: rgba(0, 0, 0, .5);
+}
+
+.data {
+  color: rgba(0, 0, 0, .5);
+  font-size: 14px;
+}
+
+hr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.clr {
+  color: #4b97d2
+}
+
+.review {
+  color: white;
+  /* text-transform: uppercase; */
+}
+.reqfas {
+  font-weight: 900 !important;
+  font-size: 20px !important;
+}
+.fas {
+  font-weight: 900;
+  font-size: 30px;
+  padding: 1px 15px 1px 1px !important;
+  color: black;
+}
+
+.fas:hover {
+  color: lightseagreen;
+}
+
+.size {
+  font-size: 10px;
+}
+
+.a {
+  background-color: #1c948d;
+  font-size: 12px;
+}
+
+.re {
+  text-align: center;
+  background-color: #23CEB7;
+  color: white;
+  border-radius: 5px;
+}
+
+.e {
+  text-align: center;
+  background-color: #23CEB7;
+  color: white;
+}
+
+.text {
+  /* color: gray; */
+  background-color: #3ab9a8;
+  color: white;
+}
+
+#options {
+  text-align: center;
+}
+
+#options button {
+  color: white;
+  cursor: pointer;
+  background: #23CEB7;
+  border: 1px solid #95a5a6;
+}
+
+.card-deck {
+  margin: 50px 0px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  padding: 0px 120px;
+}
+
+.active-btn {
+  border-radius: 3px !important;
+  border: solid 1px #1c948d !important;
+  color: #0f9792 !important;
+}
+
+.bordered {
+  border: 1px solid #95a5a6;
+}
+
+li {
+  padding-left: 5px;
+  margin: 15px -6px;
+}
+
+/* new try */
+
+.dataTable>thead>tr>th[class*="sort"]:before,
+.dataTable>thead>tr>th[class*="sort"]:after {
+  content: "" !important;
+}
+
+.image-upload img {
+  object-fit: contain;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card {
+  border: 0.5px solid #e0caca;
+}
+
+.companytable{
+  width: 100%;
+  table-layout: fixed;
+  word-wrap:break-word;
+}
+.card-new {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  /* border: 1px solid rgb(0 0 0 / 62%); */
+  border: 1px solid rgb(249 134 3);
+  border-radius: .25rem;
+  box-shadow: 0.3rem 0.6rem 1.5rem rgb(0 0 0 / 80%);
+  font-weight: 600;
+}
+
+.Applied-New {
+  background-color: #f98603;
+  color: white;
+}
+
+.CurrentMember {
+  background-color: #1f751f;
+  color: white;
+}
+
+.OnHold {
+  background-color: #636060;
+  color: white;
+}
+
+.Discontinued {
+  background-color: #942b2b;
+  color: white;
+}
+
+.Graduated {
+  background-color: #1c3f75;
+  color: white;
+}
+
+.Applied-Contacted {
+  background-color: #d25e10;
+  color: white;
+}
+
+.learn-button {
+  border-radius: 3px;
+  background-color: #1c948d;
+  font-size: 13px;
+  font-weight: bold;
+  border: unset;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.sortButtonActive {
+  background-color: #1c948d;
+  border: none;
+  color: white;
+  height: 40px;
+  padding: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+  box-sizing: border-box;
+}
+
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+  .status-font {
+    font-size: 11px;
+  }
+
+  .drop-font {
+    font-size: 13px;
+  }
+}
+
+
+.fa-download {
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+.csv {
+  color: #166d6d;
+  cursor: pointer;
+}
+
+.margin-right {
+  margin-right: 10px;
+}
+
+.product-name {
+  max-width: 200px;
+  min-width: 150px;
+}
+
+.description {
+  max-width: 400px;
+  min-width: 150px;
+}
+
+.width-110px {
+  width: 110px;
+}
+
+.width-100px {
+  width: 100px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.width-85px {
+  width: 85px;
+}
+
+.width-60px {
+  width: 60px;
+}
+
+.width-50px {
+  width: 50px;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.footer {
+  background-color: #969ca5;
+}
+
+thead {
+  background-color: #343a40;
+  color: white;
+}
+
+.width-150 {
+  width: 150px;
+}
+
+.width-135 {
+  width: 135px;
+}
+
+/* added for table */
+.addRow {
+  background-color: #0f9792;
+  color: white;
+  line-height: 1.0;
+}
+
+:host ::ng-deep .dt-button {
+  border: 1px solid #1c948d !important;
+  background-color: #0f9792 !important;
+  line-height: 1.0 !important;
+  border: none !important;
+  color: white;
+}
+
+input[type="date"] {
+  font-size: 14px;
+}
+
+.pr-3, .px-3 {
+  padding-right: 1.5rem!important;
+  margin: -60px -22px 4px 16px;
+}
+
+table.dataTable tbody td {
+  font-size: 12px;
+}
+
+a {
+  color: #111;
+}
+
+
+:host ::ng-deep .dt-button:hover {
+  border: 1px solid #1c948d !important;
+  background-color: #0f9792 !important;
+  line-height: 1.0 !important;
+  border: none !important;
+  color: black;
+}
+
+.widthDate {
+  width: 90px;
+}
+
+.biolab {
+  color: #1c948d;
+}
+.table thead, .table th {
+  vertical-align: middle;
+}
+.marg {
+  margin: -2px 6px;
+}
+
+#data-table span {
+    display:none; 
+}
+table.dataTable.fixedHeader-floating{position:absolute !important}
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+.hide {
+  display:none; 
+}
+.admin {
+  font-weight: bolder;
+}
+.CompanyName{
+  width: 60px !important;
+}
+.cStatus {
+  width: 35px !important;
+}
+.commiteeStatus {
+  width: 42px !important;
+}
+.appDate {
+  width: 37px !important;
+}
+.onWaitlist {
+  width: 22px !important;
+}
+.onboarding {
+  width: 40px !important;
+}

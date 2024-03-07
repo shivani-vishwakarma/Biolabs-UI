@@ -1,0 +1,9 @@
+h5{
+    color: rgba(0,0,0,.5);
+}
+
+/* new try */
+
+.image-upload img {
+    object-fit: contain;
+}

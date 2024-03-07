@@ -1,0 +1,687 @@
+<ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand"
+    let-onCheckedChange="onCheckedChange">
+    <div class="form-inline row-item">
+        <i *ngIf="item.children" class="mr-1" (click)="onCollapseExpand()" aria-hidden="true"
+            [ngSwitch]="item.collapsed">
+            <svg *ngSwitchCase="true" width="0.8rem" height="0.8rem" viewBox="0 0 16 16" class="bi bi-caret-right-fill"
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+            </svg>
+            <svg *ngSwitchCase="false" width="0.8rem" height="0.8rem" viewBox="0 0 16 16" class="bi bi-caret-down-fill"
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+            </svg>
+        </i>
+        <div class="form-check">
+            <input type="checkbox" *ngIf="!item.children" class="form-check-input" [(ngModel)]="item.checked"
+                (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" [indeterminate]="item.indeterminate" />
+            <label class="form-check-label" *ngIf="item.text != otherText"
+                (click)="item.checked = !item.checked; onCheckedChange()">
+                {{item.text}}
+            </label>
+            <label class="form-check-label" *ngIf="item.text == otherText"
+                (click)="item.checked = !item.checked; onCheckedChange()">
+                {{item.text}}
+            </label>
+            <input type="text" class="ml-2" *ngIf="item.text == otherText"
+                [ngClass]="{ 'is-invalid': submitted && item.checked && (!other[item.value] || other[item.value].length > otherFieldLength) }"
+                name="otherData" [disabled]="!item.checked" [(ngModel)]="other[item.value]" />
+            <div class="invalid-feedback d-block ml-2" *ngIf="submitted && item.checked && item.text == otherText">
+                <div *ngIf="!other[item.value]"> This Field is required</div>
+                <div *ngIf="other[item.value]?.length > otherFieldLength"> Should be less than {{otherFieldLength}}
+                    characters</div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #modalityTemplate let-item="item" let-onCollapseExpand="onCollapseExpand"
+    let-onCheckedChange="onCheckedChange">
+    <div class="form-inline row-item">
+        <i *ngIf="item.children" class="mr-1" (click)="onCollapseExpand()" aria-hidden="true"
+            [ngSwitch]="item.collapsed">
+            <svg *ngSwitchCase="true" width="0.8rem" height="0.8rem" viewBox="0 0 16 16" class="bi bi-caret-right-fill"
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+            </svg>
+            <svg *ngSwitchCase="false" width="0.8rem" height="0.8rem" viewBox="0 0 16 16" class="bi bi-caret-down-fill"
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+            </svg>
+        </i>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="item.checked"
+                (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" [indeterminate]="item.indeterminate" />
+            <label class="form-check-label" *ngIf="item.text != otherText"
+                (click)="item.checked = !item.checked; onCheckedChange()">
+                {{item.text}}
+            </label>
+            <label class="form-check-label" *ngIf="item.text == otherText"
+                (click)="item.checked = !item.checked; onCheckedChange()">
+                {{item.text}}
+            </label>
+            <input type="text" class="ml-2" *ngIf="item.text == otherText" name="otherData" [disabled]="!item.checked"
+                [ngClass]="{ 'is-invalid': submitted && item.checked && (!otherModality[item.value] || otherModality[item.value].length > otherFieldLength) }"
+                [(ngModel)]="otherModality[item.value]" />
+            <div class="invalid-feedback d-block ml-2" *ngIf="submitted && item.checked && item.text == otherText">
+                <div *ngIf="!otherModality[item.value]"> This Field is required</div>
+                <div *ngIf="otherModality[item.value]?.length > otherFieldLength"> Should be less than
+                    {{otherFieldLength}} characters</div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<div class="text-center">
+    <strong>
+        <h1>Residency Application Form</h1>
+    </strong>
+    <div>We would love to hear about you and the technology you are working on! Apply to one of our BioLabs locations by
+        filling out the form below and within 24 - 48 hours,
+        we will get back to you via phone or email with next steps. Thank you for your interest, we look forward to
+        hearing from you!</div>
+</div>
+<hr>
+<div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+            <div class="form-group col col-12 col-md-6">
+                <label class="form-label">Company Name:<span class="astrik">*</span></label>
+                <input type="text" formControlName="companyName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.companyName.errors }" />
+
+                <div *ngIf="submitted && form.controls.companyName.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.companyName?.errors?.required">This field is required</div>
+                    <div *ngIf="form.controls.companyName?.errors?.maxlength">Should be less than
+                        {{form.controls.companyName?.errors?.maxlength.requiredLength}} characters</div>
+                </div>
+            </div>
+            <div class="form-group col col-12 col-md-6">
+                <label class="form-label">Contact Name:<span class="astrik">*</span></label>
+                <input type="text" formControlName="name" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.name.errors }" />
+
+                <div *ngIf="submitted && form.controls.name.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.name?.errors?.required">This field is required</div>
+                    <div *ngIf="submitted && form.controls.name?.errors?.pattern">Invalid name</div>
+                    <div *ngIf="form.controls.name?.errors?.maxlength">Name Should be less than
+                        {{form.controls.name?.errors?.maxlength.requiredLength}} characters</div>
+                </div>
+            </div>
+            <div class="form-group col col-12 col-md-6">
+                <label class="form-label">Contact Phone Number:<span class="astrik">*</span></label>
+                <input inputmode="numeric" formControlName="contactPhoneNumber" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.contactPhoneNumber.errors }" />
+                <div *ngIf="submitted && form.controls.contactPhoneNumber.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.contactPhoneNumber?.errors?.required">This field is required
+                    </div>
+                    <div *ngIf="submitted && form.controls.contactPhoneNumber?.errors?.pattern">Invalid Phone Number
+                    </div>
+                    <div
+                        *ngIf="submitted && (form.controls.contactPhoneNumber?.errors?.maxlength ||
+                                            form.controls.contactPhoneNumber?.errors?.minlength) && !form.controls.contactPhoneNumber.errors.pattern">
+                        Phone number must be between 10 and 15 digits
+                    </div>
+                    <!-- <div *ngIf="submitted && (form.controls.contactPhoneNumber?.errors?.maxlength ||
+                                            form.controls.contactPhoneNumber?.errors?.minlength) || form.controls.contactPhoneNumber.errors.pattern">
+                                            {{form.controls.contactPhoneNumber.errors.pattern ? 'Invalid Phone Number' : 'Phone number must be between 10 and 15 digits'}}</div> -->
+                </div>
+                <!-- <div>
+                                        <label class="form-label">Contact Phone Number:<span class="astrik">*</span></label>
+                                    </div>
+                                    <div>
+                                        <input type="tel" formControlName="phone" class="form-control" ng2TelInput
+                                                    [ng2TelInputOptions]="{initialCountry: 'us', separateDialCode:true}"
+                                                    [ngClass]="{ 'is-invalid': submitted && form.controls.phone.errors }" min="10" max="10" />
+                                        <div *ngIf="submitted && form.controls.phone.errors" class="invalid-feedback">
+                                            <div *ngIf="form.controls.phone.errors.required">Phone number is required</div>
+                                            <div *ngIf="form.controls.phone.errors.pattern || form.controls.phone.errors.maxlength ||
+                                                            form.controls.phone.errors.minlength">Phone number must be between 10 and 15 digits</div>
+                                             </div>
+                                    </div> -->
+            </div>
+            <div class="form-group col col-12 col-md-6">
+                <label class="form-label">Email:<span class="astrik">*</span></label>
+                <input type="email" formControlName="email" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.email.errors }" />
+
+                <div *ngIf="submitted && form.controls.email.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.email?.errors?.required">This field is required</div>
+                    <div *ngIf="submitted && form.controls.email?.errors?.pattern">Email must be a valid email address
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col col-12 col-md-6">
+                <label class="form-label">Company Website:</label>
+                <input type="text" formControlName="website" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.website.errors }" />
+                <div *ngIf="submitted && form.controls.website.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.website?.errors?.required">This field is required</div>
+                    <div *ngIf="submitted && form.controls.website?.errors?.pattern">Invalid Website</div>
+                    <div *ngIf="form.controls.website?.errors?.maxlength">
+                        Should be less than {{form.controls.website?.errors?.maxlength.requiredLength}} characters
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 mt-3 app-card">
+                <div class="row">
+                    <div class="col col-12 col-md-6">
+                        <label class="form-label">How did you hear about BioLabs?<span class="astrik">*</span></label>
+                        <select formControlName="biolabsSources" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.biolabsSources.errors }">
+                            <option value="" disabled>select</option>
+                            <option *ngFor="let option of biolabsSourcesOptions" [ngValue]="option.id">{{option.name}}
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && form.controls.biolabsSources.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.biolabsSources?.errors?.required">This field is
+                                required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-md-6">
+                        <label class="form-label" *ngIf="form.controls.biolabsSources.value == otherSourceId ||
+                                         form.controls.biolabsSources.value == referralSourceId">Please elaborate<span
+                                class="astrik">*</span></label>
+                        <input type="text" class="form-control" *ngIf="form.controls.biolabsSources.value == otherSourceId
+                                        || form.controls.biolabsSources.value == referralSourceId"
+                            formControlName="otherBiolabsSources"
+                            [ngClass]="{ 'is-invalid': submitted && (!form.controls.otherBiolabsSources.value || form.controls.otherBiolabsSources.errors) }">
+                        <div *ngIf="submitted && !form.controls.otherBiolabsSources.value" class="invalid-feedback">
+                            <div>This field is required.</div>
+                        </div>
+                        <div class="invalid-feedback"
+                            *ngIf="submitted && form.controls.otherBiolabsSources?.errors?.maxlength">
+                            <div>value Should be less than
+                                {{form.controls.otherBiolabsSources?.errors?.maxlength.requiredLength}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 mt-3 app-card">
+                <div class="row">
+                    <div class="form-group col col-12 col-md-6">
+                        <label class="form-label">Which site are you applying to?<span class="astrik">*</span></label>
+                        <select formControlName="primarySite" class="form-control"
+                            (change)="onChange(form.controls.primarySite.value, content, content2)"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.primarySite.errors }">
+                            <option value="" disabled>select</option>
+                            <ng-container *ngFor="let option of primarySiteList" >
+                                <option [ngValue]="option.id" *ngIf="option.id != 2">{{option.longName}}
+                                </option>
+                            </ng-container>
+                                <!-- <option *ngFor="let option of primarySiteList" [ngValue]="option.id">{{option.longName}} -->
+                        </select>
+                        <div *ngIf="submitted && form.controls.primarySite.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.primarySite?.errors?.required">This field is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col col-12 col-md-6">
+                        <label class="form-label">Additional site(s) you are applying to?</label>
+                        <ngx-dropdown-treeview [config]="config" [items]="sites"
+                            (selectedChange)="onSelectedChange($event, content, content2)" [buttonClass]="buttonClass"
+                            class="biolab-outline"
+                            [ngClass]="{ 'errBorder': submitted && form.controls.sitesApplied.errors}">
+                        </ngx-dropdown-treeview>
+                        <input type="hidden" formControlName="sitesApplied" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.sitesApplied.errors }" />
+                        <div *ngIf="submitted && form.controls.sitesApplied.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.sitesApplied?.errors?.required">This field is
+                                required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12">
+                <label class="form-label">Briefly summarize your technology. What are your differentiators?<span
+                        class="astrik">*</span></label>
+                <textarea formControlName="technology" class="form-control textAreaField"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.technology.errors }"></textarea>
+
+                <div *ngIf="submitted && form.controls.technology.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.technology?.errors?.required">This field is required</div>
+                    <div *ngIf="form.controls.technology?.errors?.maxlength">Should be less than
+                        {{form.controls.technology?.errors?.maxlength.requiredLength}} characters</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12">
+                <label class="form-label">What is your R&D path & commercialization plan?<span
+                        class="astrik">*</span></label>
+                <textarea formControlName="rAndDPath" class="form-control textAreaField"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.rAndDPath.errors }"></textarea>
+                <div *ngIf="submitted && form.controls.rAndDPath.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.rAndDPath?.errors?.required">This field is required</div>
+                    <div *ngIf="form.controls.rAndDPath?.errors?.maxlength">Should be less than
+                        {{form.controls.rAndDPath?.errors?.maxlength.requiredLength}} characters</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col col-12 col-md-6">
+                <label class="form-label">When did you form your business?<span class="astrik">*</span></label>
+                <!-- <input type="date" formControlName="startDate" class="form-control" [max]="today"
+                [ngClass]="{ 'is-invalid': submitted && form.controls.startDate.errors }" /> -->
+                <div class="input-group">
+                    <input formControlName="startDate" class="form-control" placeholder="DD Mon YYYY" name="d2"
+                        [ngClass]="{ 'is-invalid': submitted && form.controls.startDate.errors }" [(ngModel)]="model2"
+                        [minDate]="{year: 1000, month:1, day: 1}" [maxDate]="todayMaxDate" ngbDatepicker
+                        #d2="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()"
+                            type="button"></button>
+                    </div>
+                    <div *ngIf="submitted && form.controls.startDate.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && form.controls.startDate?.errors?.required">Please provide a valid date
+                        </div>
+                        <div
+                            *ngIf="submitted && form.controls.startDate?.errors?.futureDate && !form.controls.startDate?.errors?.ngbDate.invalid">
+                            Future Date is not allowed
+                        </div>
+                        <div *ngIf="submitted && form.controls.startDate?.errors?.ngbDate.invalid">Invalid Date Format
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col col-12 col-md-6">
+                <label class="form-label">Where was your company founded?<span class="astrik">*</span></label>
+                <input type="text" formControlName="foundedPlace" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.foundedPlace.errors }" />
+
+                <div *ngIf="submitted && form.controls.foundedPlace.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.foundedPlace?.errors?.required">This field is required</div>
+                    <div class="invalid-feedback" *ngIf="submitted && form.controls.foundedPlace?.errors?.maxlength">
+                        <div>value Should be less than {{form.controls.foundedPlace?.errors?.maxlength.requiredLength}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 app-card">
+                <div class="row">
+                    <div class="col col-12 col-md-6">
+                        <label class="form-label">Company stage of development<span class="astrik">*</span></label>
+                        <select formControlName="companyStage" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.companyStage.errors }">
+                            <option value="" disabled>select</option>
+                            <option *ngFor="let option of companyStageOptions" [ngValue]="option.id">{{option.name}}
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && form.controls.companyStage.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.companyStage?.errors?.required">This field is
+                                required.</div>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-md-6">
+                        <label class="form-label" *ngIf="form.controls.companyStage.value == otherCompanyStageId">Please
+                            elaborate<span class="astrik">*</span></label>
+                        <input type="text" class="form-control"
+                            *ngIf="form.controls.companyStage.value == otherCompanyStageId"
+                            formControlName="otherCompanyStage"
+                            [ngClass]="{ 'is-invalid': submitted && (!form.controls.otherCompanyStage.value || form.controls.otherCompanyStage.errors) }">
+                        <div *ngIf="submitted && !form.controls.otherCompanyStage.value" class="invalid-feedback">
+                            <div>This field is required.</div>
+                        </div>
+                        <div class="invalid-feedback"
+                            *ngIf="submitted && form.controls.otherCompanyStage?.errors?.maxlength">
+                            <div>value Should be less than
+                                {{form.controls.otherCompanyStage?.errors?.maxlength.requiredLength}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-6 industry app-card"
+                [ngClass]="{ 'is-invalid': submitted && form.controls.primaryIndustry.errors }">
+                <label class="form-label">Primary Industry/ Sector<span class="astrik">*</span></label>
+                <span class="passHelpTxt"> (Select any one)</span>
+                <ngx-treeview class="disableclick" [config]="config" [items]="indusrtyPrimaryItems" [itemTemplate]="itemTemplate"
+                    (selectedChange)="onSelectedPrimaryIndustry($event)" (filterChange)="onFilterChange($event)">
+                </ngx-treeview>
+                <input type="hidden" formControlName="primaryIndustry" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.primaryIndustry.errors }" />
+
+                <div *ngIf="submitted && form.controls.primaryIndustry.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.primaryIndustry?.errors?.required">This field is required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-12 col-md-6 industry app-card"
+                [ngClass]="{ 'is-invalid': submitted && form.controls.industry.errors }">
+                <label class="form-label">Additional Industry/ Sectors</label>
+                <span class="passHelpTxt"> (Select all that apply)</span>
+                <ngx-treeview class="disableclick" [config]="config" [items]="indusrtyItems" [itemTemplate]="itemTemplate"
+                    (selectedChange)="onSelectedIndustry($event)" (filterChange)="onFilterChange($event)">
+                </ngx-treeview>
+                <input type="hidden" formControlName="industry" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.industry.errors }" />
+
+                <div *ngIf="submitted && form.controls.industry.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.industry?.errors?.required">This field is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 modality app-card"
+                [ngClass]="{ 'is-invalid': submitted && form.controls.modality.errors }">
+                <label class="form-label">Industry Modality<span class="astrik">*</span></label>
+                <ngx-treeview [config]="config" [items]="modalityItems" [itemTemplate]="modalityTemplate"
+                    (selectedChange)="onSelectedModality($event)" (filterChange)="onFilterChange($event)">
+                </ngx-treeview>
+                <input type="hidden" formControlName="modality" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.modality.errors }" />
+
+                <div *ngIf="submitted && form.controls.modality.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.modality?.errors?.required">This field is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 app-card">
+                <div class="row">
+                    <div class="col col-12 col-md-6 col-lg-6">
+                        <label class="form-label">Funding raised to-date:<span class="astrik">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">$</span>
+                            </div>
+                            <!-- <input type="number" formControlName="funding" class="form-control" min="0"
+                                                            [ngClass]="{ 'is-invalid': submitted && form.controls.funding.errors }" /> -->
+                            <input formControlName="funding" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && form.controls.funding.errors }"
+                                [textMask]="{mask: numberMask}" />
+                        </div>
+                        <div *ngIf="submitted && form.controls.funding.errors" class="invalid-feedback d-block">
+                            <div *ngIf="submitted && form.controls.funding?.errors?.required">This field is required
+                            </div>
+                            <div *ngIf="submitted && form.controls.funding?.errors?.min">value should not be less then
+                                {{form.controls.funding?.errors?.min.min}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-md-6 col-lg-6">
+                        <label class="form-label">Funding source:<span class="astrik">*</span></label>
+                        <ngx-dropdown-treeview [config]="config" [items]="fundingSourceOption"
+                            (selectedChange)="onSelectedFundingChange($event)" [buttonClass]="buttonClass"
+                            class="biolab-outline"
+                            [ngClass]="{ 'errBorder': submitted && form.controls.fundingSource.errors}">
+                        </ngx-dropdown-treeview>
+                        <input type="hidden" formControlName="fundingSource" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.fundingSource.errors }" />
+
+                        <!-- <select formControlName="fundingSource" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.fundingSource.errors }">
+                            <option value="" disabled>select</option>
+                            <option *ngFor="let option of fundingSourceOption" [value]="option.id">{{option.name}}</option>
+                        </select> -->
+                        <div *ngIf="submitted && form.controls.fundingSource.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.fundingSource?.errors?.required">This field is
+                                required</div>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-md-12 col-lg-12 mt-3">
+                        <label class="form-label"
+                            *ngIf="showOtherFundingOption(form.controls.fundingSource.value)">Please elaborate:<span
+                                class="astrik">*</span></label>
+                        <input type="text" class="form-control"
+                            *ngIf="showOtherFundingOption(form.controls.fundingSource.value)"
+                            formControlName="otherFundingSource"
+                            [ngClass]="{ 'is-invalid': submitted && (!form.controls.otherFundingSource.value || form.controls.otherFundingSource?.errors) }">
+                        <div *ngIf="submitted && !form.controls.otherFundingSource.value" class="invalid-feedback">
+                            <div>This field is required.</div>
+                        </div>
+                        <div class="invalid-feedback"
+                            *ngIf="submitted && form.controls.otherFundingSource?.errors?.maxlength">
+                            <div>value Should be less than
+                                {{form.controls.otherFundingSource?.errors?.maxlength.requiredLength}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 app-card">
+                <div class="row">
+                    <div class="col col-12 col-md-7">
+                        <label class="form-label">Does your company own intellectual property related to your
+                            technology?<span class="astrik">*</span></label>
+                        <select formControlName="intellectualProperty" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.intellectualProperty.errors }">
+                            <option value="" disabled>select</option>
+                            <option *ngFor="let option of intellectual" [ngValue]="option.id">{{option.name}}</option>
+                        </select>
+                        <div *ngIf="submitted && form.controls.intellectualProperty.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.intellectualProperty?.errors?.required">This field is
+                                required.</div>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-md-5">
+                        <label class="form-label"
+                            *ngIf="form.controls.intellectualProperty.value == otherIntellectualPropertyId">Please
+                            elaborate<span class="astrik">*</span></label>
+                        <input type="text" class="form-control"
+                            *ngIf="form.controls.intellectualProperty.value == otherIntellectualPropertyId"
+                            formControlName="otherIntellectualProperty"
+                            [ngClass]="{ 'is-invalid': submitted && (!form.controls.otherIntellectualProperty.value || form.controls.otherIntellectualProperty?.errors)}">
+                        <div *ngIf="submitted && !form.controls.otherIntellectualProperty.value"
+                            class="invalid-feedback">
+                            <div>This field is required.</div>
+                        </div>
+                        <div class="invalid-feedback"
+                            *ngIf="submitted && form.controls.otherIntellectualProperty?.errors?.maxlength">
+                            <div>value Should be less than
+                                {{form.controls.otherIntellectualProperty?.errors?.maxlength.requiredLength}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 app-card">
+                <div class="row">
+                    <div class="col col-12 col-md-7">
+                        <label class="form-label">Are your leadership team, IP, or publications affiliated with an
+                            institutional technology transfer office or tech venture office?<span
+                                class="astrik">*</span></label>
+                        <select formControlName="isAffiliated" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.isAffiliated.errors }">
+                            <option [ngValue]="" disabled>select</option>
+                            <option [ngValue]="true">Yes</option>
+                            <option [ngValue]="false">No</option>
+
+                        </select>
+                        <div *ngIf="submitted && form.controls.isAffiliated.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.isAffiliated?.errors?.required">This field is
+                                required.</div>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-md-5">
+                        <label class="form-label" *ngIf="form.controls.isAffiliated.value == true">Institution(s)<span
+                                class="astrik">*</span></label>
+                        <textarea class="form-control which-institution"
+                            *ngIf="form.controls.isAffiliated.value == true" formControlName="affiliatedInstitution"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.affiliatedInstitution?.errors }"></textarea>
+                        <div class="invalid-feedback"
+                            *ngIf="submitted && form.controls.affiliatedInstitution?.errors?.maxlength">
+                            <div>value Should be less than
+                                {{form.controls.affiliatedInstitution?.errors?.maxlength.requiredLength}}</div>
+                        </div>
+                        <!-- [ngClass]="{ 'is-invalid': submitted && !form.controls.affiliatedInstitution.value }"> -->
+                        <!-- <div *ngIf="submitted && !form.controls.affiliatedInstitution.value" class="invalid-feedback">
+                            <div>This field is required.</div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 app-card">
+                <div class="row">
+                    <div class="col col-12 col-md-7">
+                        <label class="form-label">How many full-time employees (Residents) do you expect to have on site
+                            to
+                            start?<span class="astrik">*</span></label>
+                        <input type="number" formControlName="noOfFullEmp" class="form-control" min="0"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.noOfFullEmp.errors }" />
+                        <div *ngIf="submitted && form.controls.noOfFullEmp.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.required">This field is required
+                            </div>
+                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.min">value should not be less
+                                then {{form.controls.noOfFullEmp?.errors?.min.min}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col col-12 col-md-7">
+                        <label class="form-label">How many full-time employees do you expect to have on site in 6-12
+                            months?<span class="astrik">*</span></label>
+                        <input type="number" formControlName="empExpect12Months" class="form-control" min="0"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.empExpect12Months.errors }" />
+                        <div *ngIf="submitted && form.controls.empExpect12Months.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.empExpect12Months?.errors?.required">This field is
+                                required</div>
+                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.min">value should not be less
+                                then {{form.controls.noOfFullEmp?.errors?.min.min}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-12 app-card">
+                <div class="row">
+                    <div class="col col-12 col-md-7">
+                        <label class="form-label">How many of these full-time Residents will utilize our lab facilities
+                            to
+                            start?<span class="astrik">*</span></label>
+                        <input type="number" formControlName="utilizeLab" class="form-control" min="0"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.utilizeLab.errors }" />
+                        <div *ngIf="submitted && form.controls.utilizeLab.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.utilizeLab?.errors?.required">This field is required
+                            </div>
+                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.min">value should not be less
+                                then {{form.controls.noOfFullEmp?.errors?.min.min}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col col-12 col-md-7">
+                        <label class="form-label">How many lab staff do you intend to have on site in 6-12 months?<span
+                                class="astrik">*</span></label>
+                        <input type="number" formControlName="expect12MonthsUtilizeLab" class="form-control" min="0"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.expect12MonthsUtilizeLab.errors }" />
+                        <div *ngIf="submitted && form.controls.expect12MonthsUtilizeLab.errors"
+                            class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.expect12MonthsUtilizeLab?.errors?.required">This
+                                field is
+                                required</div>
+                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.min">value should not be less
+                                then {{form.controls.noOfFullEmp?.errors?.min.min}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-12 app-card">
+            <div class="row">
+                <div class="col col-12 col-md-7">
+                    <label class="form-label">When would you like to join BioLabs?<span class="astrik">*</span></label>
+                    <select formControlName="preferredMoveIn" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && form.controls.preferredMoveIn.errors }">
+                        <option value="" disabled>select</option>
+                        <option *ngFor="let option of moveInPreferencesOptions" [ngValue]="option.id">{{option.name}}
+                        </option>
+                    </select>
+
+                    <div *ngIf="submitted && form.controls.preferredMoveIn.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && form.controls.preferredMoveIn?.errors?.required">This field is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-12 col-md-6"></div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12">
+                <label class="form-label">What equipment and facilities do you plan to primarily use on site?<span
+                        class="astrik">*</span></label>
+                <textarea formControlName="equipmentOnsite" class="form-control textAreaField"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls.equipmentOnsite.errors }"></textarea>
+
+                <div *ngIf="submitted && form.controls.equipmentOnsite.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && form.controls.equipmentOnsite?.errors?.required">This field is required
+                    </div>
+                    <div *ngIf="form.controls.equipmentOnsite?.errors?.maxlength">Should be less than
+                        {{form.controls.equipmentOnsite?.errors?.maxlength.requiredLength}} characters</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox" formControlName="acceptTerms" id="acceptTerms" class="form-check-input"
+                [ngClass]="{ 'is-invalid': submitted && form.controls.acceptTerms.errors }" />
+            <label for="acceptTerms" class="form-check-label">I agree to the
+                <a [href]="tcfile" target="_blank"> Terms & Agreement</a> </label>
+            <!-- <div *ngIf="submitted && form.controls.acceptTerms.errors" class="invalid-feedback">Accepting Terms & Agreement is required</div> -->
+        </div>
+        <div class="form-group">
+            <button [disabled]="loading" class="btn biolabBtn">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Submit
+            </button>
+            <a routerLink="../login" href="" class="btn btn-link">Cancel</a>
+        </div>
+    </form>
+</div>
+<ngx-spinner></ngx-spinner>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Disclaimer </h4>
+        <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button> -->
+    </div>
+    <div class="modal-body">
+        <!-- <p>Please note that the Paris Hôtel-Dieu site provides only office space and does not yet offer any laboratory
+            equipment or facilities. However, we strongly encourage you to send your application with any information
+            you deem appropriate.
+            Members of our team will guide you through our selection process as soon as we are able to meet your needs.
+        </p> -->
+        <p>
+            Please note that the Paris Hôtel-Dieu site provides only office space at the moment. Startups needing laboratory
+            space will have access to our secondary facility in the Broussais campus (Paris,14th district).
+            Please reach out to the local team if you have any questions.
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn biolabBtn" (click)="modal.close('Close click')">Ok</button>
+    </div>
+</ng-template>
+<ng-template #content2 let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Disclaimer</h4>
+    </div>
+    <div class="modal-body">
+        <p>Please note that the Paris-Saclay site will open in 2023. However, we strongly encourage you to send your
+            application with any information you deem appropriate. Members of our team will guide you through our
+            selection process as soon as we are able to meet your needs.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn biolabBtn" (click)="modal.close('Close click')">Ok</button>
+    </div>
+</ng-template>

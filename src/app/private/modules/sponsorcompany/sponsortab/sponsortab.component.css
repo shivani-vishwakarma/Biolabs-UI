@@ -1,0 +1,51 @@
+div, a, li {
+  font-family: Raleway;
+}
+
+.opacity {
+
+  opacity: 0.2;
+
+}
+
+a.active {
+  color: rgb(238, 125, 49) !important;
+}
+
+.tab-bar .tab a {
+  font-size: 18px;
+  line-height: 35px;
+  color: rgba(0, 0, 0, .5);
+}
+
+.modal-body .tab-bar .tab a {
+  line-height: inherit;
+}
+
+.tab-bar .tab:active .eff-7,
+.tab-bar .tab:focus .eff-7,
+.tab-bar .tab:hover .eff-7 {
+  border: 1px solid #1c948d;
+}
+
+.tab-bar .tab:active a,
+.tab-bar .tab:focus a,
+.tab-bar .tab:hover a {
+  color: gray;
+}
+
+.content-wrapper section {
+  min-height: 56px;
+}
+
+.nav-tabs .nav-link {
+  border: 1px solid transparent;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.nav-tabs .nav-link.active {
+  color: #495057;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}

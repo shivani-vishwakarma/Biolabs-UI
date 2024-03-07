@@ -1,0 +1,35 @@
+<div class="card text-center m-5" *ngIf="siteSponsorList.length == 0">
+    <div class="card-header">
+        Data not Found
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">No Site Sponsors available to Display.</h5>
+    </div>
+</div>
+<div class="row row-cols-1 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 mt-3">
+    <div class="col pb-3 pt-3" *ngFor="let item of siteSponsorList">
+        <div class="card ">
+            <div class="kv-avatar image-upload pic d-flex">
+                <div class="fit-img">
+                    <img *ngIf="item?.logo" class="card-img-top img-fluid" [src]="profilePic + item.logo"
+                        (error)="onImgError($event)" alt="user image">
+                    <img *ngIf="!item?.logo" class="card-img-top img-fluid" src="assets/images/addresscard.png"
+                        alt="user image">
+                        <!-- <i class="fa fa-address-card"></i> -->
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title card-text" [title]="item.name">
+                    {{item.name}}</h5>
+                <!-- <p class="card-text text-muted" [title]="item.title">{{item.title || '-'}} </p> -->
+                <div class="row">
+                    <div class="pl-3">
+                        <button class="btn biolabBtn" routerLink="/sponsor-companies/{{item.id}}/sponsorview">
+                            LEARN MORE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

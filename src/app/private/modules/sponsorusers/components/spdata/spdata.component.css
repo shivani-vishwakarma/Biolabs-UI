@@ -1,0 +1,74 @@
+.dataTable>thead>tr>th[class*="sort"]:before,
+.dataTable>thead>tr>th[class*="sort"]:after {
+  content: "" !important;
+}
+
+.table thead, .table th {
+  vertical-align: middle;
+}
+
+thead {
+  background-color: #343a40;
+  color: white;
+}
+
+a {
+  color: #111;
+}
+
+:host ::ng-deep .dt-button {
+  border: 1px solid #1c948d !important;
+  background-color: #0f9792 !important;
+  line-height: 1.0 !important;
+  border: none !important;
+  color: white;
+}
+
+/* table.dataTable tbody td {
+  font-size: 50px;
+} */
+
+.scrollable-drag-list {
+  max-height: 20rem;
+  overflow: auto;
+}
+
+.td-ellipsis {
+  max-width: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.table_legenda {
+  table-layout: fixed;
+  font-size: 12px;
+}
+
+.table_legenda th tr {
+  overflow-wrap: break-word;
+}
+
+.textfit {
+  word-wrap: break-word;
+}
+
+.active {
+  width: 3%;
+}
+
+.connect {
+  width: 5%;
+}
+
+.contactno {
+  width: 5%;
+}
+
+.ellep {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: justify;
+}

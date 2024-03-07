@@ -1,0 +1,284 @@
+/* .margin-right {
+  margin-right: 20px;
+}
+
+.product-name {
+  max-width: 200px;
+  min-width: 150px;
+}
+
+.description{
+  max-width: 400px;  
+  min-width: 150px;  
+}
+
+.width-110px {
+  width: 110px;
+}
+
+.width-100px {
+  width: 100px;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.width-85px {
+  width: 85px;
+}
+
+.width-50px{
+  width: 50px;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.footer{
+  background-color: #969ca5;
+}
+
+thead {background-color: #343a40;color:white;}
+
+.width-150 {
+  width: 150px;
+}
+
+.name{
+    width: 350px;
+}
+.dis{
+  width: 400px;
+}
+.ref{
+  width: 200px;
+} */
+
+/* new try */
+.name{
+  width: 190px;
+}
+.dis{
+width: 300px;
+}
+.type{
+  width: 170px;
+}
+.sqft{
+width: 30px;
+}
+.quantity{
+  width: 30px;
+}
+.ref{
+  width: 100px;
+}
+.cost{
+  width: 60px;
+}
+.act{
+  width: 60px;
+}
+
+.margin-right {
+  margin-right: 10px;
+}
+
+.conferencename {
+  max-width: 330px;
+  min-width: 150px;
+}
+.conferencecapacity{
+  max-width: 80px;
+  min-width: 80px;
+}
+.conferencenotes{
+  max-width: 280px;
+  min-width: 150px;
+}
+.conname{
+  width: 100px;
+}
+.concap{
+  width: 50px;
+}
+.conspace{
+  width: 50px;
+}
+.connote{
+  width: 150px;
+}
+.action {
+  width: 20px;
+}
+.a {
+  margin: -1px -30px;
+}
+.text-start {
+  text-align: start !important;
+}
+.table_legenda {
+  table-layout: fixed;
+}
+td {
+  overflow-wrap: break-word;
+}
+table.dataTable .text {
+  text-align: start;
+}
+.c {
+  margin-left: -17px;
+  width: 40%;
+}
+.add-raw {
+  padding: 1px 10px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.form-group, .form-group .col  {
+  scroll-margin-top: 10rem; /* whatever is a nice number that gets you past the header */
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+input {
+  width: 60%;
+}
+.ak {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+/* .btn {
+  margin-bottom: -18px;
+} */
+.x {
+  margin-bottom: 15px !important;
+}
+.xx {
+  margin-bottom: -12px !important;
+}
+.mr {
+  margin-left: 10px;
+}
+
+.heading {
+  color: #0e59ad;
+  font-size: 18px !important;
+}
+
+.font18{
+  font-size: 18px !important;
+}
+
+.description{
+  max-width: 400px;  
+  min-width: 150px;  
+}
+.width{
+  width: 35% !important;
+  height: 30px !important;
+}
+.logo{
+  height: 30px !important;
+}
+.widthroom{
+  width: 4% !important;
+  height: 30px !important;
+}
+.width-110px {
+  width: 110px;
+}
+
+.width-100px {
+  width: 100px;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.width-85px {
+  width: 85px;
+}
+
+.width-60px{
+  width: 60px;
+}
+
+.width-50px{
+  width: 50px;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.footer{
+  background-color: #969ca5;
+}
+
+thead {background-color: #343a40;color:white;}
+
+.width-150 {
+  width: 150px;
+}
+
+.width-135 {
+  width: 135px;
+}
+/* added for table */
+.addRow {
+  background-color: #0f9792;
+  color: white;
+  line-height: 1.0;
+}
+
+:host ::ng-deep .dt-button {
+  border: 1px solid #1c948d !important;
+  background-color: #0f9792 !important;
+  line-height: 1.0 !important;
+  border: none !important;
+  color: white;
+}
+
+table.dataTable tbody td {
+  font-size: 14px;
+}
+table.dataTable .text-start{
+  text-align: start !important;
+}
+
+
+:host ::ng-deep .dt-button:hover {
+  border: 1px solid #1c948d!important;
+  background-color: #0f9792 !important;
+  line-height: 1.0 !important;
+  border: none !important;
+  color: black;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.mt-2, .my-2 {
+  margin-top: 0.1rem!important;
+}
+
+.center-align{
+  align-self: center;
+}
+.no-data {
+  /* display: none; */
+  background-color: rgba(0,0,0,.05);
+  border: 1px solid #323232;
+  text-align: center;
+}
+.mr{
+  margin-right: -40px !important;
+}

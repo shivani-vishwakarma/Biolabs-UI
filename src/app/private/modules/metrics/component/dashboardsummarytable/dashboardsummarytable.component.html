@@ -1,0 +1,59 @@
+<h4 class="mt-5 font">Summary of Site Leasable Space & Potential Revenue</h4>
+<div class="mt-0 worldwideTable">
+    <table class="table_legenda table table-striped table-bordered table-sm size row-border hover text-center scroll"
+        datatable id="idDataTable" [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" style="width: 100%;">
+        <thead>
+            <tr>
+                <th class="c1">Site</th>
+                <th class="c2">Benches</th>
+                <th class="c3">Bench Potential Revenue</th>
+                <th class="c4">Standard 6' Bench Price</th>
+                <th class="c5">Total Bench Sq Ft</th>
+                <th class="c6">Occupied Benches</th>
+                <th class="c7">Workstations</th>
+                <th class="c8">Workstation Potential Revenue</th>
+                <th class="c9">Standard 4-5' Workstation Price</th>
+                <th class="c10">Total Workstation Sq Ft</th>
+                <th class="c11">Occupied Workstations</th>
+                <th class="c12">Offices</th>
+                <th class="c13">Office Potential Revenue</th>
+                <th class="c14">Office Starting Price</th>
+                <th class="c15">Total Office Sq Ft</th>
+                <th class="c16">Occupied Offices</th>
+                <th class="c17">Private Labs</th>
+                <th class="c18">Private Lab Potential Revenue</th>
+                <th class="c19">Private Lab Starting Price</th>
+                <th class="c20">Total Private Lab Sq Ft</th>
+                <th class="c21">Occupied Private Labs</th>
+                <th class="c22">Max Potential Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of worldWideSummary" class="textfit">
+                <td>{{item.name}}</td>
+                <td>{{item.benchestotal}}</td>
+                <td>{{item.benchespr}}</td>
+                <td>{{item.standardlabbench}}</td>
+                <!-- {{item.totalSquarefeet}} -->
+                <td>{{item.totalLabBenchSquarefeet}}</td>
+                <td>{{item.occupiedbenches}}</td>
+                <td>{{item.workstationtotal}}</td>
+                <td>{{item.workstationpr}}</td>
+                <td>{{item.standardworkstation}}</td>
+                <td>{{item.totalWorkstationSquarefeet}}</td>
+                <td>{{item.occupiedworkstation}}</td>
+                <td>{{item.privateofficetotal}}</td>
+                <td>{{item.privateofficepr}}</td>
+                <td>{{item.standardoffice}}</td>
+                <td>{{item.totalOfficeSquarefeet}}</td>
+                <td>{{item.occupiedprivateoffice}}</td>
+                <td>{{item.privatelabtotal}}</td>
+                <td>{{item.privatelabpr}}</td>
+                <td>{{item.standardprivatelab}}</td>
+                <td>{{item.totalLabSquarefeet}}</td>
+                <td>{{item.occupiedprivatelab}}</td>
+                <td>{{item.benchespr + item.workstationpr + item.privateofficepr + item.privatelabpr || null}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

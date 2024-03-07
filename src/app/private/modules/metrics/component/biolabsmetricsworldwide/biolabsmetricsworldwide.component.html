@@ -1,0 +1,58 @@
+<h4 class="mt-5 font">Worldwide Totals</h4>
+<div class="row g-3 align-items-center">
+    <div class="col-3">
+        <b><label class="col-form-label">Sites:</label></b>
+        <span class="ml-2">{{worldWideTotal?.sites || '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margin">Total Sq Footage:</label></b>
+        <span class="ml-2">{{worldWideTotal?.totalsquarefeet || '-'}}</span>
+    </div>
+</div>
+<div class="row g-3 align-items-center">
+    <div class="col">
+        <b><label class="col-form-label">Total Benches:</label></b>
+        <span class="ml-2">{{worldWideTotal?.totalbenches || '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margin">Total Offices:</label></b>
+        <span class="ml-2">{{worldWideTotal?.totalprivateoffice || '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label margins">Total Workstations:</label></b>
+        <span class="ml-2">{{worldWideTotal?.totalworkstation || '-'}}</span>
+    </div>
+    <div class="col">
+        <b><label class="col-form-label marginss">Total Labs:</label></b>
+        <span class="ml-2">{{worldWideTotal?.totalprivatelab || '-'}}</span>
+    </div>
+</div>
+<h4 class="mt-5 font">Standard Price Comparision</h4>
+
+<div class="worldwideTable">
+    <table class="table_legenda table table-striped table-bordered table-sm size row-border hover text-center scroll"
+        datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" style="width: 100%;">
+        <thead>
+            <tr>    
+                <th class="site">Site</th>
+                <th class="link">Standard 6' Bench Price</th>
+                <th class="ind">Standard Membership Price</th>
+                <th class="desc">Standard 4-5' Workstation Price</th>
+                <th class="serv">Starting Office Price</th>
+                <th class="site">Starting Lab Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of worldWideStandardPrice" class="textfit table_legenda">
+                <td>{{item.name}}</td>
+                <td>{{item.labBench}}</td>
+                <td>{{item.membership}}</td>
+                <td>{{item.workstation}}</td>
+                <td>{{item.office}}</td>
+                <td>{{item.privateLab}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<app-dashboardsummarytable [worldWideSummary]="worldWideSummary"></app-dashboardsummarytable>

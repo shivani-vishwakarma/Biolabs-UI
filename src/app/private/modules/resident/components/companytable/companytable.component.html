@@ -1,0 +1,208 @@
+<table class="table table-striped table-bordered table-sm size row-border hover text-center companytable"
+    style="width: 100%" datatable id="data-table" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+    <thead>
+        <tr>
+            <th class="CompanyName">Company Name</th>
+            <th class="cStatus">Company Status</th>
+            <th class="onWaitlist">On Waitlist</th>
+            <th class="appDate">Application Date</th>
+            <th class="hide appDate">Application Date</th>
+            <th class="appDate">Contacted Date</th>
+            <th class="hide appDate">Contacted Date</th>
+            <th class="commiteeStatus">Committee Status</th>
+            <th class="appDate">Selection Committee Date</th>
+            <th class="hide appDate">Selection Committee Date</th>
+            <th class="appDate">Residency Start Date</th>
+            <th class="hide appDate">Residency Start Date</th>
+            <th class="onboarding">Company Onboarding</th>
+            <th class="appDate">Company Onboarded Date</th>
+            <th class="hide appDate">Company Onboarded Date</th>
+            <th class="onboarding">Company Offboarding</th>
+            <th class="appDate">Company Offboarded Date</th>
+            <th class="hide appDate">Company Offboarded Date</th>
+            <th class="appDate">Residency End Date</th>
+            <th class="hide appDate">Residency End Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngIf="getRole() == 1 || getRole() == 2; else normal" style="overflow: hidden;">
+            <tr *ngFor="let item of companyList; let i = index" [ngClass]="{'company-link' : item.showCompanyName} ">
+                <td>
+                    <a title="Go to Company Profile" routerLink="/resident-companies/{{item.id}}/company"
+                        routerLinkActive="active">{{item.companyName || '-'}}</a>
+                </td>
+                <td>
+                    <a *ngIf="defaultDataService.secureSites();" title="Go to Company Admin"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin"
+                        routerlinkactive="active">{{getstatusText(item.companyStatus)}}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{getstatusText(item.companyStatus)}}</label>
+                </td>
+                <td>
+                    <a title="Go to Waitlist" routerLink="/invoice-waitlist/waitlist" routerlinkactive="active"
+                        [ngClass]="{ 'disabled-openCR':item.wl }">{{item.wl }}</a>
+                    <!-- <label [ngClass]="{ 'disabled-openCR':checking(item.siteId) }"
+                        >{{(item.changeRequestStatus && item.changeRequestStatus.length)
+                        ? 'Yes' : 'No' }}</label> -->
+                </td>
+                <td class="widthDate"><span>{{item.createdAt | date:'YYYYMMdd' || '-'}}</span>{{item.createdAt |
+                    date:globalDateFormat || '-'}}</td>
+                <td class="widthDate hide">{{item.createdAt | date:globalDateFormat || '-'}}</td>
+                <td class="widthDate">
+                    <a *ngIf="defaultDataService.secureSites()" title="Go to Company's Admin tab"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin"
+                        routerlinkactive="active"><span>{{item.contacteddate | date:'YYYYMMdd' ||
+                            '-'}}</span>{{item.contacteddate | date: globalDateFormat }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">
+                        <span>{{item.contacteddate | date:'YYYYMMdd' || '-'}}</span>
+                        {{item.contacteddate |
+                        date: globalDateFormat }}</label>
+                </td>
+                <td class="widthDate hide">
+                    <a *ngIf="defaultDataService.secureSites()" title="Go to Company's Admin tab"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin" routerlinkactive="active">{{
+                        item.companyStatusChangeDate | date: globalDateFormat }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{item.companyStatusChangeDate| date:
+                        globalDateFormat
+                        }}</label>
+                </td>
+                <td>
+                    <a *ngIf="defaultDataService.secureSites()" title="Go to Company Admin"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin"
+                        routerlinkactive="active">{{getCommitteeText(item.committeeStatus)}}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{getCommitteeText(item.committeeStatus)}}</label>
+                </td>
+                <td class="widthDate">
+                    <a *ngIf="defaultDataService.secureSites()" title="Go to Company Admin"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin"
+                        routerlinkactive="active"><span>{{formatDate(item.selectionDate) | date:'YYYYMMdd' ||
+                            '-'}}</span>{{formatDate(item.selectionDate) | date:globalDateFormat }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()"><span>{{formatDate(item.selectionDate) |
+                            date:'YYYYMMdd' || '-'}}</span>{{formatDate(item.selectionDate) |
+                        date:globalDateFormat }}</label>
+                </td>
+                <td class="widthDate hide">
+                    <a *ngIf="defaultDataService.secureSites()" title="Go to Company Admin"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin"
+                        routerlinkactive="active">{{formatDate(item.selectionDate) | date:globalDateFormat
+                        }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{formatDate(item.selectionDate) |
+                        date:globalDateFormat }}</label>
+                </td>
+                <td class="widthDate">
+                    <a *ngIf="defaultDataService.secureSites()" title="Go to Company Admin"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin"
+                        routerlinkactive="active"><span>{{formatDate(item.residencyStartDate) | date:'YYYYMMdd'
+                            || '-'}}</span>{{formatDate(item.residencyStartDate) | date:globalDateFormat }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()"><span>{{formatDate(item.residencyStartDate)
+                            | date:'YYYYMMdd' || '-'}}</span>{{formatDate(item.residencyStartDate) |
+                        date:globalDateFormat }}</label>
+                </td>
+                <td class="widthDate hide">
+                    <a *ngIf="defaultDataService.secureSites()" title="Go to Company Admin"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin"
+                        routerlinkactive="active">{{formatDate(item.residencyStartDate) | date:globalDateFormat
+                        }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{formatDate(item.residencyStartDate) |
+                        date:globalDateFormat }}</label>
+                </td>
+                <td>
+                    <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Onboarding Checklist"
+                        routerLink="/companytab/{{item.id}}/company-onboarding">{{getChecklistStatusText(item?.companyOnboardChecklistStatus || 0)}}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{getChecklistStatusText(item?.companyOnboardChecklistStatus || 0)}}</label>
+                </td>
+                <td class="widthDate">
+                    <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Onboarding Checklist"
+                        routerLink="/companytab/{{item.id}}/company-onboarding"><span>{{formatDate(item.companyOnboardChecklistDate) | date:'YYYYMMdd' ||
+                            '-'}}</span>{{formatDate(item.companyOnboardChecklistDate)|
+                            date:globalDateFormat }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()"><span>{{formatDate(item.companyOnboardChecklistDate) |
+                        date:'YYYYMMdd' || '-'}}</span>{{formatDate(item.companyOnboardChecklistDate)|
+                        date:globalDateFormat }}</label>
+                </td>
+                <td class="widthDate hide">
+                    <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Onboarding Checklist"
+                        routerLink="/companytab/{{item.id}}/company-onboarding">{{formatDate(item.companyOnboardChecklistDate)|
+                            date:globalDateFormat }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{formatDate(item.companyOnboardChecklistDate)|
+                        date:globalDateFormat }}</label>
+                </td>
+                <td>
+                    <!--{{getChecklistStatusText(item?.companyOnboardChecklistStatus || 0)}}-->
+                    <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Offboarding Checklist"
+                        routerLink="/companytab/{{item.id}}/company-offboarding">{{getChecklistStatusText(item?.companyOffboardChecklistStatus || 0)}}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{getChecklistStatusText(item?.companyOffboardChecklistStatus || 0)}}</label>
+                </td>
+                <td class="widthDate">
+                    <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Offboarding Checklist"
+                        routerLink="/companytab/{{item.id}}/company-offboarding"><span>{{formatDate(item.companyOffboardChecklistDate) | date:'YYYYMMdd' ||
+                            '-'}}</span>{{formatDate(item.companyOffboardChecklistDate)|
+                            date:globalDateFormat }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()"><span>{{formatDate(item.companyOffboardChecklistDate) |
+                        date:'YYYYMMdd' || '-'}}</span>{{formatDate(item.companyOffboardChecklistDate)|
+                        date:globalDateFormat }}</label>
+                </td>
+                <td class="widthDate hide">
+                    <a *ngIf="defaultDataService.secureSites();" href="" title="Go to Offboarding Checklist"
+                        routerLink="/companytab/{{item.id}}/company-offboarding">{{formatDate(item.companyOffboardChecklistDate)|
+                            date:globalDateFormat }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{formatDate(item.companyOffboardChecklistDate)|
+                        date:globalDateFormat }}</label>
+                </td>
+                <td class="widthDate">
+                    <a *ngIf="defaultDataService.secureSites()" title="Go to Company Admin"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin"
+                        routerlinkactive="active"><span>{{formatDate(item.residencyEndDate) | date:'YYYYMMdd' ||
+                            '-'}}</span>{{formatDate(item.residencyEndDate)| date:globalDateFormat }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()"><span>{{formatDate(item.residencyEndDate) |
+                            date:'YYYYMMdd' || '-'}}</span>{{formatDate(item.residencyEndDate)|
+                        date:globalDateFormat }}</label>
+                </td>
+                <td class="widthDate hide">
+                    <a *ngIf="defaultDataService.secureSites()" title="Go to Company Admin"
+                        routerLink="/resident-companies/{{item.id}}/companyadmin"
+                        routerlinkactive="active">{{formatDate(item.residencyEndDate)| date:globalDateFormat
+                        }}</a>
+                    <label *ngIf="!defaultDataService.secureSites()">{{formatDate(item.residencyEndDate)|
+                        date:globalDateFormat }}</label>
+                </td>
+            </tr>
+        </ng-container>
+        <ng-template #normal>
+            <tr *ngFor="let item of companyList; let i = index" [ngClass]="{'company-link' : item.showCompanyName} ">
+                <td>
+                    <a title="Go to Company Profile" routerLink="/resident-companies/{{item.id}}/company"
+                        routerLinkActive="active">{{item.companyName || '-'}}</a>
+                </td>
+                <td>{{getstatusText(item.companyStatus)}}</td>
+                <td><a [ngClass]="{ 'disabled-openCR':(item.changeRequestStatus && item.changeRequestStatus.length) }">
+                        {{item.wl }}
+                    </a>
+                </td>
+                <td class="widthDate"><span>{{item.createdAt | date:'YYYYMMdd' || '-'}}</span>{{item.createdAt |
+                    date:globalDateFormat || '-'}}</td>
+                <td class="widthDate hide">{{item.createdAt | date:globalDateFormat || '-'}}</td>
+                <td class="widthDate"><span>{{item.contacteddate| date:'YYYYMMdd' ||
+                        '-'}}</span>{{item.contacteddate | date: globalDateFormat }}</td>
+                <td class="widthDate hide">{{item.contacteddate | date: globalDateFormat }}</td>
+                <td>{{getCommitteeText(item.committeeStatus)}}</td>
+                <td class="widthDate"><span>{{formatDate(item.selectionDate) | date:'YYYYMMdd' ||
+                        '-'}}</span>{{formatDate(item.selectionDate) | date:globalDateFormat }}</td>
+                <td class="widthDate hide">{{formatDate(item.selectionDate) | date:globalDateFormat }}</td>
+                <td class="widthDate"><span>{{formatDate(item.residencyStartDate) | date:'YYYYMMdd' ||
+                        '-'}}</span>{{formatDate(item.residencyStartDate) | date:globalDateFormat }}</td>
+                <td class="widthDate hide">{{formatDate(item.residencyStartDate) | date:globalDateFormat }}</td>
+                <td>{{getChecklistStatusText(item?.companyOnboardChecklistStatus || 0)}}</td>
+                <td class="widthDate"><span>{{formatDate(item.companyOnboardChecklistDate) | date:'YYYYMMdd' ||
+                    '-'}}</span>{{formatDate(item.companyOnboardChecklistDate)| date:globalDateFormat }}</td>
+                <td class="widthDate hide">{{formatDate(item.companyOnboardChecklistDate)| date:globalDateFormat }}</td>
+                <td>{{getChecklistStatusText(item?.companyOffboardChecklistStatus || 0)}}</td>
+                <td class="widthDate"><span>{{formatDate(item.companyOffboardChecklistDate) | date:'YYYYMMdd' ||
+                    '-'}}</span>{{formatDate(item.companyOffboardChecklistDate)| date:globalDateFormat }}</td>
+                <td class="widthDate hide">{{formatDate(item.companyOffboardChecklistDate)| date:globalDateFormat }}</td>
+                <td class="widthDate"><span>{{formatDate(item.residencyEndDate) | date:'YYYYMMdd' ||
+                        '-'}}</span>{{formatDate(item.residencyEndDate)| date:globalDateFormat }}</td>
+                <td class="widthDate hide">{{formatDate(item.residencyEndDate)| date:globalDateFormat }}</td>
+            </tr>
+        </ng-template>
+    </tbody>
+</table>

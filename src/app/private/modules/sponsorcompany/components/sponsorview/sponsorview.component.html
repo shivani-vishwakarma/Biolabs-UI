@@ -1,0 +1,222 @@
+<div class="container-fluid mt-5">
+    <div class="row border">
+        <div class="col-md-3 col-sm-6 border">
+            <div class="kv-avatar image-upload d-flex">
+                <div class="viewImage">
+                    <img *ngIf="company?.logo" [src]="sponsorLogoUrl + company?.logo"
+                     class="card-img-top img-fluid fit-img opac"
+                    alt="user image">
+                    <img *ngIf="!company?.logo" class="card-img-top img-fluid fit-img" src="assets/images/addresscard.png" alt="user image">
+                </div>
+            </div>
+            <div class="row mb-4 mt-4">
+                <div class="col-12">
+                    <strong>Industry/Sector </strong>
+                </div>
+                <div class="col-12 subtitle text-muted wrap">
+                    <!-- {{ (industryNameArr && industryNameArr.join(", ")) || "-" }} -->
+                    {{filterIndustryNames(company?.industry)}}
+                </div>
+            </div>
+            <div class="row mb-4 mt-4">
+                <div class="col-12">
+                    <strong>Sites</strong>
+                </div>
+                <div class="col-12 subtitle text-muted wrap">
+                    <span> {{(company?.sites?.length) ? filterSiteNames(company?.sites) : "-"}} </span>
+                </div>
+            </div>
+            <!-- *ngIf="getRole() == 2" -->
+            <div *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 6 || getRole() == 7" class="row mb-4 mt-4" >
+                <div class="col-12">
+                    <strong>Global Contact Details</strong>
+                </div>
+                <div class="col-12 subtitle text-muted wrap">
+                    <div>
+                        <span *ngIf="company?.contactTitle || company?.contactName"> {{ company?.contactTitle }} {{ (company?.contactTitle && company?.contactName) ? '' : ' ' }} {{ company?.contactName }} </span>
+                        <span *ngIf="!company?.contactTitle && !company?.contactName"> - </span>
+                    </div>
+                    <div>
+                        <span> {{ company?.contactEmail || "-" }} </span>
+                    </div>
+                    <div>
+                        <span> {{ company?.contactPhoneNumber || "-" }} </span>
+                    </div>
+                </div>
+            </div>
+            <!-- *ngIf="getRole() == 2" -->
+            <div *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 6 || getRole() == 7" class="row mb-4 mt-4">
+                <div class="col-12">
+                    <strong>Local Contact Details</strong>
+                </div>
+                <div class="col-12 subtitle text-muted wrap">
+                    <div>
+                        <span> {{ company?.localsponsortitle}} {{ (company?.localsponsortitle && company?.localsponsorpoc) ? '' : ' ' }} {{ company?.localsponsorpoc }} </span>
+                        <span *ngIf="!company?.localsponsortitle && !company?.localsponsorpoc"> - </span>
+                    </div>
+                    <div>
+                        <span> {{ company?.localsponsoremail || "-" }} </span>
+                    </div>
+                    <div>
+                        <span> {{ company?.localsponsorphone || "-" }} </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 col-sm-6 pl-0 pr-0 pb-0">
+            <div class="status">
+                <div class="row">
+                    <div class="col-9">
+                        <h2>
+                            <span> {{ company?.name || "-" }} </span>
+                        </h2>
+                    </div>
+                    <div class="col-3">
+                        <div class="d-flex flex-row-reverse">
+                            <a [href]="company?.websiteLink" [ngClass]="{ disabled: !company?.websiteLink }"
+                                target="_blank" class="btn biolabBtn btn-xl">Visit Website</a>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-2 mb-0">
+            </div>
+            <div class="mt-0 mr-0 ml-0 ">
+                <div class="text status">
+                    <div class="ml-3 mr-2 mt-4 mb-4">
+                        <strong>Description</strong>
+                        <div class="subtitle mb-2 text-muted">
+                            {{ company?.description || "-" }}
+                        </div>
+                    </div>
+                    <div class="ml-3 mt-4 mb-5">
+                        <strong>Services/ Offering</strong>
+                        <div class="subtitle mb-2 text-muted">
+                            {{ company?.services_Offering || "-" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4 d-flex justify-content-center">
+                <a [ngClass]="{ disabled: !company?.allowConnect || getRole() == 1 || getRole() == 2 || getRole() == 3 || getRole() == 5 || getRole() == 6 || getRole() == 7 }" class="btn biolabBtn btnconnect btn-xl" data-toggle="modal"  (click)="onConnect()"
+                    data-target="#forwardapplication">Connect</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div #msgToSponsor class="modal fade" id="forwardapplication" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fa fa-envelope emailIcon" aria-hidden="true"></i>
+                <strong class="modal-title">Message To Sponsor</strong>
+            </div>
+            <div class="modal-body">
+                <span *ngIf="(isConnected && isConnectAppValid); else notForwarded;">
+                    <strong class="thank">Thank You!</strong>
+                    <p>Your connect request has been submitted. We will help you get in touch with the Sponsor.</p>
+                </span>
+                <ng-template #notForwarded>
+                    <div *ngIf="!(isConnected && isConnectAppValid)" class="row mt-3 align">
+                        <div class="col-9">
+                            <textarea name="message" [(ngModel)]="message" class="textmsg" id="message" cols="30" rows="10" placeholder="Please add a message to the sponsor you are reaching out to. It will also go to your site admin for them to facilitate the request."></textarea>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+            <div>
+                <button [disabled]="isConnected" *ngIf="!(isConnected && isConnectAppValid); else okayEnable;"
+                    type="button" (click)="sendConnectRequest(message)" class="btn confirmBtn biolabBtn">Connect Now</button>
+                <button type="button" class="btn clo biolabBtn" data-dismiss="modal">
+                    <span>Cancel</span>
+                </button>
+                <ng-template #okayEnable>
+                    <button type="button" data-dismiss="modal" class="btn biolabBtn">Close</button>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div> -->
+<ng-template #msgToSponsor let-modal>
+    <div class="thankYouModal" style="height: 334px;">
+        <div class="modal-header">
+            <i class="fa fa-envelope emailIcon" aria-hidden="true"></i>
+            <strong class="modal-title">Message To Sponsor</strong>
+        </div>
+        <div class="modal-body" style="height: 219px;">
+            <div class=" text-center pb-5" style="height: 263px;
+            padding: 7px;">
+                <span *ngIf="(isConnected && isConnectAppValid); else notForwarded;">
+                    <strong class="thank">Thank You!</strong>
+                    <p>Your connect request has been submitted. We will help you get in touch with the Sponsor.</p>
+                </span>
+                <ng-template #notForwarded>
+                    <div *ngIf="!(isConnected && isConnectAppValid)" style="width: 100%;
+                                    height: 169px;">
+                        <div>
+                            <textarea style="width: 100%;
+                                            height: 169px; border: 1px solid rgba(0,0,0,.2);" name="message"
+                                [(ngModel)]="message" id="message" cols="27" rows="10"
+                                placeholder="Please add a message to the sponsor you are reaching out to. It will also go to your site admin for them to facilitate the request."></textarea>
+                        </div>
+                    </div>
+                </ng-template>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-5 col-sm-6">
+                        <button [disabled]="isConnected" *ngIf="!(isConnected && isConnectAppValid); else okayEnable;"
+                            type="button" (click)="sendConnectRequest(message)" class="btn confirmBtn biolabBtn">Connect
+                            Now</button>
+                    </div>
+                    <div class="col-md-5 col-sm-6">
+                        <button type="button" class="btn clo biolabBtn" (click)="closeModal()" data-dismiss="modal">
+                            <span>Cancel</span>
+                        </button>
+                    </div>
+                    <ng-template #okayEnable>
+                        <button type="button" data-dismiss="modal" (click)="closeModal()"
+                            class="btn biolabBtn">Close</button>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+<ng-template #thankYou let-modal >
+    <!-- style="height: 370px;" -->
+    <div class="thankYouModal" style="height: 362px;">
+        <div class="modal-header">
+            <h4 class="modal-title">Confirmation </h4>
+        </div>
+        <div class="modal-body" style="height: 219px;">
+            <div class="jumbotron text-center pb-5" style="height: 263px;
+            padding: 7px;">
+                <div class="icon-animated icon-animated-tick" tabindex="-1" aria-hidden="true">
+                    <svg class="circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                        <circle cx="40" cy="40" r="40" />
+                    </svg>
+                    <div class="tick">
+                        <svg class="tick-leg1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 52">
+                            <polygon class="" points="1,41 0,48 25,52 25,45" />
+                        </svg>
+                        <svg class="tick-leg2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 52">
+                            <polygon class="" points="18,45 25,47 25,0 18,0" />
+                        </svg>
+                    </div>
+                </div>
+                <h5 style="    padding: 0;
+                font-size: 40px;
+                margin-top: 12px;" class="display-3">Thank You!</h5>
+                <p class="lead">
+                    <strong>Your connect request has been submitted. We will help you get in touch with the Sponsor.</strong>
+                </p>
+                <hr>
+                <p class="lead mt-0" style="margin-top: 0px;">
+                    <a class="btn biolabBtn"  (click)="closeModal()" data-toggle="pill">CLOSE</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+</ng-template>

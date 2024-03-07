@@ -1,0 +1,9 @@
+.clr {
+    border: 1px solid #ced4da;
+    padding: 9px 0px;
+    border-radius: 5px;
+}
+::ng-deep .dropdown .show{
+    overflow-y: inherit !important;
+    font-size: 15px;
+  }

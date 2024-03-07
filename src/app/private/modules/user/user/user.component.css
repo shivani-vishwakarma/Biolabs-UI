@@ -1,0 +1,46 @@
+/* @font-face {
+  font-family: 'Raleway';
+  src: url("/assets/Raleway-VariableFont_wght.ttf");
+} */
+div, a, li{
+  font-family: Raleway;
+}
+
+
+
+/* selected link */
+a.active {
+    color: rgb(238, 125, 49)!important;
+} 
+/* .header-menu {
+  margin-top: 7%;
+  font-size: 18px;
+  font-weight: 600;
+}
+.header-menu li a {
+  margin-right: 25px;
+  color: rgba(0,0,0,.5);
+} */
+/* css for tab */
+.tab-bar .tab a {
+  font-size: 18px;
+  line-height: 35px;
+  color: rgba(0,0,0,.5);
+}
+.modal-body .tab-bar .tab a {
+  line-height: inherit;
+}
+.tab-bar .tab:active .eff-7,
+.tab-bar .tab:focus .eff-7,
+.tab-bar .tab:hover .eff-7 {
+  border:1px solid #1c948d;
+}
+.tab-bar .tab:active a,
+.tab-bar .tab:focus a,
+.tab-bar .tab:hover a {
+  color: gray;
+}
+.content-wrapper section {
+  min-height: 56px;
+}
+/* css for tab */

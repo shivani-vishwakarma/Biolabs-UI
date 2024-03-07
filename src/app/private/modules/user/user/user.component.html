@@ -1,0 +1,61 @@
+<div class="content-wrapper main">
+    <!-- Main content -->
+    <section>
+        <div>
+            <ul class="nav nav-tabs flex-row cus-tab tab-bar" id="tab1">
+                <li class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="javascript:void()"
+                        routerLink="/user/management" routerLinkActive="active">
+                        Admin
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 "  class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="javascript:void()"
+                        routerLink="/user/sponsor" routerLinkActive="active">
+                        Sponsors
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+                <li class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="javascript:void()"
+                        routerLink="/user/resident" routerLinkActive="active">
+                        Resident Admin
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || getRole() == 2" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="javascript:void()"
+                        routerLink="/user/residentuser" routerLinkActive="active">
+                        Resident User
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 "  class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="javascript:void()"
+                        routerLink="/user/accountant" routerLinkActive="active">
+                        Accountant
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 " class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="javascript:void()"
+                        routerLink="/user/sponsormanager" routerLinkActive="active">
+                        Sponsor Manager
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 " class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="javascript:void()"
+                        routerLink="/user/businessmanager" routerLinkActive="active">
+                        Business Manager
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!-- /Main content -->
+</div>
+
+<router-outlet></router-outlet>

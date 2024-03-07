@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <strong class="cName">{{user?.firstName + ' ' + user?.lastName || '-'}}</strong>
+    <!-- <b><a class="link ml-5" href="/applications">Go To Company List</a>
+        <a class="link ml-4" href="/applications">Go To Members List</a></b> -->
+</div>
+<div class="content-wrapper main mt-4">
+    <section>
+        <ul [ngClass]="'child-menu'" class="nav nav-tabs flex-row cus-tab tab-bar">
+            <li class="nav-item tab"><a class="nav-link font-weight-bold" routerLink="/member-tab/{{selectedId}}/member-onboarding"
+                    routerLinkActive="active">Member Onboarding</a></li>
+            <li class="nav-item tab"><a class="nav-link font-weight-bold" routerLink="/member-tab/{{selectedId}}/member-offboarding"
+                    routerLinkActive="active">Member Offboarding</a></li>
+        </ul>
+    </section>
+</div>
+
+<router-outlet></router-outlet>

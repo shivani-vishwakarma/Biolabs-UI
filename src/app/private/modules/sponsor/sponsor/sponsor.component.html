@@ -1,0 +1,273 @@
+<p><strong class="text-muted"> BioLabs Global Network</strong></p>
+<div class="card">
+    <div class="card-body bg-light text-dark">
+        <div class="row bg-light text-dark">
+            <div class="col-md-4 col-sm-6 mb-3 p-0">
+                <div class="row mx-auto">
+                    <div class="col-2 p-0 icon-font">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-rocket fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                    <div class="col-10 pr-0 status-font">
+                        <div> Total Startups </div>
+                        <div>
+                            <strong>{{gloablData?.companyStats?.startUpcount || '-'}} Companies</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-3 p-0">
+                <div class="row mx-auto">
+                    <div class="col-2 p-0 icon-font">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                    <div class="col-10 pr-0 status-font">
+                        <div>Total Graduate</div>
+                        <div>
+                            <strong>{{gloablData?.graduate?.graduate || '-'}} Companies</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6  mb-3 p-0">
+                <div class="row mx-auto">
+                    <div class="col-2 p-0 icon-font">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-user-graduate fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                    <div class="col-10 wrap status-font">
+                        <div>Average Team Size</div>
+                        <div>
+                            <strong>{{gloablData?.companyStats?.avgTeamSize || 0}} Members</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 p-0 mt-2" *ngFor="let industry of gloablData?.categoryStats">
+                <div class="row mx-auto">
+                    <div class="col-2 p-0 icon-font">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x lightIndustry"></i>
+                            <i class="fa fa-stack-1x fa-inverse" [ngClass]="getIcon(industry?.industryid)"></i>
+                        </span>
+                    </div>
+                    <div class="col-10 wrap status-font">
+                        <div>{{industry?.name || '-'}}</div>
+                        <div>
+                            <strong>{{industry?.industrycount}} Companies</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<p> <strong class="text-muted"> BioLabs By Site</strong></p>
+<div id="carouselSiteControls" class="carousel slide mb-5" data-ride="carousel">
+    <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active" *ngFor="let siteD of siteData; let i = index;" [ngClass]="{'active': i == 0}">
+            <div class="w-100 card-height" data-holder-rendered="true">
+                <div class="row bg-light text-dark length next-card" *ngFor="let item of siteD;">
+                    <div class="col-md-3 col-sm-6">
+                        <div [ngStyle]="{'background-color': item.site?.colorCode }" class="siteMapBox">
+                            <strong class="recent-header">{{ item.site.longName }}</strong>
+                        </div>
+                        <a target="_blank" href="{{item.site?.googleMapUrl}}">
+                            <!-- <img class="map img-length" src="/assets/images/maps/{{item.site.name}}.png" /> -->
+                            <img class="map img-length" src={{item.site?.siteMapBoxImgUrl}}
+                                onerror="this.src='/assets/images/maps/Tufts.png'" alt="Google Map Image" />
+                        </a>
+                    </div>
+                    <div class="col-md-9 col-sm-6 p-0 distance">
+                        <div class="row pb-3">
+                            <div class=" col-md-3 col-sm-6 pt-3 status-font">
+                                <div>{{ item.site?.name || '-' }} </div>
+                                <div>{{ item.newStartUps[0]?.newstartups || 0}} New Startups</div>
+                                <div class="row pt-3">
+                                    <div class="col">
+                                        <button *ngIf="getCompanyAccessSite(item.site?.id) == -1" type="button"
+                                            class="btn btn-font card-btn siteMapBox"
+                                            [ngStyle]="{'background-color': item.site?.colorCode }">
+                                            <span data-toggle="modal" data-target="#confirmBox">Explore Companies</span>
+                                        </button>
+                                        <button *ngIf="getCompanyAccessSite(item.site?.id) != -1" type="button"
+                                            class="btn btn-font card-btn siteMapBox"
+                                            [ngStyle]="{'background-color': item.site?.colorCode }"
+                                            (click)="onExplore(item.site?.id)"
+                                            [routerLink]="'/sponsor-view/explore/' + item.site?.id"
+                                            routerLinkActive="active">
+                                            Explore Companies
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" col-md-9 col-sm-6 p-0 card-font">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-4  col-sm-9 mb-3">
+                                        <div class="row pt-3">
+                                            <div class="col-2 p-0 icon-font">
+                                                <span class="fa-stack fa-lg">
+                                                    <i class="fa fa-circle fa-stack-2x one"></i>
+                                                    <i class="fa fa-rocket fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-10 wrap status-font">
+                                                <div>Total Startups</div>
+                                                <div><strong>{{item.companyStats?.count || 0}} Companies</strong></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-sm-9 mb-3">
+                                        <div class="row pt-3">
+                                            <div class="col-2 p-0 icon-font">
+                                                <span class="fa-stack fa-lg">
+                                                    <i class="fa fa-circle fa-stack-2x one"></i>
+                                                    <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-10 wrap status-font">
+                                                <div>Total Graduate</div>
+                                                <div><strong>{{item.graduate?.graduate || 0}} Companies</strong></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4  col-sm-9 mb-3">
+                                        <div class="row pt-3">
+                                            <div class="col-2 p-0 icon-font">
+                                                <span class="fa-stack fa-lg">
+                                                    <i class="fa fa-circle fa-stack-2x one"></i>
+                                                    <i class="fa fa-user-graduate fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-10 wrap status-font">
+                                                <div>Average Team Size</div>
+                                                <div><strong>{{item.companyStats?.avg || 0}} Members</strong></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-9 mb-3" *ngFor="let industry of item?.categoryStats">
+                                        <div class="row pt-3">
+                                            <div class="col-2 p-0 icon-font">
+                                                <span class="fa-stack fa-lg">
+                                                    <i class="fa fa-circle fa-stack-2x oneLight"></i>
+                                                    <i class="fa fa-stack-1x fa-inverse"
+                                                        [ngClass]="getIcon(industry?.industryid)"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-10 wrap status-font">
+                                                <div [title]="industry?.name">{{industry?.name || '-'}}</div>
+                                                <div><strong>{{industry?.industrycount}} Companies</strong></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev controlArrow" href="#carouselSiteControls" role="button" data-slide="prev">
+        <span style="margin-right: 85%;" class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next controlArrow" href="#carouselSiteControls" role="button" data-slide="next">
+        <span style="margin-left: 85%;" class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<img [src]="usa_location_map" (error)="noUSAImage($event)" alt="Biolab Locations" class="img-thumbnail">
+<div class="mt-4">
+    <form class="form-inline" autocomplete="off">
+        <input class="form-control w-50 mr-sm-2" type="search" [(ngModel)]="searchText" name="searchText"
+            placeholder="Search Companies Across Our Network" aria-label="Search">
+        <button class="btn biolabBtn my-2 my-sm-0" type="submit" (click)="onSearch()" href="#"
+            [routerLink]="'/sponsor-view/search/' + searchText" routerLinkActive="active">Search</button>
+    </form>
+</div>
+<p class="mt-4"> <strong class="text-muted">Recently joined BioLabs</strong></p>
+<div *ngIf="companyArr && companyArr.length" id="carouselCompanyControls" class="carousel slide mb-5"
+    data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item" *ngFor="let comp of companyArr; let i = index;" [ngClass]="{'active': i == 0}">
+            <div class="row row-cols-xl-4 row-cols-lg-4 row-cols-md-4 row-cols-sm-2 mt-3">
+                <div class="col pt-2" *ngFor="let c of comp; let even = even; let odd = odd;">
+                    <div class="card">
+                        <div [ngStyle]="{'background-color': getSiteColor(c?.siteId)}" class="siteMapBox">
+                            <strong class="recent-header">{{c?.siteLongName || '-'}}</strong>
+                        </div>
+                        <div class="kv-avatar image-upload pic d-flex">
+                            <div class="fit-img">
+                                <img *ngIf="c?.logoImgUrl" class="card-img-top img-fluid"
+                                    [src]="logoFileSource + c.logoImgUrl" (error)="onImgError($event)" alt="user image">
+                                <img *ngIf="!c?.logoImgUrl" class="card-img-top img-fluid"
+                                    src="/assets/images/blPlaceholder.png" alt="user image">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title card-text" [title]="c.companyName">{{c?.companyName || '-'}}</h5>
+                            <div class="row">
+                                <div class="col">
+                                    <button *ngIf="getCompanyAccessSite(c.siteId) == -1" type="button"
+                                        class="btn siteMapBox"
+                                        [ngStyle]="{'background-color': getSiteColor(c?.siteId)}">
+                                        <span data-toggle="modal" data-target="#confirmBox">LEARN MORE</span>
+                                    </button>
+                                    <button *ngIf="getCompanyAccessSite(c.siteId) != -1" class="btn siteMapBox"
+                                        [ngStyle]="{'background-color': getSiteColor(c?.siteId)}"
+                                        routerLink="/resident-companies/{{c.id}}/company">
+                                        LEARN MORE
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev controlArrow" href="#carouselCompanyControls" role="button" data-slide="prev">
+        <span style="margin-right: 85%;" class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next controlArrow" href="#carouselCompanyControls" role="button" data-slide="next">
+        <span style="margin-left: 85%;" class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<div class="modal fade" id="confirmBox" tabindex="-1" role="dialog" aria-labelledby="confirmBoxModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <strong>You don't have access to search this site.<br>
+                    Please contact BioLabs team to upgrade your sponsorship.
+                </strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn biolabBtn" data-dismiss="modal" routerLink="/sponsor-view/search"
+                    routerLinkActive="active">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

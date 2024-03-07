@@ -1,0 +1,52 @@
+<div class="container">
+    <form [formGroup]="step1" *ngIf="step1.value.membershipChange=='0'">
+        <p>Your BioLabs Site Director (or Site Admin) will be in touch regarding your requests. Pending availability, we will do our best to find a solution that meets your company's needs.</p>
+    <strong>Please review your changes:</strong>
+    <table class=" mt-3 table table-striped table-bordered table-sm row-border text-center">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Current Qty</th>
+                <th>Desired Qty</th>
+            </tr>
+        </thead>
+        <tbody formArrayName="items">
+            <tr *ngFor="let item of getItemsListControls().controls; let i = index" [formGroupName]="i">
+                <td>{{item.value.itemName}}</td>
+                <td>{{item.value.currentQty}}</td>
+                <td>{{item.value.desiredQty}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+        <label> <strong> Requests/Notes: </strong> {{step1.value.requestNotes}}</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Desired Effective Date: </strong> {{step1.value.formattedDesiredStartDate | date: globalDateFormat}}</label>
+    </div>
+    
+</form>
+
+<div *ngIf="step1.value.membershipChange=='1'">
+    <div class="form-group">
+        <label><strong>Request Graduation Date:</strong> {{step3.value.formattedRequestGraduateDate | date: globalDateFormat}}</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Share data with sponsors: </strong>{{step3.value.shareYourProfile ? 'Yes' : 'No'}}</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Continue using BioLabs Marketplace Post graduation:</strong> {{step3.value.marketPlace ? 'Yes' : 'No'}}</label>
+    </div>
+    <div class="form-group">
+        <label><strong>More information about your graduation:</strong>  {{step3.value.graduateDescription}}</label>
+    </div>
+</div>
+    <div class="form-group">
+        <button class="btn biolabBtn" cdkStepperPrevious (click)="onBackClick()">Back</button>
+        <!-- <button type="button" class=" ml-2 btn biolabBtn" data-toggle="modal" data-target="#exampleModal" cdkStepperNext>Submit Request</button> -->
+        <button class=" ml-2 btn biolabBtn" [disabled]="updateRequestLoader" (click)="submitRequest()"><i class="mr-1 fa fa-circle-o-notch fa-spin" *ngIf="updateRequestLoader"></i>
+            {{!step1.value.id?"Submit":"Update"}} Request
+            </button>
+        <button #thanksStep style="display: none;" cdkStepperNext></button>
+    </div>
+</div>

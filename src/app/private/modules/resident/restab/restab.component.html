@@ -1,0 +1,79 @@
+<div class="content-wrapper main">
+    <section>
+        <div>
+            <!-- <ul class="nav nav-tabs flex-row cus-tab tab-bar">
+                <li *ngIf="(getRole() == 1) || (getRole() == 2 && defaultService.secureSites())" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#"  routerLink="/resident-companies/{{applicationId}}/companyadmin" routerLinkActive="active">Admin</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/resident-companies/{{applicationId}}/company" routerLinkActive="active">Company Profile</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || (getRole() == 4 && viewCompanyDetails())" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/resident-companies/{{applicationId}}/onboarding" routerLinkActive="active">Company Data</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || getRole() == 3 || getRole() == 5 || getRole() == 6 || getRole() == 7"
+                    class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#"
+                        routerLink="/resident-companies/{{applicationId}}/growth" routerLinkActive="active">Company Growth</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || viewCompanyDetails() || getRole() == 5 || getRole() == 6 || getRole() == 7 || (getRole() == 8 && viewCompanyDetails())"
+                    class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#"
+                        routerLink="/resident-companies/{{applicationId}}/invoicing" routerLinkActive="active">Invoicing</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || viewCompanyDetails() || (getRole() == 8 && viewCompanyDetails())" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/resident-companies/{{applicationId}}/planchange" routerLinkActive="active">Change Request</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || (getRole() == 4 && viewCompanyDetails())" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/resident-companies/{{applicationId}}/privacy" routerLinkActive="active">Privacy</a>
+                    <div class="eff-7"></div>
+                </li>
+            </ul> -->
+            <ul [ngClass]="'child-menu'" class="nav nav-tabs flex-row cus-tab tab-bar">
+                <!-- <li class="nav-item">
+                <a class="nav-link font-weight-bold active" data-toggle="pill" aria-current="page" href="#" routerLink="/resident-companies/company" routerLinkActive="active">Company Profile</a>
+            </li> -->
+                <li *ngIf="(getRole() == 1) || (getRole() == 2 && defaultService.secureSites())" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" href="#"  routerLink="/resident-companies/{{applicationId}}/companyadmin" routerLinkActive="active">Admin</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li class="nav-item tab">
+                    <a class="nav-link font-weight-bold" href="#" routerLink="/resident-companies/{{applicationId}}/company" routerLinkActive="active">Company Profile</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || (getRole() == 4 && viewCompanyDetails())" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" href="#" routerLink="/resident-companies/{{applicationId}}/onboarding" routerLinkActive="active">Company Data</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || getRole() == 3 || getRole() == 5 || getRole() == 6 || getRole() == 7"
+                    class="nav-item tab">
+                    <a class="nav-link font-weight-bold" href="#"
+                        routerLink="/resident-companies/{{applicationId}}/growth" routerLinkActive="active">Company Growth</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || viewCompanyDetails() || getRole() == 5 || getRole() == 6 || getRole() == 7 || (getRole() == 8 && viewCompanyDetails())"
+                    class="nav-item tab">
+                    <a class="nav-link font-weight-bold" href="#"
+                        routerLink="/resident-companies/{{applicationId}}/invoicing" routerLinkActive="active">Invoicing</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || viewCompanyDetails() || (getRole() == 8 && viewCompanyDetails())" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" href="#" routerLink="/resident-companies/{{applicationId}}/planchange" routerLinkActive="active">Change Request</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites()) || (getRole() == 4 && viewCompanyDetails())" class="nav-item tab">
+                    <a class="nav-link font-weight-bold" href="#" routerLink="/resident-companies/{{applicationId}}/privacy" routerLinkActive="active">Privacy</a>
+                    <div class="eff-7"></div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<br>
+<router-outlet></router-outlet>

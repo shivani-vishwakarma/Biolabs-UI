@@ -1,0 +1,73 @@
+/* .kv-reqd {
+    color: red;
+    font-family: monospace;
+    font-weight: normal;
+}
+.avatar-pic {
+    width: auto;
+} */
+/* .row {
+    min-height:110px;
+} */
+
+div, form {
+    font-family: Raleway;
+}
+  
+h5 {
+    font-size: 2rem;
+}
+.passHelpTxt {
+    color: #249792;
+    font-size: 11px;
+}
+
+.image-upload > input {
+    display: none;
+}
+.image-upload-parent {
+    background-color: #e9ecef;
+}
+.image-upload img {
+    height: 364px;
+    width: auto;
+    cursor: pointer !important;
+    /*bject-fit: contain -  the image keeps its aspect ratio, but is resized to fit within the given dimension */
+    object-fit: contain;
+    /* object-fit: cover; */
+}
+
+.image-upload{position:relative; display: inline-block;}
+.image-upload-parent:hover:after{
+    cursor: pointer !important;
+    content:'Change Image';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    background: url('/assets/images/icons/compose-solid.svg') center no-repeat;
+    background-size: 50px;
+    opacity: 0.4;
+}
+
+.image-upload-parent:hover img{opacity: 0.4;}
+
+.bioBorder {
+    border: 3px solid #8080801f;
+    padding: 0px 10px;
+}
+.preview {
+    display: block;
+    text-align: center;
+}
+.viewImage {
+    background-color: #e9ecef;
+}
+.viewImage > img {
+    cursor: unset !important;
+}
+.text{
+    margin-top: 20px;
+    margin-left: 45px;
+}

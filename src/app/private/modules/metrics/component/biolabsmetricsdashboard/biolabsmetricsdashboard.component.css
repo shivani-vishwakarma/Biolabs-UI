@@ -1,0 +1,139 @@
+a:hover {
+    cursor:pointer;
+    text-decoration: underline;
+}
+
+.dropsize {
+    width: 35%;
+}
+.heading {
+    color: rgb(33, 142, 185);
+    font-size: 18px;
+}
+
+.font {
+    color: rgb(33, 142, 185);
+    font-size: 17px;
+}
+
+table.dataTable tbody td thead {
+    font-size: 12px;
+}
+.table thead, .table th {
+    vertical-align: middle;
+  }
+
+.add-raw {
+    padding: 1px 10px;
+    /* margin: 4px -2px -14px -6px; */
+}
+
+:host ::ng-deep .dt-button {
+    border: 1px solid #1c948d !important;
+    background-color: #0f9792 !important;
+    line-height: 1.0 !important;
+    border: none !important;
+    color: white;
+}
+
+.footer {
+    background-color: #969ca5;
+}
+
+thead {
+    background-color: #343a40;
+    color: white;
+}
+
+.print {
+    padding: 5px 25px;
+    margin: 1px 1px 1px -12px;
+}
+
+.datealign {
+    margin-right: -12px !important;
+}
+
+.inpwidth {
+    margin-left: -18px;
+    justify-content: start;
+}
+
+.heading {
+    color: #0e59ad;
+    font-size: 18px !important;
+}
+
+.margin {
+    margin-left: -70px;
+}
+
+.margins {
+    margin-left: -130px;
+}
+.marginss {
+    margin-left: -180px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input {
+    width: 55%;
+}
+.inplen{
+    width: 76%!important;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.width-100px {
+    width: 100px;
+}
+
+.name {
+    width: 140px;
+}
+
+.date {
+    width: 140px;
+}
+
+.link {
+    width: 140px;
+}
+
+.sponsor {
+    width: 100px;
+}
+
+.regcount {
+    width: 100px !important;
+}
+
+.noattend {
+    width: 100px;
+}
+
+.cost {
+    width: 110px;
+}
+
+.action {
+    width: 60px;
+}
+
+.dataTable>thead>tr>th[class*="sort"]:before,
+.dataTable>thead>tr>th[class*="sort"]:after {
+  content: "" !important;
+}
+.hide {
+    display:none; 
+  }

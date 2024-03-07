@@ -1,0 +1,97 @@
+<nav class="navbar navbar-expand-lg navbar-light fixed-top shadow">
+  <a class="navbar-brand" href="#" *ngIf="!getRole()">
+    <img src="assets/images/BioLabs_CB_Logo.png" class="logo" alt="biolabslogo.png">
+  </a>
+  <a class="navbar-brand" href="#" *ngIf="getRole() == 4 || getRole() == 8">
+    <img src="assets/images/biolabs_connect.svg" class="logo" alt="biolabslogo.svg">
+  </a>
+  <a class="navbar-brand" href="#" *ngIf="getRole() == 3">
+    <img src="assets/images/biolabs_insights.svg" class="logo" alt="biolabslogo.svg">
+  </a>
+  <a class="navbar-brand" href="#" *ngIf="getRole() == 2 || getRole() == 1 || getRole() == 5 || getRole() == 6 || getRole() == 7">
+    <img src="assets/images/biolabs_admin.svg" class="logo" alt="biolabslogo.svg">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse icons" id="navbarNav" *ngIf="checkLogin()">
+    <ul class="nav navbar-nav" *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7">
+      <li class="nav-item">
+        <!-- <a class="nav-link" href="javascript:void(0);" routerLink="/applications" routerLinkActive="active">Companies</a> -->
+        <!-- BIOL-381_tab-highlight -->
+        <a class="nav-link" [ngClass]="{'active':highlightHeader()}" href="javascript:void(0);" routerLink="/applications">Companies</a>
+      </li>
+      <li class="nav-item" *ngIf="defaultService.secureSites() && getRole() !== 5 && getRole() !== 6 && getRole() !== 7">
+        <a class="nav-link"  href="javascript:void(0);" routerLink="/user" routerLinkActive="active">Manage Users</a>
+      </li>
+      <li class="nav-item" *ngIf="defaultService.secureSites() && getRole() !== 2 && getRole() !== 5">
+        <a class="nav-link" [ngClass]="{'active':highlightSponsorHeader()}" href="javascript:void(0);" routerLink="/spusertab">Sponsors</a>
+      </li>
+      <li class="nav-item" *ngIf="defaultService.secureSites()">
+        <a class="nav-link" href="javascript:void(0);" routerLink="/invoice-waitlist" routerLinkActive="active">Invoicing/Waitlist</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0);" routerLink="/metrics" routerLinkActive="active">Metrics</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav" *ngIf="getRole() == 3">
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0);" routerLink="/sponsor-view/sponsor" routerLinkActive="active">BioLabs Network</a>
+      </li>
+      <li class="nav-item">
+        <!-- <a class="nav-link" href="javascript:void(0);" routerLink="/sponsor-view/search" routerLinkActive="active">Resident Companies</a> -->
+        <!-- BIOL-381_tab-highlight -->
+        <a class="nav-link" (click)="onResidentCompanies()" [ngClass]="{'active':highlightHeader()}" href="javascript:void(0);"
+          routerLink="/sponsor-view/search" >Resident Companies</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav" *ngIf="getRole() == 4 || getRole() == 8">
+      <li class="nav-item">
+      <!-- BIOL-268 -->
+        <!-- <a  class="nav-link" href="javascript:void(0);" [routerLink]="'/resident-companies/'+companyId+'/company'" routerLinkActive="active">My Company</a> -->
+        <!-- BIOL-381_tab-highlight -->
+        <a  class="nav-link" [ngClass]="{'active':highlightHeader()}" href="javascript:void(0);" [routerLink]="'/resident-companies/'+companyId+'/company'">My Company</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://solutions.sciquest.com/apps/Router/Login?OrgName=Biolabs" target="_blank">Marketplace</a>
+      </li>
+      <li class="nav-item">
+        <!-- <a class="nav-link" href="javascript:void(0);" routerLink="/directory" routerLinkActive="active">Directory</a> -->
+        <a class="nav-link" [ngClass]="{'active':!highlightHeader()}" href="javascript:void(0);" routerLink="/directory">Directory</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto nav-flex-icons icons">
+      <li class="nav-item"  id="mainSiteDropdown" *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7">
+        <select class="bioSelect" id="mainSiteDropdown" [(ngModel)]="selectedSite" (change)="selectSite($event)">
+          <option *ngFor="let _site of sites" 
+          [ngClass]="{ 'primarySiteBold': boldPrimarySites(_site.id) }" [value]=_site.id>
+            {{_site.name}}</option>
+        </select>
+      </li>
+      <li class="nav-item" *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites())">
+        <a class="nav-link icons" href="javascript:void(0);" routerLink="/directory" routerLinkActive="active">
+          <i class="far fa-address-book icons" title="Directory"></i> <a class="d-lg-none d-xl-none">Directory</a></a>
+      </li>
+      <li class="nav-item" *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7">
+        <a class="nav-link icons" href="javascript:void(0);" routerLink="/sponsor-view/sponsor" routerLinkActive="active">
+          <i class="fas fa-globe-americas icons" title="Sponsor View"></i> <a class="d-lg-none d-xl-none">Sponsor View</a></a>
+      </li>
+      <li class="nav-item" *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7">
+        <a class="nav-link icons"  href="javascript:void(0);" routerLink="/application-form" routerLinkActive="active">
+          <i class="far fa-list-alt icons" title="Application Form"></i> <a class="d-lg-none d-xl-none">Application Form</a></a>
+      </li>
+      <li class="nav-item" *ngIf="getRole() == 1 || (getRole() == 2 && defaultService.secureSites())">
+        <a class="nav-link " href="javascript:void(0);" routerLink="/configurations" routerLinkActive="active">
+          <i class="fas fa-cogs icons" title="Configuration"></i> <a class="d-lg-none d-xl-none">Configuration</a></a>
+      </li>
+      <li class="nav-item" *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 4 || getRole() == 3 || getRole() == 5 || getRole() == 6 || getRole() == 7 || getRole() == 8">
+        <a class="nav-link " href="javascript:void(0);" routerLink="/profile" routerLinkActive="active">
+          <i class="fas fa-user-circle icons" title="My Profile"></i> <a class="d-lg-none d-xl-none">My Profile</a></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="javascript:void(0);" (click)="logout();">
+          <i class="fas fa-sign-out-alt icons" id="logout" title="Log Out"></i> <a class="d-lg-none d-xl-none">Log Out</a></a>
+      </li>
+    </ul>
+  </div>
+</nav>

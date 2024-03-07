@@ -1,0 +1,66 @@
+<div class="pt-4">
+    <button *ngIf="getRole() !== 7" class="btn btn-lg general-button" routerLink="/spusertab/spprofile">ADD NEW
+        SPONSOR</button>
+</div>
+
+<div class="mt-4 sponsorTables">
+    <table class="table_legenda table table-striped table-bordered table-sm size row-border hover text-center scroll"
+        datatable id="idDataTable" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="width: 100%;">
+        <thead>
+            <tr>
+                <th class="name">Company Name</th>
+                <th class="link">Website Link</th>
+                <th class="ind">Industry/ Sector</th>
+                <th class="desc">Description</th>
+                <th class="serv">Services/ Offering</th>
+                <th class="site">Sites</th>
+                <th class="active">Active</th>
+                <th class="connect">Connect Allowed</th>
+                <th class="contactname">Contact Name</th>
+                <th class="title">Title</th>
+                <th class="contactno">Contact Phone</th>
+                <th class="contactemail">Contact Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of globalSponsorsList;" class="textfit">
+                <td>
+                    <a title="Go to Sponsor Profile" href="javascript:void(0);" [routerLink]="'/sponsor-companies/'+item.id+'/sponsorview'"><span>{{item.name}}</span></a>
+                </td>
+                <td>
+                    <span>{{item.websiteLink}}</span>
+                </td>
+                <td class="ellep" title="{{filterIndustryNames(item.industry)}}">
+                    <span>{{filterIndustryNames(item.industry)}}</span>
+                </td>
+                <td class="ellep" title="{{item.description}}">
+                    <span>{{item.description}}</span>
+                </td>
+                <td class="ellep" title="{{item.services_Offering}}">
+                    <span>{{item.services_Offering}}</span>
+                </td>
+                <td>
+                    <span>{{filterSiteNames(item.sites)}}</span>
+                </td>
+                <td>
+                    <span>{{item.active ? 'Yes' : 'No'}}</span>
+                </td>
+                <td>
+                    <span>{{item.allowConnect ? 'Yes' : 'No'}}</span>
+                </td>
+                <td>
+                    <span>{{item.contactName}}</span>
+                </td>
+                <td>
+                    <span>{{item.contactTitle}}</span>
+                </td>
+                <td>
+                    <span>{{item.contactPhoneNumber}}</span>
+                </td>
+                <td>
+                    <span>{{item.contactEmail}}</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

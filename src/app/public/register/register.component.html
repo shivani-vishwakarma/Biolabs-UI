@@ -1,0 +1,156 @@
+<div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+
+            <!-- <div class="form-group col-6" *ngFor="let field of formFields">
+                <label>{{field.label}}</label>
+                <input type="text" [formControlName]="field.name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f[field.name].errors }" />
+                <div *ngIf="submitted && f[field.name]?.errors" class="invalid-feedback">
+                    <div *ngIf="f[field.name].errors?.required">{{field.errorMessage}}</div>
+                </div>
+            </div> -->
+            <!-- <div class="form-group col">
+                <label>Title</label>
+                <select formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
+                    <option value=""></option>
+                    <option value="Mr">Mr</option>
+                    <option value="Mrs">Mrs</option>
+                    <option value="Miss">Miss</option>
+                    <option value="Ms">Ms</option>
+                </select>
+                <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                    <div *ngIf="f.title.errors.required">Title is required</div>
+                </div>
+            </div> -->
+            <div class="form-group col-6">
+                <label>Name:*</label>
+                <input type="text" formControlName="name" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                    <div *ngIf="f.name.errors.required">Name is required</div>
+                </div>
+            </div>
+            <div class="form-group col-6">
+                <label>Website URL:</label>
+                <input type="text" formControlName="websiteUrl" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.websiteUrl.errors }" />
+                <div *ngIf="submitted && f.websiteUrl.errors" class="invalid-feedback">
+                    <div *ngIf="f.websiteUrl.errors.required">WebsiteUrl is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-6">
+                <label>Email:*</label>
+                <input type="text" formControlName="email" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">Email is required</div>
+                    <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                </div>
+            </div>
+            <div class="form-group col-6">
+                <label>Phone Number:*</label>
+                <input type="number" formControlName="phone" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" minlength="10" maxlength="15" />
+                <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                    <div *ngIf="f.phone.errors.required">This is required</div>
+                    <div *ngIf="f.phone.errors.pattern">Invalid Phone Number</div>
+                    <div *ngIf="(f.phone.errors.minlength || f.phone.errors.maxlength) && !f.phone.errors?.pattern">Phone number must be between 10 and 15 digits</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-6">
+                <label>Company Name:*</label>
+                <input type="text" formControlName="companyName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.companyName.errors }" />
+                <div *ngIf="submitted && f.companyName.errors" class="invalid-feedback">
+                    <div *ngIf="f.companyName.errors.required">Company Name is required</div>
+                </div>
+            </div>
+            <div class="form-group col-6">
+                <label>When did you form your Business?:*</label>
+                <!-- <input type="date" formControlName="startDate" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }" value="2011-08-19"
+                    id="example-date-input" /> -->
+                    <div class="input-group">
+                        <input class="form-control" formControlName="startDate" placeholder="DD Mon YYYY"
+                        [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }" value="2011-08-19"
+                        id="example-date-input" name="d2" [(ngModel)]="modelStartDate" ngbDatepicker #d2="ngbDatepicker">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()" type="button"></button>
+                        </div>
+                        <div *ngIf="submitted && f.startDate.errors" class="invalid-feedback">
+                            <div *ngIf="f.startDate.errors.required">Start Date is required</div>
+                        </div>
+                      </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-6">
+                <label>Which Site do you want to apply to?:*</label>
+                <input type="text" formControlName="siteName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.siteName.errors }" />
+                <div *ngIf="submitted && f.siteName.errors" class="invalid-feedback">
+                    <div *ngIf="f.siteName.errors.required">Site Name is required</div>
+                </div>
+            </div>
+            <div class="form-group col-6">
+                <label>Proposed Start Date:*</label>
+                <!-- <input type="date" formControlName="proposeStartDate" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.proposeStartDate.errors }" /> -->
+                    <div class="input-group">
+                        <input class="form-control" formControlName="proposeStartDate" placeholder="DD Mon YYYY"
+                        [ngClass]="{ 'is-invalid': submitted && f.proposeStartDate.errors }"
+                               name="d2" [(ngModel)]="modelProposeStartDate" ngbDatepicker #d2="ngbDatepicker">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()" type="button"></button>
+                        </div>
+                        <div *ngIf="submitted && f.proposeStartDate.errors" class="invalid-feedback">
+                            <div *ngIf="f.proposeStartDate.errors.required">Proposed Start Date is required</div>
+                        </div>
+                      </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Password</label>
+                <input type="password" formControlName="password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                    <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+            </div>
+            <div class="form-group col">
+                <label>Confirm Password</label>
+                <input type="password" formControlName="confirmPassword" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+                <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                    <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+                    <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" formControlName="acceptTerms" id="acceptTerms" class="form-check-input"
+                [ngClass]="{ 'is-invalid': submitted && f.acceptTerms.errors }" />
+            <label for="acceptTerms" class="form-check-label">Accept Terms & Conditions</label>
+            <div *ngIf="submitted && f.acceptTerms.errors" class="invalid-feedback">Accept Ts & Cs is required</div>
+        </div>
+        <div class="form-group">
+            <button [disabled]="loading" class="btn btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Register
+            </button>
+            <a routerLink="../login" href="" class="btn btn-link">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!--   Loader -->
+<!-- <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#fff" type="square-loader" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner> -->

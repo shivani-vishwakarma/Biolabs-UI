@@ -1,0 +1,366 @@
+<div class="mb-2">
+    <div class='d-flex justify-content-end mb-3'>
+        <button class="btn biolabBtn rounded-0 text-dark font-weight-bold border"
+            [ngClass]="{biolabBtn: requestTypeToggle.open}" (click)="onRequestTypeToggle()">Open Requests</button>
+        <button class="btn biolabBtn rounded-0 text-dark font-weight-bold border"
+            [ngClass]="{biolabBtn: requestTypeToggle.completed}" (click)="onRequestTypeToggle()">Completed
+            Requests</button>
+    </div>
+    <ng-container *ngIf="requestTypeToggle.open">
+        <div class="filter-section">
+            <strong>Open Request Queue</strong>
+            <div class="d-flex align-items-center">
+                <strong class="mr-2">Filter By Company Status</strong>
+                <form [formGroup]="filterForm">
+                    <select class="col form-control nav-item " aria-label=".form-control-lg example"
+                        (change)="onCompanyStatusChange($event)" formControlName="companyStatus">
+                        <option value="">None</option>
+                        <option value="0">Applied-New</option>
+                        <option value="5">Applied-Contacted</option>
+                        <option value="1">Current Member</option>
+                        <option value="2">On Hold</option>
+                        <option value="3">Discontinued</option>
+                        <option value="4">Graduated</option>
+                    </select>
+                </form>
+                <strong class="mr-2 ml-4">Filter By Request</strong>
+                <form [formGroup]="filterForm">
+                    <select class="col form-control nav-item " aria-label=".form-control-lg example"
+                        (change)="onProductTypeChange($event)" formControlName="productName">
+                        <option value="">None</option>
+                        <option *ngFor="let product of productsType" [value]="product.productTypeName">
+                            {{product.productTypeName}}</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        <div *ngIf="openRequestsList.length>=1 && (getRole() == 1 || getRole() == 2)">
+            <span class="text-muted font-italic">Items at the top are next in line (Click and drag to put them in
+                order)
+                <!-- <small class="font-italic">(<strong class="astrik">*</strong> indicate Internal requests)</small> -->
+            </span>
+        </div>
+    </ng-container>
+</div>
+<ng-container *ngIf="requestTypeToggle.open">
+    <div class="card text-center m-5 card__no-data" *ngIf="openRequestsList.length==0">
+        <div class="card-header">
+            Data not Found
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">No Open Requests available to Display.</h5>
+        </div>
+    </div>
+    <div *ngIf="openRequestsList.length>0" cdkDropList
+        [ngClass]="{'mb-3 table': (getRole() == 1 || getRole() == 2), 'mb-3 table pt-4' : (getRole() == 5 || getRole() == 6 || getRole() == 7)}"
+        (cdkDropListDropped)="openRequestsListDrop($event)">
+        <table class="table table-font table-striped table-bordered table-sm row-border hover">
+            <thead>
+                <tr class="text-center">
+                    <th>Company</th>
+                    <th>Received On</th>
+                    <th>Requested Date</th>
+                    <th>Request</th>
+                    <th>Request Notes</th>
+                    <th>Site Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let list of openRequestsList" cdkDrag [cdkDragDisabled]="hideDrag()"
+                    (click)="open(mymodal, list)">
+                    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                    <ng-container>
+                        <td class="grab companyname"
+                            title="{{list.residentCompanyName}}{{list.isRequestInternal ? '*' : '' }}">
+                            <a href="resident-companies/{{list.residentCompanyId}}/company"
+                                (click)="$event.stopPropagation();">
+                                {{list.residentCompanyName}}
+                            </a>
+                            <div class="companyStatus">
+                                <label [ngClass]="{'hightlight': checkSelectedRequest(list)}">
+                                    {{getCompanyStatus(list.companyStatus)}}
+                                </label>
+                            </div>
+                            <!-- <strong class="astrik">
+                                {{list.isRequestInternal ? '*' : '' }}
+                            </strong> -->
+                        </td>
+                        <td class="grab companydate"
+                            title="{{list.dateRequested | date: globalDateFormat}}">{{list.dateRequested | date:
+                            globalDateFormat}}</td>
+                        <td class="grab companydate"
+                            title="{{(list.membershipChange == 0 ? list.desiredStartDate : list.requestGraduateDate) | date: globalDateFormat}}">
+                            {{(list.membershipChange==0 ? list.desiredStartDate : list.requestGraduateDate) | date:
+                            globalDateFormat}}
+                        </td>
+                        <!-- <td class="grab companyreq" title="{{list.itemsNamesToString}}">
+                            <div *ngIf="list.membershipChange==0">
+                                <ng-container *ngFor="let item of list.items;let i = index">
+                                    <span *ngIf="list.isRequestInternal">
+                                        <label [ngClass]="{'hightlight': checkSelectedRequest(list)}">
+                                            {{caculateDesiredQut(item.desiredQty, item.currentQty,
+                                            item.itemName,list.items.length, i)}}
+                                        </label>
+                                    </span>
+                                    <div *ngIf="(item.desiredQty-item.currentQty) > 0"></div>
+                                </ng-container>
+                            </div> -->
+                        <td class="grab companyreq" title="{{list.planChangeSummary}}">
+                            <div *ngIf="list.membershipChange==0">
+                                <span *ngIf="list.isRequestInternal">
+                                    <label [ngClass]="{'hightlight': checkSelectedRequest(list)}">
+                                        {{list.planChangeSummary}}
+                                    </label>
+                                </span>
+                            </div>
+                            <div *ngIf="list.membershipChange==1">
+                                Graduate/Terminate
+                            </div>
+                            <span *ngIf="!list.isRequestInternal">
+                                See Notes
+                            </span>
+                        </td>
+                        <td class="grab reqnotes" title="{{list.requestNotes}}">{{list.membershipChange==0 ?
+                            list.requestNotes : list.graduateDescription}}</td>
+                        <td class="grab sitenotes" title="{{list.siteNotes}}">{{list.siteNotes}}</td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-container>
+<ng-container *ngIf="requestTypeToggle.completed">
+    <div class="filter-section">
+        <strong>Completed Requests</strong>
+        <div class="d-flex align-items-center">
+            <!-- <strong class="mr-2">Filter By Company Status</strong>
+            <form [formGroup]="filterForm">
+                <select class="col form-control nav-item " aria-label=".form-control-lg example">
+                    <option value="">None</option>
+                        <option value="0">Applied-New</option>
+                        <option value="5">Applied-Contacted</option>
+                        <option value="1">Current Member</option>
+                        <option value="2">On Hold</option>
+                        <option value="3">Discontinued</option>
+                        <option value="4">Graduated</option>
+                </select>
+            </form> -->
+            <strong class="mr-2 ml-4">Filter By Status</strong>
+            <form [formGroup]="filterForm">
+                <select class="col form-control nav-item " aria-label=".form-control-lg example"
+                    (change)="onRequestTypeChange($event)" formControlName="requestTypes">
+                    <option value="">None</option>
+                    <option *ngFor="let requestType of requestTypes" [value]="requestType">{{requestType}}</option>
+                </select>
+            </form>
+        </div>
+    </div>
+    <!-- <div class="mb-2" *ngIf="approvedAndDeniedList.length>=1">
+            <span class="text-muted font-italic">
+                <small class="font-italic">(<strong class="astrik">*</strong> indicate Internal requests)</small>
+                &nbsp;
+            </span>
+        </div> -->
+    <div class="card text-center top m-5 card__no-data" *ngIf="approvedAndDeniedList.length==0">
+        <div class="card-header">
+            Data not Found
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">No Completed Requests available to Display.</h5>
+        </div>
+    </div>
+    <div *ngIf="approvedAndDeniedList.length>0" class="example-list mb-3 pt-4 table fixTableHead">
+        <table class="table table-font table-striped table-bordered table-sm row-border hover fixed_header scroll">
+            <thead>
+                <tr class="text-center">
+                    <th>Company</th>
+                    <th>Received On</th>
+                    <th>Requested Date</th>
+                    <th>Request</th>
+                    <th>Fulfilled on</th>
+                    <th>Request Notes</th>
+                    <th>Site Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let list of approvedAndDeniedList" (click)="open(mymodal, list)" class="cursor-pointer">
+                    <td class="completed-companyname td-ellipsis"
+                        title="{{list.residentCompanyName}}{{list.isRequestInternal ? '*' : '' }}">
+                        <a href="resident-companies/{{list.residentCompanyId}}/company"
+                            (click)="$event.stopPropagation();">
+                            {{list.residentCompanyName}}
+                        </a>
+                        <div class="companyStatus">{{getCompanyStatus(list.companyStatus)}}</div>
+                        <!-- <strong class="astrik">{{list.isRequestInternal ? '*' : ''
+                            }}</strong> -->
+                    </td>
+                    <td class="completed-companydate td-ellipsis"
+                        title="{{list.dateRequested | date: globalDateFormat}}">
+                        {{list.dateRequested | date: globalDateFormat}}</td>
+                    <td class="completed-companydate td-ellipsis"
+                        title="{{list.desiredStartDate | date: globalDateFormat}}">
+                        {{(list.membershipChange==0 ? list.desiredStartDate : list.requestGraduateDate) | date:
+                        globalDateFormat}}</td>
+                    <td class="completed-companyreq" title="{{list.itemsNamesToString}}">
+                        <div *ngIf="list.membershipChange==0">
+                            <ng-container *ngFor="let item of list.items;let i = index">
+                                <span *ngIf="list.isRequestInternal">
+                                    {{caculateDesiredQut(item.desiredQty, item.currentQty,
+                                    item.itemName,list.items.length,i)}}
+                                </span>
+                                <div *ngIf="(item.desiredQty-item.currentQty) > 0"></div>
+                            </ng-container>
+                        </div>
+                        <div *ngIf="list.membershipChange==1">
+                            Graduate/Terminate
+                        </div>
+                        <span *ngIf="!list.isRequestInternal">
+                            See Notes
+                        </span>
+                    </td>
+                    <td class="completed-companyfulfil td-ellipsis validation"
+                        title="{{list.fulfilledOn | date:globalDateFormat}}">{{list.fulfilledOn | date:
+                        globalDateFormat}}</td>
+                    <td class="completed-reqnotes" title="{{list.requestNotes}}">{{list.membershipChange==0 ?
+                        list.requestNotes : list.graduateDescription}}</td>
+                    <td class="completed-sitenotes" title="{{list.siteNotes}}">{{list.siteNotes}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-container>
+<ngx-spinner></ngx-spinner>
+<ng-template #mymodal let-modal>
+    <div class="container">
+        <div class="modal-header">
+            <h5> Review Request</h5>
+            <h6 class="form-control-static pull-right">Received On : <strong>{{selectedOpenRequest?.dateRequested |
+                    date: globalDateFormat}}</strong> </h6>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="openRequest" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class=" col form-group">
+                        <fieldset disabled>
+                            <label for="disabledTextInput">Company:</label>
+                            <input formControlName="residentCompanyName" type="text" id="companyName"
+                                class="form-control">
+                        </fieldset>
+                    </div>
+                    <div class=" col form-group">
+                        <fieldset disabled>
+                            <label for="disabledTextInput">Requested Date:</label>
+                            <input *ngIf="openRequest.value.desiredStartDate"
+                                [value]="(openRequest.value.desiredStartDate | date: globalDateFormat)" type="text"
+                                class="form-control" />
+                            <input *ngIf="!openRequest.value.desiredStartDate"
+                                [value]="selectedOpenRequest.requestGraduateDate | date: globalDateFormat" type="text"
+                                class="form-control" />
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col form-group">
+                        <fieldset disabled>
+                            <label for="disabledTextInput">Request Type:</label>
+                            <input formControlName="requestedType" type="text" id="requestedType" class="form-control"
+                                placeholder="Disabled input">
+                        </fieldset>
+                    </div>
+                    <div class=" col form-group">
+                        <fieldset disabled>
+                            <label for="disabledTextInput">Requested By:</label>
+                            <input
+                                [value]="selectedOpenRequest.isRequestInternal ? openRequest.value.requestedBy : selectedOpenRequest.requestedBy"
+                                type="text" id="requestedBy" class="form-control">
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col form-group">
+                        <fieldset disabled>
+                            <label for="disabledTextInput">Plan Change Summary:</label>
+                            <textarea
+                                [value]="selectedOpenRequest.membershipChange == 0 ? openRequest.value.planChangeSummary : 'Graduate/Terminate'"
+                                type="text" id="planChangeSummary" class="form-control"></textarea>
+                        </fieldset>
+                    </div>
+                    <div class=" col form-group">
+                        <fieldset disabled>
+                            <label for="disabledTextInput">Request Notes:</label>
+                            <textarea
+                                [value]="selectedOpenRequest.requestNotes ? selectedOpenRequest.requestNotes : selectedOpenRequest.graduateDescription"
+                                type="text" id="requestNotes" class="form-control"></textarea>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col form-group">
+                        <label for="">Status:</label>
+                        <select class="form-control status" id="exampleFormControlSelect1"
+                            formControlName="requestStatus">
+                            <option value="Open" [defaultSelected]="selectedOpenRequest.requestStatus == 0">Open
+                            </option>
+                            <option value="Approved- In Progress"
+                                [defaultSelected]="selectedOpenRequest.requestStatus == 1">Approved - In Progress
+                            </option>
+                            <option value="Approved-Completed"
+                                [defaultSelected]="selectedOpenRequest.requestStatus == 2">Approved - Completed</option>
+                            <option value="Denied" [defaultSelected]="selectedOpenRequest.requestStatus == 3">Denied
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="">Fulfilled On:</label>
+                        <!-- <input formControlName="fulfilledOn" type="date" class="form-control"
+                            [min]="minCalenderDate | date:'yyyy-MM-dd'" /> -->
+
+                        <div class="input-group validation">
+                            <input class="form-control" formControlName="fulfilledOn" placeholder="DD Mon YYYY"
+                                name="d2" [(ngModel)]="modelFulfilledOn" [minDate]="minCalDate" ngbDatepicker
+                                #d2="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()"
+                                    type="button"></button>
+                                <!-- <span *ngIf="modelFulfilledOn.errors">invalud formatDate</span> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="">Site Notes:
+                            <span class="text-muted font-italic"><small class="font-italic">(Visible to the
+                                    customer)</small></span>
+                        </label>
+                        <textarea formControlName="siteNotes" type="text" class="form-control"
+                            placeholder="Add Site Notes" formControlName="siteNotes"></textarea>
+                        <div *ngIf="openRequest.controls.siteNotes.errors && openRequest.controls.siteNotes.errors.maxlength"
+                            class="text-danger">Should be less than 500 characters.
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="">Internal Notes:
+                            <span class="text-muted font-italic"><small class="font-italic">(Only visible to Site
+                                    admins)</small></span>
+                        </label>
+                        <textarea formControlName="internalNotes" type="text" class="form-control"
+                            placeholder="Add Internal Notes"></textarea>
+                        <div *ngIf="openRequest.controls.internalNotes.errors && openRequest.controls.internalNotes.errors.maxlength"
+                            class="text-danger"> Should be less than 500 characters.
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <form [formGroup]="openRequest" (ngSubmit)="onSubmit()" class="mr-auto">
+                <button type="submit" class="btn biolabBtn" data-dismiss="modal" [disabled]="updateRequestLoader"><i
+                        class="mr-1 fa fa-circle-o-notch fa-spin" *ngIf="updateRequestLoader"></i>Update</button>
+            </form>
+        </div>
+    </div>
+</ng-template>

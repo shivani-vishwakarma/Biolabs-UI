@@ -1,0 +1,14 @@
+.card-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.image-upload img {
+    object-fit: contain;
+}
+.card-img-top{
+    width: 100%;
+    height: 217px;
+    -o-object-fit: cover;
+    object-fit: cover;
+    }

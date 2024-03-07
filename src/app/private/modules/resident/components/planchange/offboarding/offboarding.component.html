@@ -1,0 +1,95 @@
+<div class="container">
+    <form [formGroup]="step3" (ngSubmit)="stepThreeSubmit()" autocomplete="off" novalidate #formRef="ngForm">
+        <h5><strong>Please provide a few details regarding your graduation:</strong></h5>
+
+        <div class="row form-group mt-5">
+            <div class="col-md-8 col-sm-5">
+                <strong> <label class="form-label">Requested Graduation Date?<strong
+                            class="astrik">*</strong></label></strong>
+            </div>
+            <div class="col-md-4 col-sm-5">
+                <!-- <input type="date" class="form-control" formControlName="requestGraduateDate"
+                    [min]="minCalenderDate | date:'yyyy-MM-dd'"
+                    [ngClass]="{ 'is-invalid': submitted && step3.controls.requestGraduateDate.errors }" /> -->
+                <div class="input-group validation">
+                    <input class="form-control" formControlName="requestGraduateDate" placeholder="DD Mon YYYY"
+                        [ngClass]="{ 'is-invalid': submitted && step3.controls.requestGraduateDate.errors|| !dateValid }"
+                        name="d2" [(ngModel)]="modelrequestGraduateDate" [minDate]="minCalDate" ngbDatepicker
+                        #d2="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()"
+                            type="button"></button>
+                    </div>
+                    <!-- <div *ngIf="submitted && step3.controls.requestGraduateDate.errors || !dateValid" class="invalid-feedback">
+                            <div *ngIf="submitted && step3.controls.requestGraduateDate?.errors?.required">Please provide a
+                                valid date</div>
+                                <div *ngIf="step3.controls.requestGraduateDate?.errors?.pastDate">Past date is now allowed</div>
+                                <div *ngIf="step3.controls.requestGraduateDate?.errors?.invalid">Invalid date format</div>
+                        </div> -->
+                    <div *ngIf="submitted && step3.controls.requestGraduateDate.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && step3.controls.requestGraduateDate?.errors?.required">Please provide a
+                            valid
+                            date</div>
+                        <div *ngIf="step3.controls.requestGraduateDate?.errors?.pastDate">Past date is now allowed</div>
+                        <div *ngIf="submitted && step3.controls.requestGraduateDate?.errors?.ngbDate.invalid">Invalid
+                            date format</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row form-group mt-3">
+            <div class="col-md-9 col-sm-5">
+            <strong> <label for="form-label">
+                    <div>
+                        Can we make your information visible to sponsors/etc after graduation?
+                    </div>
+                    <div>
+                        For more information on BioLabs' sponsors and the benefits, please visit: 
+                        <a href="https://www.biolabs.io/sponsors" target="_blank"> Sponsors | BioLabs</a>
+                    </div>
+                </label></strong>
+            </div>
+            <div class="col-md-3 col-sm-5">
+                <select class="form-control" formControlName="shareYourProfile">
+                    <option [ngValue]="" disabled>select</option>
+                    <option [ngValue]="true">Yes</option>
+                    <option [ngValue]="false">No</option>
+                </select>
+            </div>
+        </div> -->
+        <div class="row form-group mt-3">
+            <div class="col-md-8 col-sm-5">
+                <strong> <label for="form-label">Would you like to continue using BioLabs Marketplace Post
+                        graduation?<strong class="astrik">*</strong></label></strong>
+            </div>
+            <div class="col-md-4 col-sm-5">
+                <select class="form-control" formControlName="marketPlace"
+                    [ngClass]="{ 'is-invalid': submitted && step3.controls.marketPlace.errors }">
+                    <option [ngValue]="null" disabled>select</option>
+                    <option [ngValue]="true">Yes</option>
+                    <option [ngValue]="false">No</option>
+                </select>
+                <div *ngIf="submitted && step3.controls.marketPlace.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && step3.controls.marketPlace?.errors?.required">This field is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-3">
+            <strong> <label for="exampleFormControlTextarea1">Please provide more information about your
+                    graduation:</label></strong>
+            <textarea class="form-control" id="exampleFormControlTextarea1" formControlName="graduateDescription"
+                [ngClass]="{ 'is-invalid': submitted && step3.controls.graduateDescription.errors }" name="requestNotes"
+                rows="2"></textarea>
+            <div *ngIf="submitted && step3.controls.graduateDescription.errors" class="invalid-feedback">
+                <div *ngIf="step3.controls.graduateDescription?.errors?.maxlength">
+                    Should be less than {{step3.controls.graduateDescription?.errors?.maxlength.requiredLength}}
+                    characters
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn biolabBtn" cdkStepperPrevious (click)="onBackClick()">Back</button>
+            <button class=" ml-2 btn biolabBtn" cdkStepperNext (click)="onNextClick()">Next</button>
+        </div>
+    </form>
+</div>

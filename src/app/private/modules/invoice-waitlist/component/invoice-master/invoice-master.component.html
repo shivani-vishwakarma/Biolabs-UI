@@ -1,0 +1,94 @@
+<div class="container-fluid">
+    <div class="row  float-right">
+        <div class="col">
+            <select [(ngModel)]="range" class="float-right" (change)="getInvoiceByMonth()">
+                <option value="1">1 Month</option>
+                <option value="3">3 Months</option>
+                <option value="6">6 Months</option>
+            </select>
+        </div>
+        <div class="col">
+            <input type="month" [(ngModel)]="month" class="float-right" (change)="getInvoiceByMonth()" />
+        </div>
+    </div>
+    <br>
+    <div class="row mt-3">
+        <div class="col">
+            <table class="table table-striped table-bordered table-sm row-border hover text-center" datatable
+                [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                <thead>
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Site Name</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Qty</th>
+                        <th>Recurrence</th>
+                        <th>Current Charge</th>
+                        <th>Unit Cost</th>
+                        <th>Monthly Cost</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data; let i = index" [ngClass]="{'company-link' : i%2} ">
+                        <td><strong> 
+                            {{item.companyName}}
+                            </strong></td>
+                        <td>{{item.siteName}}</td>
+                        <td>{{item.productName}}</td>
+                        <td>{{item.productDescription}}</td>
+                        <td class="widthDate">{{item.startDate | date: globalDateFormat }}</td>
+                        <td class="widthDate">{{item.endDate | date: globalDateFormat }}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{(item.recurrence == null) ? "" : (item.recurrence) ? 'Yes' : 'No'}}</td>
+                        <td>{{(item.currentCharge == null) ? "" : (item.currentCharge ) ?
+                            'Yes' : 'No'}}</td>
+                        <td>{{item.cost}}</td>
+                        <td>{{item.actualCost | number: '1.0-2'}}</td>
+                        <td>{{item.month}}-{{item.year}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row pt-3 mr-3" *ngIf="getRole() == 1 || getRole() == 2">
+    <div class="col">
+        <div class="float-right mralign">
+            <ul class="lockDateList">
+                <li class="lockDateListItem"><span class="lockDate">
+                    Invoice Lock Date:</span> {{selectedFreezeDate | date: globalDateFormat}}</li>
+                <li class="lockDateListItem"><span class="lockDate">
+                    Invoice Status:</span> {{oldMonthDte ? 'Locked' : 'Open'}}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- <div class="row pt-3">
+    <div class="col">
+        <div class="float-right mr-4">
+            <div class="input-group align1">
+                Invoice freeze date :
+                <div class="input-group-prepend pl-1 height">
+                    <span class="ml-3">{{selectedFreezeDate | date: globalDateFormat}}</span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row pt-0">
+    <div class="col">
+        <div class="float-right mr-4">
+            <div class="input-group align2 row">
+                Invoice Status :
+                <div class="input-group-prepend pl-2 height">
+                    <span class="ml-3">{{oldMonthDte ? 'Locked' : 'Open'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

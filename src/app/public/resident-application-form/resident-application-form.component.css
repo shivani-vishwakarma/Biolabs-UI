@@ -1,0 +1,43 @@
+.textAreaField {
+    min-height: 15vh;
+}
+
+.app-card {
+    border: 1px solid #8080802B;
+    border-radius: 2px;
+    padding: 25px;
+}
+
+.addMoreBtn {
+    text-align: center;
+    margin-top: 15px;
+}
+.form-label {
+    font-weight: 600 !important;
+}
+
+.which-institution {
+    min-height: 67%;
+}
+.form-group, .form-group .col  {
+    scroll-margin-top: 10rem; /* whatever is a nice number that gets you past the header */
+}
+.form-control {
+    text-align: left !important;
+}
+
+::ng-deep ngb-datepicker {
+    width: auto !important;
+    height: auto !important;
+    overflow: hidden;
+  }
+    /* overflow-y: scroll !important; */
+.passHelpTxt {
+    color: #249792;
+    font-size: 11px;
+}
+
+::ng-deep ngx-treeview.disableclick .form-inline .form-check-label {
+    pointer-events: none !important;
+    cursor: default !important;
+  }

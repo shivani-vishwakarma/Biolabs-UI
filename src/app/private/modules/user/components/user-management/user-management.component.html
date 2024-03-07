@@ -1,0 +1,197 @@
+<div class="pt-4">
+    <button class="btn btn-lg general-button" *ngIf="userData.length > 0" (click)="open(addUser); setAddModel();">ADD NEW ADMIN</button>
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="open(addUser)">GO TO ADMIN ANALYTICS</button> -->
+</div>
+
+<div class="card text-center m-5" *ngIf="userData.length == 0">
+    <div class="card-header">
+        Data not Found
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">No Admin available to Display.</h5>
+        <button class="btn btn-lg general-button" (click)="open(addUser); setAddModel();">ADD NEW ADMIN</button>
+    </div>
+</div>
+
+
+
+
+<ng-template #addUser let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{selectedData && selectedData.id ? 'Edit User' : 'Add User'}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="card-body">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="fname">First Name<span class="kv-reqd">*</span></label>
+                            <input type="text" formControlName="fName" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.fName.errors }" />
+                            <div *ngIf="submitted && f.fName.errors" class="invalid-feedback">
+                                <div *ngIf="f.fName.errors.required">First Name is required</div>
+                                <div *ngIf="f.fName.errors.pattern">Name must be a valid </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="lName">Last Name<span class="kv-reqd">*</span></label>
+                            <input type="text" formControlName="lName" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.lName.errors }" />
+                            <div *ngIf="submitted && f.lName.errors" class="invalid-feedback">
+                                <div *ngIf="f.lName.errors.required">Last Name is required</div>
+                                <div *ngIf="f.lName.errors.pattern">Name must be a valid </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="fname">Email Address<span class="kv-reqd">*</span></label>
+                            <input type="email" formControlName="email" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" [attr.disabled]="selectedData && selectedData.id"/>
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">Email is required</div>
+                                <div *ngIf="f.email.errors.pattern">Email must be a valid email address</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="fname">Phone Number</label>
+                            <input type="text" formControlName="phone" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" min="10" max="15" />
+                            <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                                <div *ngIf="f.phone.errors.required">This is required</div>
+                                <div *ngIf="f.phone.errors.pattern">Invalid Phone Number</div>
+                                <div *ngIf="(f.phone.errors.maxlength ||
+                                f.phone.errors.minlength) && !f.phone.errors?.pattern">Phone number must be between 10 and 15 digits</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" formControlName="title" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+                            <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                                <div *ngIf="f.title.errors.required">Title Name is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="site">Sites<span class="kv-reqd">*</span></label>
+                            <ngx-dropdown-treeview [config]="config" [items]="sites" (selectedChange)="onSelectedChange($event)"
+                                [buttonClass]="buttonClass" class="biolab-outline" [ngClass]="{ 'errBorder': submitted && f.site.errors }">
+                            </ngx-dropdown-treeview>
+                            <input type="hidden" formControlName="site" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.site.errors }" />
+                            <div *ngIf="submitted && f.site.errors" class="invalid-feedback">
+                                <div *ngIf="f.site.errors.required">Site Name is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="userType">User Type<span class="kv-reqd">*</span></label>
+                            <select formControlName="userType" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.userType.errors }">
+                                <option *ngFor="let type of userTypeArr" [value]="type.id">{{type.name}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.userType.errors" class="invalid-feedback">
+                                <div *ngIf="submitted && f.userType?.errors?.required">User Type is required.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button [disabled]="loading" class="btn biolabBtn">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        {{selectedData && selectedData.id ? 'Update User' : 'Add User'}}
+                    </button>
+                </div>
+            </form>
+            <!-- <div id="kv-avatar-errors-1" class="center-block" style="width:800px;display:none"></div> -->
+        </div>
+    </div>
+    <!-- <div class="modal-footer">
+        <button type="submit" class="btn biolabBtn" (click)="saveUser('Save click')">Submit</button>
+    </div> -->
+</ng-template>
+
+<ng-template #deleteUser let-modal1 >
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Delete User</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal1.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body ">
+        <img src="assets/images/chem1.png" class="card-img-top" alt="...">
+        <div class="fixed-centre pt-3"><strong> Are you sure you want to delete {{selectedData.firstName}} {{selectedData.lastName}} </strong>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn biolabBtn" (click)="modal1.close('Save click')">NO,
+            CANCEL</button>
+        <button type="button" class="btn biolabBtn btn-del" (click)="deleteUserData()">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            YES,
+            DELETE</button>
+    </div>
+</ng-template>
+
+<div class="row row-cols-1 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 mt-3">
+    <div class="col pb-3 pt-3" *ngFor="let user of userData">
+        <div class="card ">
+            <div class="kv-avatar image-upload pic d-flex">
+                <div class="fit-img">
+                    <img *ngIf="user?.imageUrl" class="card-img-top img-fluid" [src]="profilePic + user.imageUrl"
+                        (error)="onImgError($event)" alt="user image">
+                    <img *ngIf="!user?.imageUrl" class="card-img-top img-fluid" src="assets/images/default.svg"
+                        alt="user image">
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="text-dark card-text" [title]="user.firstName + user.lastName"> {{user.firstName}}
+                    {{user.lastName}}</h5>
+                <p class="card-text text-muted" [title]="user.email">{{user.email}}
+                </p>
+                <div class="row">
+                    <div class="col-6">
+                        <button class="btn biolabBtn" (click)="open(addUser); setEditData(user);">Edit</button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn biolabBtn float-right"
+                            (click)="open(deleteUser, 'lg'); selectedData = user;">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 
+<nav aria-label="...">
+    <ul class="pagination justify-content-end">
+        <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+        </li>
+        <li class="page-item active">
+            <span class="page-link">
+                1
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>
+</nav> -->

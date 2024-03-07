@@ -1,0 +1,167 @@
+table.dataTable tbody td thead {
+    font-size: 12px;
+}
+
+table.dataTable tfoot th, table.dataTable tfoot td {
+    padding: 8px 10px 5px 10px !important;
+    border-top: 1px solid #111;
+}
+
+.invalid-feedback {
+    display: block;
+}
+
+.add-raw {
+    padding: 1px 10px;
+    /* margin: 4px -2px -14px -6px; */
+}
+
+:host ::ng-deep .dt-button {
+    border: 1px solid #1c948d !important;
+    background-color: #0f9792 !important;
+    line-height: 1.0 !important;
+    border: none !important;
+    color: white;
+}
+
+.footer {
+    background-color: #969ca5;
+}
+
+thead {
+    background-color: #343a40;
+    color: white;
+}
+
+.heading {
+    /* color: #0f9792; */
+    color: #0e59ad;
+    font-size: 18px !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input {
+    width: 55%;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.width-100px {
+    width: 100px;
+}
+
+.name {
+    width: 150px !important;
+}
+
+.notes {
+    width: 137px;
+}
+
+td {
+    overflow-wrap: break-word;
+}
+
+.table_legenda {
+    table-layout: fixed;
+    width: 100% !important;
+}
+
+table.dataTable .text-start {
+    text-align: start !important;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 14px;
+}
+
+.center-align {
+    text-align: center;
+}
+
+.action {
+    width: 33px !important;
+}
+
+::ng-deep ngb-datepicker {
+    width: auto !important;
+    overflow-y: hidden !important;
+    height: auto !important;
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    height: 48px;
+    background-color: #ccc;
+    display: table;
+}
+
+.cdk-drag-preview td {
+    flex-grow: 2;
+    font-size: 14px;
+    border: 1px solid #edeef0;
+    background: #e7e8eb;
+    text-align: center;
+    padding: 4px;
+    /* width: 100%; */
+    vertical-align: middle;
+    max-width: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    /* overflow-wrap: break-word !important; */
+}
+
+.example-custom-placeholder {
+    background: rgb(192, 191, 191);
+    border: dotted 3px #999;
+    min-height: 25px;
+    max-width: 0px;
+}
+
+.grab {
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+td {
+    border: 1px solid #e7e8eb;
+}
+
+/* .cdk-drag-preview .conferencename {
+  width: 10% !important;
+}
+.cdk-drag-preview .conferencecapacity {
+    width: 30% !important;
+} */
+.cdk-drag-preview .icon {
+    width: 4.5% !important;
+    text-align: center;
+}
+
+.cdk-drag-preview .grab {
+    text-align: center;
+}
+
+.cdk-drag-preview .stepName {
+    width: 11% !important;
+}
+
+.cdk-drag-preview .description {
+    width: 30% !important;
+}

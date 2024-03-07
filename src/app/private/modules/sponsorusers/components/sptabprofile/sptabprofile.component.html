@@ -1,0 +1,30 @@
+<div class="content-wrapper main">
+    <section>
+        <div>
+            <!-- <ul [ngClass] = "'child-menu'" class="nav nav-tabs flex-row cus-tab tab-bar" id="tab1">
+                <li class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill"
+                        routerLink="/spusertab/sptabprofile/{{applicationId}}/spviewprofile" routerLinkActive="active">
+                        Sponsor Profile
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+                <li class="nav-item tab" *ngIf="getRole() != 7">
+                    <a class="nav-link font-weight-bold" data-toggle="pill"
+                        routerLink="/spusertab/sptabprofile/{{applicationId}}/speditprofile" routerLinkActive="active">
+                        Edit Profile
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+            </ul> -->
+            <!-- <nav > -->
+                <ul [ngClass] = "'child-menu'" class="nav nav-tabs flex-row cus-tab tab-bar">
+                      <li class="nav-item tab"><a class="nav-link font-weight-bold" routerLink="/spusertab/sptabprofile/{{applicationId}}/spviewprofile" routerLinkActive="active">View Profile</a></li>
+                      <li class="nav-item tab" *ngIf="getRole() != 7"><a class="nav-link font-weight-bold" routerLink="/spusertab/sptabprofile/{{applicationId}}/speditprofile" routerLinkActive="active">Edit Profile</a></li>
+                </ul>  
+                <!-- </nav>   -->
+        </div>
+    </section>
+</div>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,203 @@
+<div class="container-fluid">
+    <h4 class="heading">Offboarding Checklist</h4>
+    <hr>
+    <form class="mt-1 mb-3 validation">
+        <table class="table table-striped table-bordered table-sm row-border hover text-center table_legenda"
+            style="width: 100%;" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr>
+                    <th class="name">Step Name</th>
+                    <th class="name">Date Completed</th>
+                    <th class="name">Status</th>
+                    <th class="notes">Description </th>
+                    <th class="notes">Template Link</th>
+                    <th class="notes">Completed File Link</th>
+                    <th class="notes">Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr (click)="open(mymodal, offboard)" *ngFor="let offboard of memberOffboardData;">
+                    <!-- <td (click)="open(addUser); setEditData(user);">aaa</td> -->
+                    <td>
+                        {{offboard.stepName}}
+                        <!-- <a routerLinkActive="active"></a> -->
+                    </td>
+                    <td>{{formatDate(offboard.completedDate) | date: globalDateFormat}}</td>
+                    <td>{{getstatusText(offboard.checklist_status)}}</td>
+                    <td>{{offboard.description}}</td>
+                    <td>
+                        <a [href]="addhttp(offboard?.templateLink)" target="_blank">
+                            {{offboard.templateLink}}
+                        </a>
+                    </td>
+                    <td>
+                        <a [href]="addhttp(offboard?.completedFileLink)" target="_blank">
+                            {{offboard.completedFileLink}}
+                        </a>
+                    </td>
+                    <td>{{offboard.notes}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <ng-template #mymodal let-modal>
+        <div class="container model">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Update Step</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click');">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <div class="modal-body distance">
+                            <div class="row mt">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="stepName">Step Name:</label>
+                                        <input type="stepName" formControlName="stepName" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && f.stepName.errors }"
+                                            [attr.disabled]="selectedData && selectedData.id" readonly />
+                                        <div *ngIf="submitted && f.stepName.errors" class="invalid-feedback">
+                                            <div *ngIf="f.stepName.errors.required">Step Name is required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="status">Status:</label>
+                                        <select formControlName="status" class="form-control nav-item leng"
+                                            aria-label=".form-control-lg example">
+                                            <option value="0">Not Started</option>
+                                            <option value="1">Assigned</option>
+                                            <option value="2">Completed</option>
+                                            <option value="3">N/A</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.status.errors" class="invalid-feedback">
+                                            <div *ngIf="f.status.errors.required">Status is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="description">Description:</label>
+                                        <!-- <input type="description" formControlName="description"
+                                        class="form-control description"
+                                        [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+                                        [attr.disabled]="selectedData && selectedData.id" readonly /> -->
+                                        <textarea type="description" formControlName="description" class="form-control"
+                                            rows="4" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+                                            [attr.disabled]="selectedData && selectedData.id" readonly></textarea>
+                                        <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                            <div *ngIf="f.description.errors.required">description is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <!-- <div class="form-group">
+                                    <label for="status">Status:</label>
+                                    <select formControlName="status"
+                                        class="form-control nav-item leng" aria-label=".form-control-lg example">
+                                        <option value="0">Not Started</option>
+                                        <option value="1">Assigned</option>
+                                        <option value="2">Completed</option>
+                                        <option value="3">N/A</option>
+                                    </select>
+                                    <div *ngIf="submitted && f.status.errors" class="invalid-feedback">
+                                        <div *ngIf="f.status.errors.required">Status is required</div>
+                                    </div>
+                                </div> -->
+                                    <div class="form-group">
+                                        <label for="templateLink">Template Link:</label>
+                                        <textarea type="templateLink" formControlName="templateLink"
+                                            class="form-control height"
+                                            [ngClass]="{ 'is-invalid': submitted && f.templateLink.errors }"
+                                            [attr.disabled]="selectedData && selectedData.id" readonly></textarea>
+                                        <div *ngIf="submitted && f.templateLink.errors" class="invalid-feedback">
+                                            <div *ngIf="f.templateLink.errors.required">Template Link is
+                                                required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="date">Date Completed:</label>
+                                        <div class="input-group leng">
+                                            <input class="form-control" placeholder="DD Mon YYYY"
+                                                formControlName="completedDate" name="d3" ngbDatepicker
+                                                #d3="ngbDatepicker">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary fa fa-calendar"
+                                                    (click)="d3.toggle()" type="button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <!-- <div class="form-group">
+                                    <label for="templateLink">Template Link:</label>
+                                    <textarea type="templateLink" formControlName="templateLink"
+                                        class="form-control height"
+                                        [ngClass]="{ 'is-invalid': submitted && f.templateLink.errors }"
+                                        [attr.disabled]="selectedData && selectedData.id" readonly></textarea>
+                                    <div *ngIf="submitted && f.templateLink.errors" class="invalid-feedback">
+                                        <div *ngIf="f.templateLink.errors.required">Template Link is
+                                            required</div>
+                                    </div>
+                                </div> -->
+                                    <div class="form-group">
+                                        <label for="notes">Notes:</label>
+                                        <textarea type="notes" formControlName="notes" class="form-control" rows="3"
+                                            [ngClass]="{ 'is-invalid': submitted && f.notes.errors }"
+                                            [attr.disabled]="selectedData && selectedData.id"></textarea>
+                                        <div *ngIf="submitted && f.notes.errors" class="invalid-feedback">
+                                            <div *ngIf="f.notes.errors.maxlength">Notes should be less than 200
+                                                characters</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="completedFileLink">Completed File Link:</label>
+                                        <textarea type="completedFileLink" formControlName="completedFileLink"
+                                            class="form-control height"
+                                            [ngClass]="{ 'is-invalid': submitted && f.completedFileLink.errors }"
+                                            [attr.disabled]="selectedData && selectedData.id"></textarea>
+                                        <div *ngIf="submitted && f.completedFileLink.errors" class="invalid-feedback">
+                                            <div *ngIf="f.completedFileLink.errors.pattern">Completed File Link is
+                                                invalid
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <!-- <div class="form-group">
+                                    <label for="notes">Notes:</label>
+                                    <textarea type="notes" formControlName="notes" class="form-control" rows="3"
+                                        [ngClass]="{ 'is-invalid': submitted && f.notes.errors }"
+                                        [attr.disabled]="selectedData && selectedData.id"></textarea>
+                                    <div *ngIf="submitted && f.notes.errors" class="invalid-feedback">
+                                        <div *ngIf="f.notes.errors.maxlength">Notes should be less than 200 characters</div>
+                                    </div>
+                                </div> -->
+                                </div>
+                            </div>
+                            <div class="form-group mtop">
+                                <button type="submit" class="btn biolabBtn save">
+                                    Update
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn biolabBtn cancel" aria-hidden="true"
+                                    (click)="modal.dismiss('Cross click');">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <strong class="header">Fully Completed Date: {{formatDate(fullyCompletedDate) | date: globalDateFormat}}</strong>
+</div>

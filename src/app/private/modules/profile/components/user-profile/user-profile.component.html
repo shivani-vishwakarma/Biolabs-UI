@@ -1,0 +1,286 @@
+<div class="card">
+    <!-- markup -->
+    <!-- note: your server code `/site/avatar_upload/1` will receive `$_FILES['avatar-1']` on form submission -->
+    <!-- the avatar markup -->
+    <form *ngIf="!editMode">
+        <div class="row">
+            <div class="col-sm-4 d-flex">
+                <div class="kv-avatar image-upload d-flex">
+                    <div class="viewImage">
+                        <img *ngIf="user.user?.imageUrl" [src]="profilePic + user.user.imageUrl" (error)="onImgError($event)" class="card-img-top img-fluid fit-img"
+                            alt="user image">
+                        <img *ngIf="!user.user?.imageUrl" class="card-img-top img-fluid fit-img" src="assets/images/default.svg" alt="user image">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="row pt-2 pr-2">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <h5><strong>{{user.user.firstName}}  {{user.user.lastName}}</strong></h5>
+                            <strong>{{userTypeName || '-'}}</strong>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <button *ngIf="!editMode" class="btn biolabBtn float-right" (click)="enableEditMode()">Edit Profile</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label class="col form-label">Name </label>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="form-group">
+                            <label class="col form-label" [title]="user.user.firstName + user.user.lastName">{{user.user.firstName}}  {{user.user.lastName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label class="col form-label">Email </label>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="form-group">
+                            <label class="col form-label" [title]="user.user.email">{{user.user.email}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label class="col form-label">Contact No. </label>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="form-group">
+                            <label class="col form-label" [title]="user.user.phoneNumber">{{user.user.phoneNumber || '-'}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label class="col form-label">Title </label>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="form-group">
+                            <label class="col form-label" [title]="user.user.title">{{user.user.title || '-'}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label class="col form-label">Company </label>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="form-group">
+                            <label *ngIf="user.user.role == 4 || user.user.role == 8 " class="col form-label">
+                                <a href="javascript:void(0);"
+                                    [routerLink]="'/resident-companies/'+user.user.company?.id+'/company'">{{user.user.company?.companyName
+                                    || '-'}}</a>
+                            </label>
+                            <label
+                                *ngIf="user.user.role == 1 || user.user.role == 2 || user.user.role == 3 || user.user.role == 5 ||  user.user.role == 6 ||  user.user.role == 7"
+                                class="col form-label">
+                                <a href="https://www.biolabs.io/" target="_blank">BioLabs.io</a>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form *ngIf="editMode" [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
+        <div class="row">
+            <div class="col-sm-4 text-center">
+                <div class="kv-avatar image-upload d-flex">
+                    <label for="file-input">
+                        <div class="image-upload-parent">
+                            <img *ngIf="user.user?.imageUrl" [src]="profilePic + user.user.imageUrl" (error)="onImgError($event)" class="card-img-top img-fluid fit-img opac" alt="user image">
+                            <img *ngIf="!user.user?.imageUrl" class="card-img-top img-fluid fit-img opac" src="assets/images/default.svg" alt="user image">
+                        </div>
+                    </label>
+                    <input id="file-input" type="file" accept="image/*" (change)="onFileChange($event)" />
+                </div>
+                <div class="kv-avatar-hint mt-3">
+                    <small>Select file < 5 MB</small><br>
+                    <small>Supported file jpg|jpeg|png</small>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="row pt-2 pr-2">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <h5><strong>Update Profile</strong></h5>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <button *ngIf="editMode" class="btn biolabBtn float-right" (click)="disableEditMode()">Cancel</button>
+                            <button [disabled]="loading" class="btn biolabBtn float-right mr-2">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                Update Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row pr-2">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="fname">First Name<span class="kv-reqd">*</span></label>
+                            <input type="text" formControlName="fName" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.fName.errors }" autocomplete="off" />
+                            <div *ngIf="submitted && f.fName.errors" class="invalid-feedback">
+                                <div *ngIf="f.fName.errors.required">First Name is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="lName">Last Name<span class="kv-reqd">*</span></label>
+                            <input type="text" formControlName="lName" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.lName.errors }" autocomplete="off"/>
+                            <div *ngIf="submitted && f.lName.errors" class="invalid-feedback">
+                                <div *ngIf="f.lName.errors.required">Last Name is required</div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- </div>
+                <div class="row"> -->
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" formControlName="title" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.title.errors }" autocomplete="off"/>
+                            <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                                <div *ngIf="f.title.errors.required">Title Name is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="fname">Phone Number</label>
+                            <input type="text" formControlName="phone" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" min="10" max="15"  autocomplete="off"/>
+                            <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                                <div *ngIf="f.phone.errors.required">This field is required</div>
+                                <div *ngIf="f.phone.errors.pattern">Invalid Phone Number</div>
+                                <div *ngIf="(f.phone.errors.maxlength ||
+                                f.phone.errors.minlength) && !f.phone.errors?.pattern">Phone number must be between 10 and 15 digits</div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- </div>
+                <div class="row"> -->
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="fname">Email Address<span class="kv-reqd">*</span></label>
+                            <input type="email" formControlName="email" class="form-control" [attr.disabled]="editMode"
+                                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" autocomplete="off"/>
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">Email is required</div>
+                                <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select formControlName="userType" class="form-control" [attr.disabled]="editMode">
+                                <option [ngValue]="null" disabled [hidden]="true">Select Option</option>
+                                <option *ngFor="let type of userTypeArr" [value]="type.id">{{type.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- uncomment for checkBox feature -->
+                <!-- <div class="row">
+                    <div class="col-sm-12">
+                        <input type="checkbox" formControlName="chkBox" [(ngModel)]="changePass">
+                        <label for="chkBox" class="form-check-label ml-1"
+                            [ngClass]="{'font-weight-bold':changePass}">Change Password</label>
+                    </div>
+                </div> -->
+                <!-- <div class="row mt-2" *ngIf="changePass"> uncomment for checkBox feature-->
+                <div class="row mt-2 pr-2">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Password</label><span class="passHelpTxt"> (Fill only if you intent to change it)</span>
+                            <input type="password" formControlName="password" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.password.errors }" autocomplete="new-password"/>
+                            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                <div *ngIf="f.password.errors.required">Password is required</div>
+                                <div *ngIf="f.password.errors.pattern">Password should be atleast 8 alphnumeric
+                                    characters</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" formControlName="confirmPassword" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" autocomplete="new-password"/>
+                            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                                <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+                                <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <hr> -->
+        <!-- <div class="form-group">
+            <button [disabled]="loading" class="btn biolabBtn float-right m-2">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Update Profile
+            </button>
+        </div> -->
+    </form>
+</div>
+<div *ngIf="user.user.role==3">
+    <div class="card">
+        <div class="row">
+            <div class="col-sm-3 text-center">
+            </div>
+            <div class="col-4 text-center mt-4">
+                <label>
+                    <strong>Notification settings</strong>
+                </label>
+            </div>
+            <div class="col-5 pr-4">
+                <div class="row text">
+                    <div class="form-group">
+                        <label for="chkBox" class="form-check-label ml-1">
+                            <input type="checkbox" id="chkBox" [(ngModel)]="mailsRequest"
+                                (ngModelChange)="updateMailsRequest()">
+                            I want to receive emails about companies joining and graduating from BioLabs
+                        </label>
+                    </div>
+                    <div class="form-group text-muted">
+                        <label for="Selector">
+                            I would like to receive these emails :
+                        </label>
+                        <select class="form-control-sm ml-2" id="Selector" id="requestType" [disabled]="!mailsRequest"
+                            [(ngModel)]="mailsRequestType" (ngModelChange)="updateMailsRequestType()">
+                            <option value="1">Monthly</option>
+                            <option value="2">Quaterly</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

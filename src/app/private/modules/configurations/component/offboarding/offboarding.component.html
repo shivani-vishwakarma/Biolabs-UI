@@ -1,0 +1,112 @@
+<h4 class="heading">Company Offboarding Checklist</h4>
+<hr>
+<div class="row">
+    <div class="col" *ngIf="getRole() != 4">
+        <button (click)=addRow() class="btn biolabBtn float-right add-raw x" [disabled]="(addRowVar || isOffboardingEditEnabled )">Add
+            Row</button>
+    </div>
+</div>
+<form [formGroup]="addOffboardingForm" class="mt-1 validation" (ngSubmit)="addOffboardingData()">
+    <table cdkDropList (cdkDropListDropped)="dropRow(offBoardingItems, $event)"
+        class="table table-striped table-bordered table-sm row-border hover text-center table_legenda" datatable
+        [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <thead>
+            <tr>
+                <th class="name">Step Name</th>
+                <th class="notes">Description </th>
+                <th class="notes">Template Link</th>
+                <th class="action"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr cdkDragHandle [cdkDragDisabled]="isOffboardingEditEnabled || addRowVar" cdkDrag *ngFor="let item of offBoardingItems">
+                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                <td class="grab stepName">
+                    <span *ngIf="!item.editable">{{item.stepName}}</span>
+                    <input *ngIf="item.editable" class="conferencename w-100" [ngClass]="{ 'is-invalid': submitted && addOffboardingForm.controls.stepName.errors }" formControlName="stepName" type="text"
+                        name="stepName" />
+                </td>
+                <td class="grab description">
+                    <span *ngIf="!item.editable">{{item.description}}</span>
+                    <input *ngIf="item.editable" class="conferencecapacity w-100" formControlName="description"
+                    [ngClass]="{ 'is-invalid': submitted && addOffboardingForm.controls.description.errors }" type="text" name="description" />
+                </td>
+                <td class="grab description">
+                    <a *ngIf="!item.editable" [href]="addhttp(item?.templateLink)" target="_blank">
+                        {{item.templateLink}}
+                    </a>
+                    <input *ngIf="item.editable" class="conferencecapacity w-100" [ngClass]="{ 'is-invalid': submitted && addOffboardingForm.controls.templateLink.errors }" formControlName="templateLink"
+                        type="text" name="templateLink" />
+                </td>
+                <td class="icon" *ngIf="getRole() != 4">
+                    <span class="margin-right cursor-pointer" *ngIf="!(addRowVar || isOffboardingEditEnabled)">
+                        <li class="fa fa-edit" (click)="editEnable(item)"></li>
+                    </span>
+
+                    <span data-toggle="modal" data-target="#deleteOffboardModal"
+                        *ngIf="!(addRowVar || isOffboardingEditEnabled)">
+                        <li class="fa fa-trash ml-2" (click)="setItemData(item)"></li>
+                    </span>
+                    <span *ngIf="((addRowVar) || (isOffboardingEditEnabled && item.id !== selectedItem.id))"
+                        class="margin-right">
+                        <li class="fa fa-edit disabled"></li>
+                    </span>
+
+                    <span *ngIf="((addRowVar) || (isOffboardingEditEnabled && item.id !== selectedItem.id))"
+                        data-toggle="modal">
+                        <li class="fa fa-trash disabled ml-2"></li>
+                    </span>
+                    <span class="margin-right cursor-pointer submit" *ngIf="item.editable">
+                        <li class="fa fa-check" (click)="updateOffboardingData(item.id, item)"></li>
+                    </span>
+                    <span class="margin-right cursor-pointer" *ngIf="item.editable">
+                        <i class="fas fa-times ml-2"
+                            (click)="item.editable = !item.editable; isOffboardingEditEnabled = !isOffboardingEditEnabled"></i>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr [cdkDragDisabled]="isOffboardingEditEnabled || addRowVar" cdkDrag *ngIf="addRowVar">
+                <td class="form-group grab">
+                    <input class="conferencename w-100" [ngClass]="{ 'is-invalid': submitted && addOffboardingForm.controls.stepName.errors }" formControlName="stepName" type="text" name="stepName" />
+                </td>
+                <td class="form-group grab">
+                    <input class="conferencecapacity w-100" formControlName="description" type="text"
+                    [ngClass]="{ 'is-invalid': submitted && addOffboardingForm.controls.description.errors }" name="description" />
+                </td>
+                <td class="form-group grab">
+                    <input class="conferencecapacity w-100" [ngClass]="{ 'is-invalid': submitted && addOffboardingForm.controls.templateLink.errors }" formControlName="templateLink" type="text"
+                        name="templateLink" />
+                </td>
+                <td class="form-group">
+                    <span class="margin-right cursor-pointer submit">
+                        <i class="fa fa-check" (click)="addOffboardingData()"></i>
+                    </span>
+                    <span (click)="addRowVar = !addRowVar"><i class="fa fa-times cursor-pointer ml-2"></i></span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
+<div class=" modal fade" id="deleteOffboardModal" tabindex="-1" role="dialog" aria-labelledby="deleteOffboardModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteOffboardModalLabel">Delete Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the item?
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                <button type="button" class="btn biolabBtn btn-del" (click)="deleteOffboardingItem()" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<app-member-offboarding></app-member-offboarding>

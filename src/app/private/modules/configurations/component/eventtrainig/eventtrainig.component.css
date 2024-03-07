@@ -1,0 +1,114 @@
+table.dataTable tbody td thead {
+    font-size: 12px;
+}
+.invalid-feedback {
+  display: block;
+}
+.add-raw {
+    padding: 1px 10px;
+    /* margin: 4px -2px -14px -6px; */
+}
+
+:host ::ng-deep .dt-button {
+    border: 1px solid #1c948d !important;
+    background-color: #0f9792 !important;
+    line-height: 1.0 !important;
+    border: none !important;
+    color: white;
+}
+
+.footer {
+    background-color: #969ca5;
+}
+
+thead {
+    background-color: #343a40;
+    color: white;
+}
+.table thead, .table th {
+    vertical-align: middle;
+}
+.heading {
+    color: #0e59ad;
+    font-size: 18px !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input {
+    width: 55%;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.width-100px {
+    width: 100px;
+}
+
+.name {
+    width: 120px !important;
+}
+
+.date {
+    width: 130px !important;
+}
+
+.link {
+    width: 130px !important;
+}
+
+.sponsor {
+    width: 55px;
+}
+
+.regcount {
+    width: 75px !important;
+}
+
+.cost {
+    width: 50px !important;
+}
+
+.notes {
+    width: 145px;
+}
+
+td {
+    overflow-wrap: break-word;
+}
+
+.table_legenda {
+    table-layout: fixed;
+    width: 100% !important;
+}
+table.dataTable .text-start{
+    text-align: start !important;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 14px;
+}
+.center-align{
+    text-align: center;
+}
+
+.action {
+    width: 25px !important;
+}
+::ng-deep ngb-datepicker {
+    width: auto !important;
+    overflow-y: hidden !important;
+    height: auto !important;
+  }

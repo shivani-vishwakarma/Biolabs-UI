@@ -1,0 +1,197 @@
+.grab {
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  /* box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12); */
+}
+
+.example-custom-placeholder {
+  background: #ccc;
+  border: dotted 3px #999;
+  min-height: 25px;
+  max-width: 0px;
+  /* transition: transform 250ms cubic-bezier(0, 0, 0.2, 1); */
+}
+
+.table {
+  width: 100% !important;
+  /* word-break: break-all; */
+  /* margin-bottom: 0px !important; */
+}
+
+.td-ellipsis {
+ max-width: 10px;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;
+ text-align: left;
+}
+
+.card__no-data {
+  margin: 0px !important;
+}
+.top {
+  margin-top: 8px !important;
+}
+.scrollable-drag-list {
+  max-height: 20rem;
+  overflow: auto;
+}
+
+thead {
+  background-color: #343a40;
+  color: white;
+}
+/* Open Request Table CSS Start */
+.companyname {
+  width: 15%;
+}
+.companydate {
+  width: 9.5%;
+}
+/* .companydatestart {
+  width: 8.5%;
+} */
+.companyreq{
+  width: 11%;
+}
+.reqnotes{
+  width: 18%;
+}
+.sitenotes{
+  width: 17%;
+}
+/* Open Request Table CSS End */
+
+/* Completed Request Table CSS Start*/
+.completed-companyname {
+  width: 17%;
+}
+.completed-companydate {
+  width: 11%;
+}
+.completed-companyreq{
+  width: 13%;
+}
+.completed-companyfulfil{
+  width: 11%;
+}
+.completed-reqnotes{
+  width: 18%;
+}
+.completed-sitenotes{
+  width: 20%;
+}
+/* Completed Request Table CSS End*/
+hr {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.filter-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+select {
+  width: 12rem;
+  cursor: pointer;
+}
+
+.hightlight {
+  color: white;
+  font-weight: 800;
+  background: #779fbc;
+}
+
+.passHelpTxt {
+  color: #0f9792;
+  /* font-size: 11px; */
+}
+/* .passHelpTxt {
+  color: rgb(238, 125, 49)!important;
+  font-size: 11px;
+} */
+#onhoversort{
+  visibility: hidden;
+}
+#sort:hover ~ #onhoversort{
+  visibility: visible;
+}
+.passHelp {
+  color: #0f9792;
+}
+/* .passHelp {
+  color: rgb(238, 125, 49)!important;
+} */
+/* .fixTableHead {
+  overflow-y: auto;
+  height: 300px;
+} */
+/* .fixTableHead thead th {
+  position: sticky;
+  top: 0;
+} */
+table {
+  border-collapse: collapse; 
+  /* width: 100%; */
+}
+th,
+td {
+  /* padding: 8px 15px; */
+  /* border: 1px solid #a5b1bd; */
+  border: 1px solid #dee2e6;
+  
+}
+th {
+  background: #343a40;
+}
+.modal-header .close {
+  padding: 4px 8px;
+  margin: 0rem 0rem 0rem;
+}
+.pull-right{
+  float: right;
+  margin-left: auto;
+  margin-right: 40px;
+}
+
+.status{
+  width: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+.table-font{
+  font-size: 13.5px;
+}
+a{
+  color: #212529 !important;
+  /* background-color: #c7c4c4 !important; */
+}
+.highlight-open-request
+{
+  color: white !important; 
+  background-color : #779fbc !important; 
+  font-weight: 800;
+}
+
+.companyStatus {
+  color: #2291b2;
+  font-size: 10.5px;
+}
+
+::ng-deep ngb-datepicker{
+  width: auto !important;
+  height: auto !important;
+  overflow: hidden;
+  /* overflow-y: scroll !important; */
+}

@@ -1,0 +1,66 @@
+<div class="card text-center m-5" *ngIf="userData.length == 0">
+    <div class="card-header">
+        Data not Found
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">No BioLabs Site Staff available to Display.</h5>
+    </div>
+</div>
+<div class="row row-cols-1 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 mt-3">
+    <div class="col pb-3 pt-3" *ngFor="let user of userData">
+        <div class="card">
+            <div class="kv-avatar image-upload pic d-flex">
+                <div class="fit-img">
+            <img *ngIf="user?.imageUrl" class="card-img-top img-fluid" [src]="profilePic + user.imageUrl"
+                (error)="onImgError($event)" alt="user image">
+            <img *ngIf="!user?.imageUrl" class="card-img-top img-fluid" src="assets/images/default.svg" alt="user image">
+        </div>
+    </div>
+            <div class="card-body">
+                <h5 class="text-dark card-text" [title]="user.firstName + user.lastName"> {{user.firstName}} {{user.lastName}}</h5>
+                <p class="card-text text-muted" [title]="user.title">{{user.title || '-'}}</p>
+                <!-- <div class="row">
+                    <div class="col-8">
+                        <button class="btn biolabBtn">More</button>
+                        <button class="btn biolabBtn" (click)="open(addUser); setEditData(user);">Edit</button>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn biolabBtn float-right" (click)="open(deleteUser, 'lg'); selectedData = user;">Delete</button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col pb-3 pt-3">
+        <div class="card ">
+            <img src="assets/images/default.svg" class="card-img-top" alt="user image">
+            <div class="card-body">
+                <strong>Akshay Bordekar</strong><br><br>
+                <button class="btn biolabBtn">LEARN MORE</button>
+                <br><br><button class="btn biolabBtn btn-del">DELETE</button>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<ng-template #deleteUser let-modal1 >
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Delete User</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal1.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body ">
+        <img src="assets/images/chem1.png" class="card-img-top" alt="...">
+        <div class="fixed-centre pt-3"><strong> Are you sure you want to delete {{selectedData.firstName}} {{selectedData.lastName}} </strong>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn biolabBtn" (click)="modal1.close('Save click')">NO,
+            CANCEL</button>
+        <button type="button" class="btn biolabBtn btn-del" (click)="deleteUserData()">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            YES,
+            DELETE</button>
+    </div>
+</ng-template>

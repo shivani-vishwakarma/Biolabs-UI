@@ -1,0 +1,113 @@
+.font {
+  color: rgb(33, 142, 185);
+  font-size: 17px;
+}
+.dataTable>thead>tr>th[class*="sort"]:before,
+.dataTable>thead>tr>th[class*="sort"]:after {
+  content: "" !important;
+}
+.table thead, .table th {
+  vertical-align: middle;
+}
+thead {
+  background-color: #343a40;
+  color: white;
+}
+:host ::ng-deep .dt-button {
+  border: 1px solid #1c948d !important;
+  background-color: #0f9792 !important;
+  line-height: 1.0 !important;
+  border: none !important;
+  color: white;
+}
+:host ::ng-deep .dt-button:hover {
+  border: 1px solid #1c948d!important;
+  background-color: #0f9792 !important;
+  line-height: 1.0 !important;
+  border: none !important;
+  color: black;
+}
+/* table.dataTable tbody td {
+  font-size: 50px;
+} */
+/* .scrollable-drag-list {
+  max-height: 20rem;
+  overflow: auto;
+} */
+.table_legenda {
+  table-layout: fixed;
+  font-size: 12px;
+}
+.table_legenda th tr{
+  overflow-wrap: break-word;
+}
+.textfit{
+  word-wrap: break-word;
+}
+.c1 {
+  width: 50px !important;
+  /* width: 70px !important; */
+}
+.c2{
+  width: 45px !important;
+}
+.c3 {
+  width: 55px !important;
+}
+.c4 {
+  width: 55px !important;
+}
+.c5 {
+  width: 55px !important;
+}
+.c6 {
+  width: 55px !important;
+}
+.c7 {
+  width: 75px !important;
+}
+.c8 {
+  width: 75px !important;
+}
+.c9 {
+  width: 64px !important;
+}
+.c10 {
+  width: 70px !important;
+}
+.c11 {
+  width: 70px !important;
+}
+.c12 {
+  width: 40px !important;
+}
+.c13 {
+  width: 50px !important;
+}
+.c14 {
+  width: 50px !important;
+}
+.c15 {
+  width: 60px !important;
+}
+.c16 {
+  width: 55px !important;
+}
+.c17 {
+  width: 40px !important;
+}
+.c18 {
+  width: 60px !important;
+}
+.c19 {
+  width: 60px !important;
+}
+.c20 {
+  width: 45px !important;
+}
+.c21 {
+  width: 60px !important;
+}
+.c22 {
+  width: 55px !important;
+}

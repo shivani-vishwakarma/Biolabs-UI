@@ -1,0 +1,25 @@
+<div class="content-wrapper main">
+    <section>
+        <div>
+            <ul class="nav nav-tabs flex-row cus-tab tab-bar">
+                <li *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7" class="nav-item tab">
+                    <a class="nav-link font-weight-bold " data-toggle="pill" href="#" routerLink="invoice-summary"
+                        routerLinkActive="active">Invoice Summary</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li class="nav-item tab ">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="waitlist"
+                        routerLinkActive="active">Waitlist</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7" class="nav-item tab">
+                    <a class="nav-link font-weight-bold " data-toggle="pill" href="#" routerLink="all-site-invoice"
+                        routerLinkActive="active">Invoice Master</a>
+                    <div class="eff-7"></div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<br>
+<router-outlet></router-outlet>

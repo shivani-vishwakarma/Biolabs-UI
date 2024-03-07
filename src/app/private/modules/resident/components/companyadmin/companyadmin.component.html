@@ -1,0 +1,268 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+        <div class="col">
+            <div class="row pl-3">
+                <h2><span>{{company?.companyName || '-'}}</span></h2>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4 col-sm-6">
+                    <h6><strong> Company Status:</strong></h6>
+                    <select formControlName="companyStatus" (change)="onChangeCompanyStatus(f.companyStatus.value)"
+                        class="form-control nav-item" aria-label=".form-control-lg example">
+                        <option value="" disabled>Select status</option>
+                        <!-- <option *ngFor="let option of companyStageOptions" [value]="option.id">{{option.name}}</option> -->
+                        <option value="0">Applied-New</option>
+                        <option value="5">Applied-Contacted</option>
+                        <option value="1">Current Member</option>
+                        <option value="2">On Hold</option>
+                        <option value="3">Discontinued</option>
+                        <option value="4">Graduated</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h6> <strong>Selection Committee Status:</strong></h6>
+                    <select formControlName="committeeStatus" class="form-control nav-item"
+                        aria-label=".form-control-lg example">
+                        <option value=null disabled>Select status</option>
+                        <option *ngFor="let option of committeeStatus" [value]="option.id">{{option.name}}</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-sm-6 validation">
+                    <h6> <strong>Selection Committee Date:</strong></h6>
+                    <!-- <input type="date" formControlName="committeeDate" [attr.disabled]="f.committeeStatus.value == 0 ? '' : null" class="form-control" [max]="today"
+                        [ngClass]="{ 'is-invalid': submitted && form.controls.committeeDate.errors }" /> -->
+                    <div class="input-group">
+                        <input [readonly]="f.committeeStatus.value == 0 ? true : false" class="form-control"
+                            placeholder="DD Mon YYYY" formControlName="committeeDate"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.committeeDate.errors }" name="d2"
+                            [(ngModel)]="modelCommitteeDate" [maxDate]="todayMaxDate" ngbDatepicker #d2="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button [disabled]="f.committeeStatus.value == 0 ? true : false"
+                                class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()"
+                                type="button"></button>
+                        </div>
+                        <div *ngIf="submitted && form.controls.committeeDate.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.committeeDate?.errors?.required">Please provide a
+                                valid date</div>
+                            <div *ngIf="submitted && form.controls.committeeDate?.errors?.validDate">Invalid Date
+                                Format
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4 col-sm-6">
+                    <h6>
+                        <strong>Residency Start Date:</strong>
+                        <span *ngIf="f.companyStatus.value == 1 || f.companyStatus.value == 4" class="astrik">*</span>
+                    </h6>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="DD Mon YYYY" formControlName="residencyStartDate"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.residencyStartDate.errors }" name="d3"
+                            ngbDatepicker #d3="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d3.toggle()"
+                                type="button"></button>
+                        </div>
+                        <div *ngIf="submitted && form.controls.residencyStartDate.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.residencyStartDate?.errors?.required">Please provide a
+                                valid date</div>
+                            <div *ngIf="submitted && form.controls.residencyStartDate?.errors?.validDate">Invalid Date
+                                Format
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h6>
+                        <strong>Residency End Date:</strong>
+                        <span *ngIf="f.companyStatus.value == 4" class="astrik">*</span>
+                    </h6>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="DD Mon YYYY" formControlName="residencyEndDate"
+                            [ngClass]="{ 'is-invalid': submitted && form.controls.residencyEndDate.errors }" name="d4"
+                            ngbDatepicker #d4="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d4.toggle()"
+                                type="button"></button>
+                        </div>
+                        <div *ngIf="submitted && form.controls.residencyEndDate.errors" class="invalid-feedback">
+                            <div *ngIf="submitted && form.controls.residencyEndDate?.errors?.required">Please provide a
+                                valid date</div>
+                            <div *ngIf="submitted && form.controls.residencyEndDate?.errors?.validDate">Invalid Date
+                                Format
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4 col-sm-6">
+                    <h6><strong>Company Onboarding:</strong></h6>
+                    <select formControlName="companyOnboarding" (change)='onChange(f.companyOnboarding.value)'
+                        [attr.disabled]="(f.companyStatus.value == 1 || f.companyStatus.value == 4) != true ? '' : null"
+                        class="form-control nav-item " aria-label=".form-control-lg example">
+                        <option value="" disabled>Select status</option>
+                        <option *ngIf="f.companyStatus.value == 1 || f.companyStatus.value == 4" [ngValue]="true">
+                            Onboarded</option>
+                        <option [ngValue]="false">Needs Onboarding</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h6> <strong>Company Visibility:</strong></h6>
+                    <select formControlName="companyVisibility"
+                        [attr.disabled]="((f.companyOnboarding.value && f.companyStatus.value==1 || f.companyStatus.value == 4)) != true  ? '' : null"
+                        class="form-control nav-item " aria-label=".form-control-lg example">
+                        <option value="" disabled>Select status</option>
+                        <option
+                            *ngIf="((f.companyOnboarding.value == true && f.companyStatus.value==1) || f.companyStatus.value == 4)"
+                            [ngValue]="true">Published</option>
+                        <option [ngValue]="false">Stealth</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="container-fluid pl-0 pt-3">
+    <button [disabled]="loading" class="btn biolabBtn" (click)="onSubmit()">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span><strong>Update</strong>
+    </button>
+    <button *ngIf="!((isForwarded && isForwardAppValid) || (company && company.forwardedStatus)); else appForwarded"
+        class="btn biolabBtn ml-2" data-toggle="modal" data-target="#forwardapplication"><strong>Forward
+            Application</strong></button>
+    <ng-template #appForwarded>
+        <button class="btn biolabBtn ml-2" style="cursor: not-allowed;" disabled><strong>Forwarded</strong></button>
+    </ng-template>
+    <button class="btn biolabBtn ml-2" (click)="addTextarea()"><strong>Add Notes</strong></button>
+</div>
+<hr>
+<form [formGroup]="noteForm" (ngSubmit)="onNoteSubmit()">
+    <div class="row ">
+        <div class="col-8">
+            <div *ngFor="let textarea of textAreasList; let textarea_index= index">
+                <textarea formControlName="notes" class="form-control" rows="3" name="{{textarea}}"></textarea>
+                <div *ngIf="noteForm.controls.notes.errors && noteForm.controls.notes.errors.maxlength"
+                    class="text-danger">
+                    Should be less than 500 characters.
+                </div>
+                <div class="row mt-2">
+                    <div class="col">
+                        <button class="btn biolabBtn"> <strong> Save</strong></button>
+                        <button class="btn btn-link" (click)="removeTextArea(textarea_index)"> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngFor="let note of notes;let i = index;" class="mb-4 mt-1">
+        <div class="row mt-3">
+            <div class="col">
+                <i class="far fa-file-alt"></i> <strong class="ml-1 mr-2">{{note?.firstname + " " +
+                    note?.lastname}}</strong> <label class="mr-3">{{note?.createdAt | date: globalDateFormat}} </label>
+                <span *ngIf="currentUser.id==note.createdBy">
+                    <i class="fa fa-edit cursor-pointer mr-3" (click)="editNotes(note);"></i>
+                    <i class="fa fa-times cursor-pointer mr-3 text-danger " data-toggle="modal"
+                        data-target="#deleteModal" (click)="selectedData = note;"></i>
+                </span>
+                <div *ngIf="currentUser.id==note.createdBy"
+                    [hidden]="noteForm.value.id==null || noteForm.value.id!=note.id">
+                    <form [formGroup]="noteForm" (ngSubmit)="updateNotes()">
+                        <div class="row ">
+                            <div class="col-8 mt-4">
+                                <textarea formControlName="notes" class="form-control" rows="3"></textarea>
+                                <div *ngIf="noteForm.controls.notes.errors && noteForm.controls.notes.errors.maxlength"
+                                    class="text-danger">
+                                    Should be less than 500 characters.
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col">
+                                        <button type="submit" class="btn biolabBtn"> <strong> Update</strong></button>
+                                        <button type="button" class="btn btn-link" (click)="removeTextArea(i)">
+                                            Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row ml-5" [hidden]="noteForm.value.id || noteForm.value.id==note.id">
+            <div class="col">
+                {{note.notes}}
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this note ?
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                <button type="button" class="btn biolabBtn btn-del" data-dismiss="modal"
+                    (click)="deleteNote(selectedData.id)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="forwardapplication" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{(isForwarded && isForwardAppValid) ? 'Forwarded' :
+                    'Site Selection'}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span *ngIf="(isForwarded && isForwardAppValid); else notForwarded;">A copy of this application was
+                    forwarded to
+                    <b>{{selectedForwardSite.name}}</b> successfully.
+                    <p>Please remember to update the status of this application using the Company Status.</p>
+                </span>
+                <ng-template #notForwarded>
+                    <span>Select a site you want to forward to. It will send a copy of this application to selected
+                        site.</span>
+                </ng-template>
+                <!-- <form [formGroup]="form"> -->
+                <div *ngIf="!(isForwarded && isForwardAppValid)" class="row mt-3 align">
+                    <div class="col-9">
+                        <select [(ngModel)]='selectedForwardSite' name="dropdownOption" id="dropdownOption"
+                            class='form-control'
+                            [ngClass]="{ 'is-invalid': ((isForwarded && !selectedForwardSite.id))}">
+                            <option value="Select a site" disabled>Select a site</option>
+                            <option *ngFor="let option of primarySiteList"
+                                [disabled]="(company && (company.primarySite.includes(option.id) || (company.forwardedSite && company.forwardedSite.length && company.forwardedSite.includes(option.id)))) || selectedSite == option.id"
+                                [ngValue]="option">{{option.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <!-- </form> -->
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="isForwarded" *ngIf="!(isForwarded && isForwardAppValid); else okayEnable;"
+                    type="button" (click)="forwardApp()" class="btn biolabBtn">Forward</button>
+                <ng-template #okayEnable>
+                    <button type="button" data-dismiss="modal" class="btn biolabBtn">OK</button>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

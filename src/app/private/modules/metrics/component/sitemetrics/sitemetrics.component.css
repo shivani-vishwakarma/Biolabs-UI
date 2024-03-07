@@ -1,0 +1,96 @@
+.map {
+  padding-left: 50px !important;
+}
+table {
+  width: 100%;
+}
+.heading {
+    color: rgb(33, 142, 185);
+    font-size: 18px;
+  }
+  .match{
+    margin-top: 93px!important;
+  }
+  .mr-5{
+    margin-right: 12rem!important;
+  }
+  .font{
+    color: rgb(33, 142, 185);
+    font-size: 17px;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+  .print {
+      padding: 5px 25px;
+      margin: 1px 1px 1px -12px;
+  }
+  .margin {
+      margin-left: -70px;
+  }
+  .margins {
+    margin-left: -130px;
+  }
+  .marginss {
+    margin-left: -190px;
+  }
+  .margina {
+    margin-left: -130px;
+  }
+  .marginb {
+    margin-left: -185px;
+  }
+  /* .input-group {
+      margin-left: -120px;
+  } */
+  .inpwidth {
+    margin-left: -18px;
+    justify-content: start;
+  }
+  .align{
+    max-width: 10% !important;
+  }
+  .labwidth {
+    margin-left: -15px;
+  }
+  .datealign{
+    margin-right: -12px !important;
+  }
+.tablefont{
+  font-size: 14.5px;
+}
+
+/* .apexcharts-legend.position-bottom.apexcharts-align-center, .apexcharts-legend.position-top.apexcharts-align-center{
+  position: static !important;
+} */
+
+::ng-deep.legend-occupancy-align .apexcharts-legend.position-bottom.apexcharts-align-center, .apexcharts-legend.position-top.apexcharts-align-center{
+  position: absolute;
+  max-height: 198px;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  grid-template-rows: -5px 100px;
+  top: 304px;
+  grid-template-areas:
+      "a a b"
+      "a a b";
+  margin-left: 9px;
+}
+
+::ng-deep.legend-revenue-align .apexcharts-legend.position-bottom.apexcharts-align-center, .apexcharts-legend.position-top.apexcharts-align-center{
+  position: absolute;
+  max-height: 198px;
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  grid-template-rows: -5px 100px;
+  top: 304px;
+  grid-template-areas:
+      "a a b"
+      "a a b";
+  margin-left: 9px;
+}

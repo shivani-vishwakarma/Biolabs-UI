@@ -1,0 +1,180 @@
+<!-- <div class="row">
+    <div class="col">
+        <button class="btn biolabBtn float-right add-raw x">Add
+            Row</button>
+    </div>
+</div>
+
+<table class="table table-striped table-bordered table-sm row-border hover text-center table_legenda" >
+        <thead>
+            <tr>
+                <th class="name">Global Name</th>
+                <th class="link">Website Link</th>
+                <th class="value">Value </th>
+                <th class="poc">Local POC</th>
+                <th class="title">Title </th>
+                <th class="num">Phone Number</th>
+                <th class="email">Email </th>
+                <th class="start">Site Sponsorship Start Date </th>
+                <th class="end">Site Sponsorship End Date </th>
+                <th class="notes">Notes   </th>
+                <th class="action"> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+            </tr>
+            <tr>
+                <td>aaaaaaaaa</td>
+                <td>aaaaaaaaaaaaaaa</td>
+                <td>aaaaaa</td>
+                <td>aaaaaa</td>
+                <td>aaaaaaaaa</td>
+                <td>9561115732</td>
+                <td>akshay.bordekar@newvisionsoftware.in</td>
+                <td>09 Jan 1996</td>
+                <td>31 Mar 2022</td>
+                <td>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+                <td>aaa</td>
+            </tr>
+        </tbody>
+    </table> -->
+    <form [formGroup]="sponsorsForm" class="mt-1 validation">
+        <table class="table table-striped table-bordered table-sm row-border hover text-center table_legenda" style="width: 100%;" datatable
+            [dtOptions]="dtMemberOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr>
+                    <th class="name">Global Name</th>
+                    <th class="link">Website Link</th>
+                    <th class="value">Monetary Value </th>
+                    <th class="poc">Local POC</th>
+                    <th class="title">Title </th>
+                    <th class="num">Phone Number</th>
+                    <th class="email">Email </th>
+                    <th class="start">Site Sponsorship Start Date </th>
+                    <th class="end">Site Sponsorship End Date </th>
+                    <th class="notes">Notes </th>
+                    <th class="action"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of sponsorsData">
+                    <td class="grab name">
+                        <span *ngIf="!item.editable">{{item.globalsponsor}}</span>
+                        <input *ngIf="item.editable" [attr.disabled]="true"
+                            class="conferencename w-100" formControlName="globalsponsor" type="text" name="globalsponsor" />
+                    </td>
+                    <td class="grab description">
+                        <a *ngIf="!item.editable" [href]="addhttp(item?.websiteLink)" target="_blank">
+                            {{item.websiteLink}}
+                        </a>
+                        <input *ngIf="item.editable" [ngClass]="{ 'is-invalid': submitted && sponsorsForm.controls.websiteLink.errors }"
+                             formControlName="websiteLink" type="text" name="websiteLink" />
+                    </td>
+                    <td class="grab description">
+                        <span *ngIf="!item.editable">{{item.value}}</span>
+                        <input *ngIf="item.editable" formControlName="value" type="text"
+                            [ngClass]="{ 'is-invalid': submitted && sponsorsForm.controls.value.errors }"
+                            name="value" />
+                    </td>
+                    <td class="grab description">
+                        <span *ngIf="!item.editable">
+                            {{item.localPOC}}
+                        </span>
+                        <input *ngIf="item.editable" [ngClass]="{ 'is-invalid': submitted && sponsorsForm.controls.localPOC.errors }"
+                             formControlName="localPOC" type="text"
+                            name="localPOC" />
+                    </td>
+                    <td class="grab">
+                        <span *ngIf="!item.editable">{{item.title}}</span>
+                        <input *ngIf="item.editable" [ngClass]="{ 'is-invalid': submitted && sponsorsForm.controls.title.errors }"
+                            formControlName="title" type="text" name="title" />
+                    </td>
+                    <td class="grab description">
+                        <span *ngIf="!item.editable">{{item.phoneNumber}}</span>
+                        <input *ngIf="item.editable" formControlName="phoneNumber" type="text"
+                            [ngClass]="{ 'is-invalid': submitted && sponsorsForm.controls.phoneNumber.errors }"
+                            name="phoneNumber" />
+                    </td>
+                    <td class="grab description">
+                        <span *ngIf="!item.editable">{{item.email}}</span>
+                        <input *ngIf="item.editable" formControlName="email" type="text"
+                            [ngClass]="{ 'is-invalid': submitted && sponsorsForm.controls.email.errors }"
+                            name="email" />
+                    </td>
+                    <td class="grab description">
+                        <span *ngIf="!item.editable">
+                            {{formatDate(item.sponsorshipStartDate) | date: globalDateFormat}}
+                        </span>
+                        <div *ngIf="item.editable" class="input-group">
+                            <input formControlName="sponsorshipStartDate" class="form-control w-100" placeholder="DD Mon YYYY"
+                                name="d1" ngbDatepicker #d1="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary fa fa-calendar" (click)="d1.toggle()"
+                                    type="button"></button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="grab description">
+                        <span *ngIf="!item.editable">
+                            {{formatDate(item.sponsorshipEndDate) | date: globalDateFormat}}
+                        </span>
+                        <div *ngIf="item.editable" class="input-group">
+                            <input formControlName="sponsorshipEndDate" class="form-control w-100" placeholder="DD Mon YYYY"
+                                name="d2" ngbDatepicker #d2="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()"
+                                    type="button"></button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="grab">
+                    <!-- <td class="grab ellep" title="{{item.notes}}"> -->
+                        <span *ngIf="!item.editable">{{item.notes}}</span>
+                        <input *ngIf="item.editable" [ngClass]="{ 'is-invalid': submitted && sponsorsForm.controls.notes.errors }"
+                             formControlName="notes" type="text" name="notes" />
+                    </td>
+                    <td class="icon" *ngIf="getRole() != 4">
+                        <span class="margin-right cursor-pointer" *ngIf="!isEditEnabled">
+                            <li class="fa fa-edit" (click)="editEnable(item)"></li>
+                        </span>
+                        <span *ngIf="(isEditEnabled && item.id !== selectedItem.id)"
+                            class="margin-right">
+                            <li class="fa fa-edit disabled"></li>
+                        </span>
+                        <span class="margin-right cursor-pointer submit" *ngIf="item.editable">
+                            <li class="fa fa-check" (click)="updateSponsor(item.id, item)"></li>
+                        </span>
+                        <span class="margin-right cursor-pointer" *ngIf="item.editable">
+                            <i class="fas fa-times ml-2"
+                                (click)="item.editable = !item.editable; isEditEnabled = !isEditEnabled"></i>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>    
+        </table>
+    </form>

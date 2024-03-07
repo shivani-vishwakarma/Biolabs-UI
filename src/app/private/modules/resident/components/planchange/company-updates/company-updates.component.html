@@ -1,0 +1,94 @@
+<div class="container">
+    <form [formGroup]="step2"
+    (ngSubmit)="stepTwoSubmit()"
+    autocomplete="off"
+    novalidate
+    #formRef="ngForm">
+    It is important that BioLabs has your most current information. Please review your company data and provide any updates. You can also update your profile at any time using your login:
+    <div class="row mb-3 mt-3">
+        <div class="col-6">
+            <div class="form-group mt-3">
+               <strong><label class="form-label">Funding raised to-date:<strong class="astrik">*</strong></label></strong> 
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">$</span>
+                    </div>
+                    <!-- <input type="number" formControlName="funding" name="funding" class="form-control" min="0" 
+                    [ngClass]="{ 'is-invalid': submitted && step2.controls.funding.errors }" /> -->
+
+                    <input [textMask]="{mask: numberMask}" formControlName="funding" class="form-control" name="funding"
+                        [ngClass]="{ 'is-invalid': submitted && step2.controls.funding.errors }"/>
+
+                    <div *ngIf="submitted && step2.controls.funding.errors" class="invalid-feedback">
+                        <div *ngIf="submitted && step2.controls.funding?.errors?.required">This field is required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group mt-3">
+                <strong>  <label for="form-label">Funding source:<strong class="astrik">*</strong></label></strong>
+                <ngx-dropdown-treeview [config]="config" [items]="fundingSourceOption" 
+                    (selectedChange)="onSelectedFundingChange($event)" [buttonClass]="buttonClass" class="clr">
+                </ngx-dropdown-treeview>
+                <input type="hidden" formControlName="fundingSource" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && step2.controls.fundingSource.errors }" />
+                 <div *ngIf="submitted && step2.controls.fundingSource.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && step2.controls.fundingSource?.errors?.required">This field is required</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group mt-3">
+                <strong> <label for="exampleFormControlSelect1">Company stage of development:<strong class="astrik">*</strong></label></strong>
+                <select class="form-control" id="exampleFormControlSelect1" formControlName="companyStage" name="companyStage"
+                [ngClass]="{ 'is-invalid': submitted && step2.controls.companyStage.errors }">
+                    <option [ngValue]="" disabled>select</option>
+                    <option *ngFor="let option of companyStageOptions" [ngValue]="option.id">
+                        {{option.name}}</option>
+                </select>
+                <div *ngIf="submitted && step2.controls.companyStage.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && step2.controls.companyStage?.errors?.required">This field is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group mt-3">
+                <strong> <label> Total Employees:<strong class="astrik">*</strong></label></strong>
+                <input type="number" class="form-control" min="0" formControlName="companySize" name="companySize"
+                [ngClass]="{ 'is-invalid': submitted && step2.controls.companySize.errors }" />
+                <div *ngIf="submitted && step2.controls.companySize.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && step2.controls.companySize?.errors?.required">This field is required</div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- <div class="row">
+    <div class="col-12">
+        <div class="form-group mt-3" *ngIf="privacy==false && type=='0'">
+           <strong> <label for="exampleFormControlTextarea1">
+                <div>
+                    Can we make your information visible to sponsors/etc? For more information on BioLabs' sponsors and the benefits,
+                </div>
+                <div>
+                    please visit: <a href="https://www.biolabs.io/sponsors" target="_blank"> Sponsors | BioLabs</a>
+                </div>
+            </label></strong>
+        </div>
+    </div>
+    <div class="col-6" *ngIf="privacy==false && type=='0'">
+        <select formControlName="shareYourProfile" class="form-control">
+            <option [ngValue]="" disabled>select</option>
+            <option [ngValue]="true">Yes</option>
+            <option [ngValue]="false">No</option>
+        </select>
+    </div>
+</div> -->
+    <div class="form-group mt-4 mb-5">
+        <button class="btn biolabBtn" cdkStepperPrevious (click)="onBackClick()">Back</button>
+        <button class=" ml-2 btn biolabBtn" cdkStepperNext (click)="onNextClick()">Next</button>
+    </div>
+</form>
+</div>

@@ -1,0 +1,24 @@
+<div class="content-wrapper main">
+    <section>
+        <div>
+            <ul class="nav nav-tabs flex-row cus-tab tab-bar" id="tab1">
+                <li class="nav-item tab">
+                    <a class="nav-link font-weight-bold" href="#"
+                        routerLink="/sponsor-companies/{{applicationId}}/sponsorview" routerLinkActive="active">
+                        Sponsor Profile
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+                <li class="nav-item tab"  *ngIf="getRole() == 1 || getRole() == 6">
+                    <a class="nav-link font-weight-bold" href="#"
+                        routerLink="/sponsor-companies/{{applicationId}}/sponsoredit" routerLinkActive="active">
+                        Edit Profile
+                    </a>
+                    <div class="eff-7"></div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<router-outlet></router-outlet>

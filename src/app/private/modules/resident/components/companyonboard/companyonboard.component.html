@@ -1,0 +1,1762 @@
+<ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand"
+    let-onCheckedChange="onCheckedChange">
+    <div class="form-inline row-item">
+        <i *ngIf="item.children" class="mr-1" (click)="onCollapseExpand()" aria-hidden="true"
+            [ngSwitch]="item.collapsed">
+            <svg *ngSwitchCase="true" width="0.8rem" height="0.8rem" viewBox="0 0 16 16" class="bi bi-caret-right-fill"
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+            </svg>
+            <svg *ngSwitchCase="false" width="0.8rem" height="0.8rem" viewBox="0 0 16 16" class="bi bi-caret-down-fill"
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+            </svg>
+        </i>
+        <div class="form-check">
+            <input type="checkbox" *ngIf="!item.children" class="form-check-input" [(ngModel)]="item.checked"
+                (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" [indeterminate]="item.indeterminate" />
+            <label class="form-check-label" *ngIf="item.text != otherText"
+                (click)="item.checked = !item.checked; onCheckedChange()">
+                {{item.text}}
+            </label>
+            <label class="form-check-label" *ngIf="item.text == otherText"
+                (click)="item.checked = !item.checked; onCheckedChange()">
+                {{item.text}}
+            </label>
+            <input type="text" class="ml-2" *ngIf="item.text == otherText"
+                [ngClass]="{'is-invalid': submitted && item.checked && (!other[item.value] || other[item.value].length > otherFieldLength) }"
+                name="otherData" [disabled]="!item.checked" [(ngModel)]="other[item.value]" />
+            <div class="invalid-feedback d-block ml-2" *ngIf="submitted && item.checked && item.text == otherText">
+                <div *ngIf="!other[item.value]"> This Field is required</div>
+                <div *ngIf="other[item.value]?.length > otherFieldLength">
+                    Should be less than {{otherFieldLength}} characters
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #modalityTemplate let-item="item" let-onCollapseExpand="onCollapseExpand"
+    let-onCheckedChange="onCheckedChange">
+    <div class="form-inline row-item">
+        <i *ngIf="item.children" class="mr-1" (click)="onCollapseExpand()" aria-hidden="true"
+            [ngSwitch]="item.collapsed">
+            <svg *ngSwitchCase="true" width="0.8rem" height="0.8rem" viewBox="0 0 16 16" class="bi bi-caret-right-fill"
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+            </svg>
+            <svg *ngSwitchCase="false" width="0.8rem" height="0.8rem" viewBox="0 0 16 16" class="bi bi-caret-down-fill"
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+            </svg>
+        </i>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="item.checked"
+                (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" [indeterminate]="item.indeterminate" />
+            <label class="form-check-label" *ngIf="item.text != otherText"
+                (click)="item.checked = !item.checked; onCheckedChange()">
+                {{item.text}}
+            </label>
+            <label class="form-check-label" *ngIf="item.text == otherText"
+                (click)="item.checked = !item.checked; onCheckedChange()">
+                {{item.text}}
+            </label>
+            <input type="text" class="ml-2" *ngIf="item.text == otherText" name="otherData" [disabled]="!item.checked"
+                [ngClass]="{ 'is-invalid': submitted && item.checked && (!otherModality[item.value] || otherModality[item.value].length > otherFieldLength) }"
+                [(ngModel)]="otherModality[item.value]" />
+            <div class="invalid-feedback d-block ml-2" *ngIf="submitted && item.checked && item.text == otherText">
+                <div *ngIf="!otherModality[item.value]"> This Field is required</div>
+                <div *ngIf="otherModality[item.value]?.length > otherFieldLength"> Should be less than
+                    {{otherFieldLength}} characters</div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<div class="container-fluid">
+    <h2><span class="ml-1"> {{ company?.companyName || "-" }} </span></h2>
+</div>
+<div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <a class="btn btn-link accordion-label" data-toggle="collapse" href="#collapseOne"
+                            aria-expanded="false" id="application-accordion" aria-controls="collapseOne">
+                            Application Information
+                            <span class="pull-right">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label">Company Name:<span class="astrik">*</span></label>
+                                <input type="text" formControlName="companyName" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.companyName.errors }" />
+
+                                <div *ngIf="submitted && form.controls.companyName.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.companyName?.errors?.required">This field is
+                                        required</div>
+                                    <div *ngIf="form.controls.companyName?.errors?.maxlength">Should be less than
+                                        {{form.controls.companyName?.errors?.maxlength.requiredLength}} characters</div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label">Contact Name:<span class="astrik">*</span></label>
+                                <input type="text" formControlName="name" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.name.errors }" />
+
+                                <div *ngIf="submitted && form.controls.name.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.name?.errors?.required">This field is
+                                        required</div>
+                                    <div *ngIf="submitted && form.controls.name?.errors?.pattern">Invalid name</div>
+                                    <div *ngIf="form.controls.name?.errors?.maxlength">
+                                        Name Should be less than
+                                        {{form.controls.name?.errors?.maxlength.requiredLength}} characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label">Contact Phone Number:</label>
+                                <input type="text" formControlName="contactPhoneNumber" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.contactPhoneNumber.errors }"
+                                    min="10" max="15" />
+                                <div *ngIf="submitted && form.controls.contactPhoneNumber.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="form.controls.contactPhoneNumber.errors.pattern">Invalid Phone Number
+                                    </div>
+                                    <div *ngIf="(form.controls.contactPhoneNumber.errors.maxlength ||
+                                                            form.controls.contactPhoneNumber.errors.minlength) 
+                                                            && !form.controls.contactPhoneNumber.errors?.pattern">Phone
+                                        number must be between 10 and 15 digits</div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label">Email:<span class="astrik">*</span></label>
+                                <input type="email" formControlName="email" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.email.errors }" />
+
+                                <div *ngIf="submitted && form.controls.email.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.email?.errors?.required">This field is
+                                        required</div>
+                                    <div *ngIf="submitted && form.controls.email?.errors?.pattern">Email must be a valid
+                                        email address</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label">Company Website:</label>
+                                <input type="text" formControlName="website" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.website.errors }" />
+                                <div *ngIf="submitted && form.controls.website.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.website?.errors?.required">This field is
+                                        required</div>
+                                    <div *ngIf="submitted && form.controls.website?.errors?.pattern">Invalid Website
+                                    </div>
+                                    <div *ngIf="form.controls.website?.errors?.maxlength">
+                                        Should be less than {{form.controls.website?.errors?.maxlength.requiredLength}}
+                                        characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-6 d-none">
+                                <label class="form-label">Which BioLabs site are you applying to?<span
+                                        class="astrik">*</span></label>
+                                <ngx-dropdown-treeview [config]="config" [items]="sites"
+                                    (selectedChange)="onSelectedChange($event)" [buttonClass]="buttonClass"
+                                    class="biolab-outline"
+                                    [ngClass]="{ 'errBorder': submitted && form.controls.site.errors}">
+                                </ngx-dropdown-treeview>
+                                <input type="hidden" formControlName="site" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.site.errors }" />
+
+                                <div *ngIf="submitted && form.controls.site.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.site?.errors?.required">This field is
+                                        required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 app-card">
+                                <div class="row">
+                                    <div class="col col-12 col-md-6">
+                                        <label class="form-label">How did you hear about BioLabs?<span
+                                                class="astrik">*</span></label>
+                                        <select formControlName="biolabsSources" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.biolabsSources.errors }">
+                                            <option value="" disabled>select</option>
+                                            <option *ngFor="let option of biolabsSourcesOptions" [ngValue]="option.id">
+                                                {{option.name}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && form.controls.biolabsSources.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="submitted && form.controls.biolabsSources?.errors?.required">
+                                                This field is required.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-12 col-md-6">
+                                        <label class="form-label" *ngIf="form.controls.biolabsSources.value == otherSourceId ||
+                                             form.controls.biolabsSources.value == referralSourceId">
+                                            Please elaborate<span class="astrik">*</span>
+                                        </label>
+                                        <input type="text" class="form-control" *ngIf="form.controls.biolabsSources.value == otherSourceId
+                                            || form.controls.biolabsSources.value == referralSourceId"
+                                            formControlName="otherBiolabsSources"
+                                            [ngClass]="{ 'is-invalid': submitted && (!form.controls.otherBiolabsSources.value || form.controls.otherBiolabsSources.errors) }">
+                                        <div *ngIf="submitted && !form.controls.otherBiolabsSources.value"
+                                            class="invalid-feedback">
+                                            <div>This field is required.</div>
+                                        </div>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && form.controls.otherBiolabsSources?.errors?.maxlength">
+                                            <div>value Should be less than
+                                                {{form.controls.otherBiolabsSources?.errors?.maxlength.requiredLength}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label class="form-label">
+                                    Briefly summarize your technology. What are your differentiators?<span
+                                        class="astrik">*</span>
+                                </label>
+                                <textarea formControlName="technology" class="form-control textAreaField"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.technology.errors }"></textarea>
+                                <div *ngIf="submitted && form.controls.technology.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.technology?.errors?.required">This field is
+                                        required</div>
+                                    <div *ngIf="form.controls.technology?.errors?.maxlength">
+                                        Should be less than
+                                        {{form.controls.technology?.errors?.maxlength.requiredLength}} characters
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label class="form-label">What is your R&D path & commercialization plan?<span
+                                        class="astrik">*</span></label>
+                                <textarea formControlName="rAndDPath" class="form-control textAreaField"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.rAndDPath.errors }"></textarea>
+                                <div *ngIf="submitted && form.controls.rAndDPath.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.rAndDPath?.errors?.required">This field is
+                                        required</div>
+                                    <div *ngIf="form.controls.rAndDPath?.errors?.maxlength">
+                                        Should be less than
+                                        {{form.controls.rAndDPath?.errors?.maxlength.requiredLength}} characters
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label">When did you form your business?<span
+                                        class="astrik">*</span></label>
+                                <!-- <input type="date" formControlName="startDate" class="form-control" [max]="today"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.startDate.errors }" /> -->
+                                <div class="input-group">
+                                    <input class="form-control" formControlName="startDate" placeholder="DD Mon YYYY"
+                                        [ngClass]="{ 'is-invalid': submitted && form.controls.startDate.errors }"
+                                        name="d2" [minDate]="{year: 1000, month:1, day: 1}" [(ngModel)]="modelStartDate"
+                                        [maxDate]="todayMaxDate" ngbDatepicker #d2="ngbDatepicker">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary fa fa-calendar" (click)="d2.toggle()"
+                                            type="button"></button>
+                                    </div>
+                                    <div *ngIf="submitted && form.controls.startDate.errors" class="invalid-feedback">
+                                        <div *ngIf="submitted && form.controls.startDate?.errors?.required">Please
+                                            provide a valid date</div>
+                                        <div
+                                            *ngIf="submitted && form.controls.startDate?.errors?.futureDate && !form.controls.startDate?.errors?.ngbDate.invalid">
+                                            Future Date is not allowed
+                                        </div>
+                                        <div *ngIf="submitted && form.controls.startDate?.errors?.ngbDate.invalid">
+                                            Invalid Date Format
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label">Where was your company founded?<span
+                                        class="astrik">*</span></label>
+                                <input type="text" formControlName="foundedPlace" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.foundedPlace.errors }" />
+                                <div *ngIf="submitted && form.controls.foundedPlace.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.foundedPlace?.errors?.required">This field is
+                                        required</div>
+                                    <div class="invalid-feedback"
+                                        *ngIf="submitted && form.controls.foundedPlace?.errors?.maxlength">
+                                        <div>value Should be less than
+                                            {{form.controls.foundedPlace?.errors?.maxlength.requiredLength}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 app-card">
+                                <div class="row">
+                                    <div class="col col-12 col-md-6">
+                                        <label class="form-label">Company stage of development<span
+                                                class="astrik">*</span></label>
+                                        <select formControlName="companyStage" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.companyStage.errors }">
+                                            <option [ngValue]="" disabled>select</option>
+                                            <option *ngFor="let option of companyStageOptions" [ngValue]="option.id">
+                                                {{option.name}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && form.controls.companyStage.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="submitted && form.controls.companyStage?.errors?.required">This
+                                                field is required.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-12 col-md-6">
+                                        <label class="form-label"
+                                            *ngIf="form.controls.companyStage.value == otherCompanyStageId">
+                                            Please elaborate<span class="astrik">*</span>
+                                        </label>
+                                        <input type="text" class="form-control"
+                                            *ngIf="form.controls.companyStage.value == otherCompanyStageId"
+                                            formControlName="otherCompanyStage"
+                                            [ngClass]="{ 'is-invalid': submitted && (!form.controls.otherCompanyStage.value || form.controls.otherCompanyStage.errors) }">
+                                        <div *ngIf="submitted && !form.controls.otherCompanyStage.value"
+                                            class="invalid-feedback">
+                                            <div>This field is required.</div>
+                                        </div>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && form.controls.otherCompanyStage?.errors?.maxlength">
+                                            <div>value Should be less than
+                                                {{form.controls.otherCompanyStage?.errors?.maxlength.requiredLength}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 col-md-6 industry app-card"
+                                [ngClass]="{ 'is-invalid': submitted && form.controls.primaryIndustry.errors }">
+                                <label class="form-label">Primary Industry/ Sector<span class="astrik">*</span></label>
+                                <span class="passHelpTxt"> (Select any one)</span>
+                                <ngx-treeview class="disableclick" [config]="config" [items]="indusrtyPrimaryItems"
+                                    [itemTemplate]="itemTemplate" (selectedChange)="onSelectedPrimaryIndustry($event)"
+                                    (filterChange)="onFilterChange($event)">
+                                </ngx-treeview>
+                                <input type="hidden" formControlName="primaryIndustry" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.primaryIndustry.errors }" />
+
+                                <div *ngIf="submitted && form.controls.primaryIndustry.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.primaryIndustry?.errors?.required">This field
+                                        is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-md-6 primaryIndustry app-card"
+                                [ngClass]="{ 'is-invalid': submitted && form.controls.industry.errors }">
+                                <label class="form-label">Additional Industry/ Sectors</label>
+                                <span class="passHelpTxt"> (Select all that apply)</span>
+                                <ngx-treeview class="disableclick" [config]="config" [items]="indusrtyItems" [itemTemplate]="itemTemplate"
+                                    (selectedChange)="onSelectedIndustry($event)"
+                                    (filterChange)="onFilterChange($event)">
+                                </ngx-treeview>
+                                <input type="hidden" formControlName="industry" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.industry.errors }" />
+
+                                <div *ngIf="submitted && form.controls.industry.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.industry?.errors?.required">This field is
+                                        required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 modality app-card"
+                                [ngClass]="{ 'is-invalid': submitted && form.controls.modality.errors }">
+                                <label class="form-label">Industry Modality<span class="astrik">*</span></label>
+                                <ngx-treeview [config]="config" [items]="modalityItems"
+                                    [itemTemplate]="modalityTemplate" (selectedChange)="onSelectedModality($event)"
+                                    (filterChange)="onFilterChange($event)">
+                                </ngx-treeview>
+                                <input type="hidden" formControlName="modality" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.modality.errors }" />
+                                <div *ngIf="submitted && form.controls.modality.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.modality?.errors?.required">This field is
+                                        required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 app-card">
+                                <div class="row">
+                                    <div class="col col-12 col-md-6 col-lg-6">
+                                        <label class="form-label">Funding raised to-date:<span
+                                                class="astrik">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">$</span>
+                                            </div>
+                                            <!-- <input type="number" formControlName="funding" class="form-control" min="0" -->
+                                            <!-- [ngClass]="{ 'is-invalid': submitted && form.controls.funding.errors }" /> -->
+                                            <input [textMask]="{mask: numberMask}" formControlName="funding"
+                                                class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && form.controls.funding.errors }" />
+                                        </div>
+                                        <div *ngIf="submitted && form.controls.funding.errors"
+                                            class="invalid-feedback d-block">
+                                            <div *ngIf="submitted && form.controls.funding?.errors?.required">This field
+                                                is required</div>
+                                            <div *ngIf="submitted && form.controls.funding?.errors?.min">
+                                                value should not be less then {{form.controls.funding?.errors?.min.min}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-12 col-md-6 col-lg-6">
+                                        <label class="form-label">Funding source:<span class="astrik">*</span></label>
+                                        <ngx-dropdown-treeview [config]="config" [items]="fundingSourceOption"
+                                            (selectedChange)="onSelectedFundingChange($event)"
+                                            [buttonClass]="buttonClass" class="biolab-outline"
+                                            [ngClass]="{ 'errBorder': submitted && form.controls.fundingSource.errors}">
+                                        </ngx-dropdown-treeview>
+                                        <input type="hidden" formControlName="fundingSource" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.fundingSource.errors }" />
+                                        <!-- <select formControlName="fundingSource" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.fundingSource.errors }">
+                                            <option value="" disabled>select</option>
+                                            <option *ngFor="let option of fundingSourceOption" [ngValue]="option.id">{{option.name}}</option>
+                                        </select> -->
+                                        <div *ngIf="submitted && form.controls.fundingSource.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="submitted && form.controls.fundingSource?.errors?.required">This
+                                                field is required</div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-12 col-md-12 col-lg-12 mt-3">
+                                        <label class="form-label"
+                                            *ngIf="showOtherFundingOption(form.controls.fundingSource.value)">
+                                            Please elaborate funding source for other
+                                            <span class="astrik">*</span>
+                                        </label>
+                                        <input type="text" class="form-control"
+                                            *ngIf="showOtherFundingOption(form.controls.fundingSource.value)"
+                                            formControlName="otherFundingSource"
+                                            [ngClass]="{ 'is-invalid': submitted && (!form.controls.otherFundingSource.value || form.controls.otherFundingSource?.errors) }">
+                                        <div *ngIf="submitted && !form.controls.otherFundingSource.value"
+                                            class="invalid-feedback">
+                                            <div>This field is required.</div>
+                                        </div>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && form.controls.otherFundingSource?.errors?.maxlength">
+                                            <div>value Should be less than
+                                                {{form.controls.otherFundingSource?.errors?.maxlength.requiredLength}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 app-card">
+                                <div class="row">
+                                    <div class="col col-12 col-md-7">
+                                        <label class="form-label">Does your company own intellectual property related to
+                                            your technology?
+                                            <span class="astrik">*</span>
+                                        </label>
+                                        <select formControlName="intellectualProperty" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.intellectualProperty.errors }">
+                                            <option [ngValue]="" disabled>select</option>
+                                            <option *ngFor="let option of intellectual" [ngValue]="option.id">
+                                                {{option.name}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && form.controls.intellectualProperty.errors"
+                                            class="invalid-feedback">
+                                            <div
+                                                *ngIf="submitted && form.controls.intellectualProperty?.errors?.required">
+                                                This field is required.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-12 col-md-5">
+                                        <label class="form-label"
+                                            *ngIf="form.controls.intellectualProperty.value == otherIntellectualPropertyId">
+                                            Please elaborate<span class="astrik">*</span>
+                                        </label>
+                                        <input type="text" class="form-control"
+                                            *ngIf="form.controls.intellectualProperty.value == otherIntellectualPropertyId"
+                                            formControlName="otherIntellectualProperty"
+                                            [ngClass]="{ 'is-invalid': submitted && (!form.controls.otherIntellectualProperty.value || form.controls.otherIntellectualProperty?.errors)}">
+                                        <div *ngIf="submitted && !form.controls.otherIntellectualProperty.value"
+                                            class="invalid-feedback">
+                                            <div>This field is required.</div>
+                                        </div>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && form.controls.otherIntellectualProperty?.errors?.maxlength">
+                                            <div>value Should be less than
+                                                {{form.controls.otherIntellectualProperty?.errors?.maxlength.requiredLength}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 app-card">
+                                <div class="row">
+                                    <div class="col col-12 col-md-7">
+                                        <label class="form-label">
+                                            Are your leadership team, IP, or publications affiliated with an
+                                            institutional technology transfer office or tech venture office?<span
+                                                class="astrik">*</span>
+                                        </label>
+                                        <select formControlName="isAffiliated" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.isAffiliated.errors }">
+                                            <option [ngValue]="null" disabled>select</option>
+                                            <option [ngValue]="true">Yes</option>
+                                            <option [ngValue]="false">No</option>
+                                        </select>
+                                        <div *ngIf="submitted && form.controls.isAffiliated.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="submitted && form.controls.isAffiliated?.errors?.required">This
+                                                field is required.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-12 col-md-5">
+                                        <label class="form-label"
+                                            *ngIf="form.controls.isAffiliated.value == true">Institution(s)
+                                            <span class="astrik">*</span>
+                                        </label>
+                                        <textarea class="form-control which-institution"
+                                            *ngIf="form.controls.isAffiliated.value == true"
+                                            formControlName="affiliatedInstitution"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.affiliatedInstitution?.errors }"></textarea>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && form.controls.affiliatedInstitution?.errors?.maxlength">
+                                            <div>value Should be less than
+                                                {{form.controls.affiliatedInstitution?.errors?.maxlength.requiredLength}}
+                                            </div>
+                                        </div>
+                                        <!-- [ngClass]="{ 'is-invalid': submitted && !form.controls.affiliatedInstitution.value }"> -->
+                                        <!-- <div *ngIf="submitted && !form.controls.affiliatedInstitution.value" class="invalid-feedback">
+                                            <div>This field is required.</div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 app-card">
+                                <div class="row">
+                                    <div class="col col-12 col-md-7">
+                                        <label class="form-label">
+                                            How many full-time employees (Residents) do you expect to have on site to
+                                            start?
+                                            <span class="astrik">*</span>
+                                        </label>
+                                        <input type="number" formControlName="noOfFullEmp" class="form-control" min="0"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.noOfFullEmp.errors }" />
+                                        <div *ngIf="submitted && form.controls.noOfFullEmp.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.required">This
+                                                field is required</div>
+                                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.min">
+                                                value should not be less then
+                                                {{form.controls.noOfFullEmp?.errors?.min.min}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pt-4">
+                                    <div class="col col-12 col-md-7">
+                                        <label class="form-label">
+                                            How many full-time employees do you expect to have on site in 6-12 months?
+                                            <span class="astrik">*</span>
+                                        </label>
+                                        <input type="number" formControlName="empExpect12Months" class="form-control"
+                                            min="0"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.empExpect12Months.errors }" />
+                                        <div *ngIf="submitted && form.controls.empExpect12Months.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="submitted && form.controls.empExpect12Months?.errors?.required">
+                                                This field is required</div>
+                                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.min">
+                                                value should not be less then
+                                                {{form.controls.noOfFullEmp?.errors?.min.min}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 app-card">
+                                <div class="row">
+                                    <div class="col col-12 col-md-7">
+                                        <label class="form-label">
+                                            How many of these full-time Residents will utilize our lab facilities to
+                                            start?
+                                            <span class="astrik">*</span>
+                                        </label>
+                                        <input type="number" formControlName="utilizeLab" class="form-control" min="0"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.utilizeLab.errors }" />
+                                        <div *ngIf="submitted && form.controls.utilizeLab.errors"
+                                            class="invalid-feedback">
+                                            <div *ngIf="submitted && form.controls.utilizeLab?.errors?.required">This
+                                                field is required</div>
+                                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.min">
+                                                value should not be less then
+                                                {{form.controls.noOfFullEmp?.errors?.min.min}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pt-4">
+                                    <div class="col col-12 col-md-7">
+                                        <label class="form-label">
+                                            How many lab staff do you intend to have on site in 6-12 months?
+                                            <span class="astrik">*</span>
+                                        </label>
+                                        <input type="number" formControlName="expect12MonthsUtilizeLab"
+                                            class="form-control" min="0"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.expect12MonthsUtilizeLab.errors }" />
+                                        <div *ngIf="submitted && form.controls.expect12MonthsUtilizeLab.errors"
+                                            class="invalid-feedback">
+                                            <div
+                                                *ngIf="submitted && form.controls.expect12MonthsUtilizeLab?.errors?.required">
+                                                This field is required</div>
+                                            <div *ngIf="submitted && form.controls.noOfFullEmp?.errors?.min">
+                                                value should not be less then
+                                                {{form.controls.noOfFullEmp?.errors?.min.min}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 app-card">
+                            <div class="row">
+                                <div class="col col-12 col-md-7">
+                                    <label class="form-label">When would you like to join BioLabs?<span
+                                            class="astrik">*</span></label>
+                                    <select formControlName="preferredMoveIn" class="form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && form.controls.preferredMoveIn.errors }">
+                                        <option value="" disabled>select</option>
+                                        <option *ngFor="let option of moveInPreferencesOptions" [ngValue]="option.id">
+                                            {{option.name}}</option>
+                                    </select>
+                                    <div *ngIf="submitted && form.controls.preferredMoveIn.errors"
+                                        class="invalid-feedback">
+                                        <div *ngIf="submitted && form.controls.preferredMoveIn?.errors?.required">This
+                                            field is required</div>
+                                    </div>
+                                </div>
+                                <div class="col col-12 col-md-6"></div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label class="form-label">What equipment and facilities do you plan to primarily use on
+                                    site?<span class="astrik">*</span></label>
+                                <textarea formControlName="equipmentOnsite" class="form-control textAreaField"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.equipmentOnsite.errors }"></textarea>
+                                <div *ngIf="submitted && form.controls.equipmentOnsite.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.equipmentOnsite?.errors?.required">This field
+                                        is required</div>
+                                    <div *ngIf="form.controls.equipmentOnsite?.errors?.maxlength">
+                                        Should be less than
+                                        {{form.controls.equipmentOnsite?.errors?.maxlength.requiredLength}} characters
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <button [disabled]="loading" class="btn biolabBtn">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                Submit
+                            </button>
+                            <a routerLink="../login" href="" class="btn btn-link">Cancel</a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <a class="btn btn-link accordion-label" data-toggle="collapse" href="#collapseTwo"
+                            aria-expanded="false" id="upload-accordion" aria-controls="collapseTwo">
+                            Upload Logo & Pitch Deck
+                            <span class="pull-right">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <label class="form-label">Upload Company
+                                    Logo</label>&nbsp;&nbsp;{{extractFileName(company?.logoImgUrl)}}
+                                <input type="file" formControlName="deckLogo" class="form-control" accept="image/*"
+                                    (change)="onFileChange($event, 'logo')"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.deckLogo.errors }" />
+                                <input type="hidden" formControlName="deckLogo" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.deckLogo.errors }">
+                                <small>Select file < 2 MB (Supported file formats: .jpeg .png .svg .jpg)</small>
+                                        <!-- <div *ngIf="submitted && form.controls.deckLogo.errors" class="invalid-feedback">
+                                <div *ngIf="submitted && form.controls.deckLogo?.errors?.required">This field is required</div>
+                                <div *ngIf="form.controls.equipmentOnsite?.errors?.maxlength">Should be less than {{form.controls.equipmentOnsite?.errors?.maxlength.requiredLength}} characters</div>
+                            </div> -->
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="form-label">Upload Pitch
+                                    Deck</label>&nbsp;&nbsp;{{extractFileName(company?.pitchdeck)}}
+                                <span *ngIf="isUploadingFile" class="spinner-border spinner-border-sm mr-1"></span>
+                                <input type="file" formControlName="pitchDeck" class="form-control"
+                                    accept=".pdf,.pptx,.pptm,.ppt,.potx,.ppsx,.pps"
+                                    (change)="onFileChange($event, 'pitchdeck')"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.pitchDeck.errors }" />
+                                <input type="hidden" formControlName="pitchDeck" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.pitchDeck.errors }">
+                                <small>Select file < 100 MB (Supported file formats: .pdf .pptx .pptm .ppt .potx .ppsx
+                                        .pps)</small>
+                                        <!-- <div *ngIf="submitted && form.controls.pitchDeck.errors" class="invalid-feedback">
+                                <div *ngIf="submitted && form.controls.pitchDeck?.errors?.required">This field is required</div>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingThree">
+                    <h5 class="mb-0">
+                        <a class="btn btn-link collapsed accordion-label" data-toggle="collapse" href="#collapseThree"
+                            aria-expanded="true" id="additional-accordion" aria-controls="collapseThree">
+                            Additional Application Information
+                            <span class="pull-right">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <!-- <div class="form-group col col-12">
+                                <label class="form-label">Company Website</label>
+                                <input type="text" formControlName="website" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.website.errors }" />
+                                <div *ngIf="submitted && form.controls.website.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.website?.errors?.required">This field is required</div>
+                                    <div *ngIf="submitted && form.controls.website?.errors?.pattern">Invalid Website</div>
+                                    <div *ngIf="form.controls.website?.errors?.maxlength">
+                                        Should be less than {{form.controls.website?.errors?.maxlength.requiredLength}} characters
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label">Would you like your company logo to be included in our member
+                                    wall?</label>
+                                <select formControlName="logoOnWall" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.logoOnWall.errors }">
+                                    <option [ngValue]="" disabled>select</option>
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false">No</option>
+                                </select>
+                                <div *ngIf="submitted && form.controls.logoOnWall.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.logoOnWall?.errors?.required">This field is
+                                        required.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label">Would you like your company logo on your licensed space
+                                    (desk/lab bench)?</label>
+                                <select formControlName="logoOnLicensedSpace" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.logoOnLicensedSpace.errors }">
+                                    <option [ngValue]="" disabled>select</option>
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false">No</option>
+                                </select>
+                                <div *ngIf="submitted && form.controls.logoOnLicensedSpace.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.logoOnLicensedSpace?.errors?.required">This
+                                        field is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-12">
+                                <label class="form-label">What assistance are you most interested in tapping into within
+                                    the BioLabs community?</label>
+                                <textarea formControlName="bioLabsAssistanceNeeded" class="form-control textAreaField"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.bioLabsAssistanceNeeded.errors }"></textarea>
+                                <div *ngIf="submitted && form.controls.bioLabsAssistanceNeeded.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.bioLabsAssistanceNeeded?.errors?.required">
+                                        This field is required</div>
+                                    <div *ngIf="form.controls.bioLabsAssistanceNeeded?.errors?.maxlength">
+                                        Should be less than
+                                        {{form.controls.bioLabsAssistanceNeeded?.errors?.maxlength.requiredLength}}
+                                        characters
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-6">
+                                <label class="form-label"> Have you published any papers related to your
+                                    technology?</label>
+                                <select formControlName="technologyPapersPublished" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.technologyPapersPublished.errors }">
+                                    <option [ngValue]="" disabled>select</option>
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false">No</option>
+                                </select>
+                                <div *ngIf="submitted && form.controls.technologyPapersPublished.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.technologyPapersPublished?.errors?.required">
+                                        This field is required.</div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-6"
+                                *ngIf="form.controls.technologyPapersPublished.value == true">
+                                <label class="form-label">How many?</label>
+                                <input type="number" formControlName="technologyPapersPublishedLinkCount"
+                                    class="form-control" min="0"
+                                    [ngClass]="{ 'is-invalid': submitted  && (form.controls.technologyPapersPublishedLinkCount.errors) }" />
+                                <div *ngIf="submitted && (form.controls.technologyPapersPublishedLinkCount.errors)"
+                                    class="invalid-feedback">
+                                    <div class="invalid-feedback"
+                                        *ngIf="form.controls.technologyPapersPublishedLinkCount?.errors?.required">This
+                                        field is required</div>
+                                    <div *ngIf="form.controls.technologyPapersPublishedLinkCount?.errors?.maxlength">
+                                        Should be less than
+                                        {{form.controls.technologyPapersPublishedLinkCount?.errors?.min.min}} characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-12"
+                                *ngIf="form.controls.technologyPapersPublished.value == true">
+                                <label class="form-label">Please provide links</label>
+                                <textarea formControlName="technologyPapersPublishedLink"
+                                    class="form-control textAreaField"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.technologyPapersPublishedLink.errors }"></textarea>
+                                <div *ngIf="submitted && form.controls.technologyPapersPublishedLink.errors"
+                                    class="invalid-feedback">
+                                    <div
+                                        *ngIf="submitted && form.controls.technologyPapersPublishedLink?.errors?.required">
+                                        This field is required</div>
+                                    <div
+                                        *ngIf="submitted && form.controls.technologyPapersPublishedLink?.errors?.pattern">
+                                        Invalid Link</div>
+                                    <div *ngIf="form.controls.technologyPapersPublishedLink?.errors?.maxlength">
+                                        Should be less than
+                                        {{form.controls.technologyPapersPublishedLink?.errors?.maxlength.requiredLength}}
+                                        characters
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-row">
+                            <div class="form-group col col-12 col-md-12">
+                                <label class="form-label">How many patents have you filed & been granted?</label>
+                                <textarea formControlName="patentsFiledGrantedDetails"
+                                    class="form-control textAreaField"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.patentsFiledGrantedDetails.errors }">
+                                </textarea>
+                                <div *ngIf="submitted && form.controls.patentsFiledGrantedDetails.errors"
+                                    class="invalid-feedback">
+                                    <div
+                                        *ngIf="submitted && form.controls.patentsFiledGrantedDetails?.errors?.required">
+                                        This field is required</div>
+                                    <div *ngIf="form.controls.patentsFiledGrantedDetails?.errors?.maxlength">
+                                        Should be less than
+                                        {{form.controls.patentsFiledGrantedDetails?.errors?.maxlength.requiredLength}}
+                                        characters
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  -->
+
+                        <div class="form-row">
+                            <div class="form-group col col-11 col-md-6">
+                                <label class="form-label">How many patents have you filed?</label>
+                                <input [textMask]="{mask: inputNumberMaskNoLimit}" formControlName="patentsFiled"
+                                    class="form-control" min="0"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.patentsFiled.errors }" />
+                                <div *ngIf="submitted && form.controls.patentsFiled.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.patentsFiled?.errors?.required">This field is
+                                        required </div>
+                                    <div *ngIf="submitted && form.controls.patentsFiled?.errors?.min">value should not
+                                        be
+                                        less then {{form.controls.patentsFiled?.errors?.min.min}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-11 col-md-6">
+                                <label class="form-label">How many patents have been granted to you? </label>
+                                <input [textMask]="{mask: inputNumberMaskNoLimit}" formControlName="patentsGranted"
+                                    class="form-control" min="0"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.patentsGranted.errors }" />
+                                <div *ngIf="submitted && form.controls.patentsGranted.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.patentsGranted?.errors?.required">This field
+                                        is
+                                        required </div>
+                                    <div *ngIf="submitted && form.controls.patentsGranted?.errors?.min">value should not
+                                        be
+                                        less then {{form.controls.patentsGranted?.errors?.min.min}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col col-11 col-md-6">
+                                <label class="form-label">Active Clinical Trials </label>
+                                <input [textMask]="{mask: inputNumberMaskNoLimit}"
+                                    formControlName="activeClinicalTrials" class="form-control" min="0"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.activeClinicalTrials.errors }" />
+                                <div *ngIf="submitted && form.controls.activeClinicalTrials.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.activeClinicalTrials?.errors?.required">This
+                                        field is
+                                        required </div>
+                                    <div *ngIf="submitted && form.controls.activeClinicalTrials?.errors?.min">value
+                                        should not be
+                                        less then {{form.controls.activeClinicalTrials?.errors?.min.min}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col col-11 col-md-6">
+                                <label class="form-label">Clinical Trial Participants</label>
+                                <input [textMask]="{mask: inputNumberMaskNoLimit}"
+                                    formControlName="clinicalTrialParticipants" class="form-control" min="0"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.clinicalTrialParticipants.errors }" />
+                                <div *ngIf="submitted && form.controls.clinicalTrialParticipants.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.clinicalTrialParticipants?.errors?.required">
+                                        This field is
+                                        required </div>
+                                    <div *ngIf="submitted && form.controls.clinicalTrialParticipants?.errors?.min">value
+                                        should not be
+                                        less then {{form.controls.clinicalTrialParticipants?.errors?.min.min}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="accordion1" formArrayName="companyMembers" class="mb-4">
+                            <div class="card">
+                                <div class="card-header" [id]="'headingCM'">
+                                    <h5 class="mb-0">
+                                        <a class="btn btn-link accordion-label" data-toggle="collapse"
+                                            id="leadership-accordion" [href]="'#collapse_CM'" aria-expanded="false"
+                                            aria-controls="collapse_CM">
+                                            <strong>Leadership/Management Team</strong>
+                                            <span class="pull-right">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div [id]="'collapse_CM'" class="collapse" aria-labelledby="'headingCM'"
+                                    data-parent="#accordion1">
+                                    <div class="card-body">
+                                        <div id="accordion_CM">
+                                            <div *ngFor="let child of getcompanyMembers().controls; let i = index"
+                                                class="">
+                                                <div class="card">
+                                                    <div class="card-header" [id]="'headingCM' + i">
+                                                        <h5 class="mb-0 d-flex">
+                                                            <a class="btn btn-link accordion-label leadership-accordion"
+                                                                data-toggle="collapse" [href]="'#collapse_CM_'+i"
+                                                                aria-expanded="false"
+                                                                [attr.aria-controls]="'collapse_CM_'+i">
+                                                                <strong>
+                                                                    {{form.value.companyMembers[i].name || 'Team
+                                                                    Member'}}
+                                                                    {{form.value.companyMembers[i].title ? ' | ' +
+                                                                    form.value.companyMembers[i].title : ''}}
+                                                                    {{form.value.companyMembers[i].email ? ' | ' +
+                                                                    form.value.companyMembers[i].email : ''}}
+                                                                </strong>
+                                                                <span class="pull-right font-20">
+                                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                                </span>
+                                                            </a>
+                                                            <a class="btn btn-link">
+                                                                <i class="fa fa-trash-alt pull-right font-20"
+                                                                    aria-hidden="true"
+                                                                    (click)="removeMember(i, form.value.companyMembers[i].id, 'managements')"></i>
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+                                                    <div [id]="'collapse_CM_'+i" class="collapse"
+                                                        [attr.aria-labelledby]="'headingCM'+i"
+                                                        data-parent="#accordion_CM">
+                                                        <div class="card-body">
+                                                            <div class="card">
+                                                                <div class="card-body" [formGroupName]="i">
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="form-group  col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Name</label>
+                                                                            <input type="text" formControlName="name"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateMember(i, 'name')?.errors }" />
+                                                                            <div *ngIf="submitted && validateMember(i, 'name')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="submitted && validateMember(i, 'name')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateMember(i, 'name')?.errors?.pattern">
+                                                                                    Invalid name</div>
+                                                                                <div
+                                                                                    *ngIf="validateMember(i, 'name')?.errors?.maxlength">
+                                                                                    Name Should be less than
+                                                                                    {{validateMember(i,
+                                                                                    'name')?.errors?.maxlength.requiredLength}}
+                                                                                    characters
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Title</label>
+                                                                            <input type="text" formControlName="title"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateMember(i, 'title')?.errors }" />
+                                                                            <div *ngIf="submitted && validateMember(i, 'title')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="submitted && validateMember(i, 'title')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateMember(i, 'title')?.errors?.pattern">
+                                                                                    Invalid Title</div>
+                                                                                <div
+                                                                                    *ngIf="validateMember(i, 'title')?.errors?.maxlength">
+                                                                                    Title Should be less than
+                                                                                    {{validateMember(i,
+                                                                                    'title')?.errors?.maxlength.requiredLength}}
+                                                                                    characters
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Email</label>
+                                                                            <input type="email" formControlName="email"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateMember(i, 'email')?.errors }" />
+                                                                            <div *ngIf="submitted && validateMember(i, 'email').errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="submitted && validateMember(i, 'email')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="submitted && validateMember(i, 'email')?.errors?.pattern">
+                                                                                    Email must be a valid email address
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Phone</label>
+                                                                            <input type="text" formControlName="phone"
+                                                                                class="form-control" min="10" max="15"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateMember(i, 'phone')?.errors }" />
+                                                                            <div *ngIf="submitted && validateMember(i, 'phone')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="validateMember(i, 'phone')?.errors?.required">
+                                                                                    Phone number is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateMember(i, 'phone')?.errors?.pattern || validateMember(i, 'phone')?.errors?.maxlength ||
+                                                                                    validateMember(i, 'phone')?.errors?.minlength">
+                                                                                    Phone number must be between 10 and
+                                                                                    15 digits
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">LinkedIn
+                                                                                link</label>
+                                                                            <input type="text"
+                                                                                formControlName="linkedinLink"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateMember(i, 'linkedinLink')?.errors }" />
+                                                                            <div *ngIf="submitted && validateMember(i, 'linkedinLink')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="validateMember(i, 'linkedinLink')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateMember(i, 'linkedinLink')?.errors?.pattern">
+                                                                                    Invalid link</div>
+                                                                                <div
+                                                                                    *ngIf="validateMember(i, 'linkedinLink')?.errors?.maxlength">
+                                                                                    Link Should be less than
+                                                                                    {{validateMember(i,
+                                                                                    'linkedinLink')?.errors?.maxlength.requiredLength}}
+                                                                                    characters
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-4 col col-9 col-md-4">
+                                                                            <label
+                                                                                class="form-label">Publications</label>
+                                                                            <input type="text"
+                                                                                formControlName="publications"
+                                                                                class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Academic
+                                                                                Affiliation</label>
+                                                                            <input type="text"
+                                                                                formControlName="academicAffiliation"
+                                                                                class="form-control" />
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Joining as a
+                                                                                member?</label>
+                                                                            <select class="form-control"
+                                                                                formControlName="joiningAsMember">
+                                                                                <option [ngValue]="null" hidden
+                                                                                    selected>select </option>
+                                                                                <option [ngValue]="true">Yes</option>
+                                                                                <option [ngValue]="false">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group  col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Main Executive POC
+                                                                                for Company?</label>
+                                                                            <select class="form-control"
+                                                                                formControlName="mainExecutivePOC">
+                                                                                <option [ngValue]="null" hidden
+                                                                                    selected>select </option>
+                                                                                <option [ngValue]="true">Yes</option>
+                                                                                <option [ngValue]="false">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="form-group  col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Laboratory
+                                                                                Executive POC for Company?</label>
+                                                                            <select class="form-control"
+                                                                                formControlName="laboratoryExecutivePOC">
+                                                                                <option [ngValue]="null" hidden
+                                                                                    selected>select </option>
+                                                                                <option [ngValue]="true">Yes</option>
+                                                                                <option [ngValue]="false">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Invoicing
+                                                                                Executive POC for Company?</label>
+                                                                            <select class="form-control"
+                                                                                formControlName="invoicingExecutivePOC">
+                                                                                <option [ngValue]="null" hidden
+                                                                                    selected>select </option>
+                                                                                <option [ngValue]="true">Yes</option>
+                                                                                <option [ngValue]="false">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="text-center mb-4">
+                                            <a class="btn biolabBtn " href="javascript:void(0);"
+                                                (click)="addMembers()"><strong>ADD</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="accordionAB" formArrayName="companyAdvisors" class="mb-4">
+                            <div class="card">
+                                <div class="card-header" [id]="'heading_AB'">
+                                    <h5 class="mb-0">
+                                        <a class="btn btn-link accordion-label" data-toggle="collapse"
+                                            [href]="'#collapse_AB'" aria-expanded="false" id="advisor-accordion"
+                                            [attr.aria-controls]="'collapse_AB'">
+                                            <strong>Advisory Board: (Board of Directors and/or Scientific Advisory
+                                                Board)</strong>
+                                            <span class="pull-right">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div [id]="'collapse_AB'" class="collapse" aria-labelledby="'heading_AB'"
+                                    data-parent="#accordionAB">
+                                    <div class="card-body">
+                                        <div id="accordion_sub_AB">
+                                            <div *ngFor="let child of getcompanyAdvisors().controls; let i = index"
+                                                class="">
+                                                <div class="card">
+                                                    <div class="card-header" [id]="'headingAB' + i">
+                                                        <h5 class="mb-0 d-flex">
+                                                            <a class="btn btn-link accordion-label advisor-accordion"
+                                                                data-toggle="collapse" [href]="'#collapse_AB_'+i"
+                                                                aria-expanded="false"
+                                                                [attr.aria-controls]="'collapse_AB_'+i">
+                                                                <strong>
+                                                                    {{form.value.companyAdvisors[i].name || 'Company
+                                                                    Advisor'}}
+                                                                    {{form.value.companyAdvisors[i].title ? ' | ' +
+                                                                    form.value.companyAdvisors[i].title : '' }}
+                                                                    {{form.value.companyAdvisors[i].organization ? ' | '
+                                                                    + form.value.companyAdvisors[i].organization : ''}}
+                                                                </strong>
+                                                                <span class="pull-right font-20">
+                                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                                </span>
+                                                            </a>
+                                                            <a class="btn btn-link">
+                                                                <i class="fa fa-trash-alt pull-right font-20"
+                                                                    aria-hidden="true"
+                                                                    (click)="removeCompanyAdvisors(i, form.value.companyAdvisors[i].id, 'advisors')"></i>
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+                                                    <div [id]="'collapse_AB_'+i" class="collapse"
+                                                        [attr.aria-labelledby]="'headingAB'+i"
+                                                        data-parent="#accordion_sub_AB">
+                                                        <div class="card-body">
+                                                            <div class="card">
+                                                                <div class="card-body" [formGroupName]="i">
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Name</label>
+                                                                            <input type="text" formControlName="name"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateAdvisors(i, 'name')?.errors }" />
+                                                                            <div *ngIf="submitted && validateAdvisors(i, 'name')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="submitted && validateAdvisors(i, 'name')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateAdvisors(i, 'name')?.errors?.pattern">
+                                                                                    Invalid name</div>
+                                                                                <div
+                                                                                    *ngIf="validateAdvisors(i, 'name')?.errors?.maxlength">
+                                                                                    Name Should be less than
+                                                                                    {{validateAdvisors(i,
+                                                                                    'name')?.errors?.maxlength.requiredLength}}
+                                                                                    characters
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Title</label>
+                                                                            <input type="text" formControlName="title"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateAdvisors(i, 'title')?.errors }" />
+                                                                            <div *ngIf="submitted && validateAdvisors(i, 'title')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="submitted && validateAdvisors(i, 'title')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateAdvisors(i, 'title')?.errors?.pattern">
+                                                                                    Invalid Title</div>
+                                                                                <div
+                                                                                    *ngIf="validateAdvisors(i, 'title')?.errors?.maxlength">
+                                                                                    Title Should be less than
+                                                                                    {{validateAdvisors(i,'title')?.errors?.maxlength.requiredLength}}
+                                                                                    characters
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label
+                                                                                class="form-label">Organization</label>
+                                                                            <input type="text"
+                                                                                formControlName="organization"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateAdvisors(i, 'organization')?.errors }" />
+                                                                            <div *ngIf="submitted && validateAdvisors(i, 'organization')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="submitted && validateAdvisors(i, 'organization')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateAdvisors(i, 'organization')?.errors?.pattern">
+                                                                                    Invalid Organization</div>
+                                                                                <div
+                                                                                    *ngIf="validateAdvisors(i, 'organization')?.errors?.maxlength">
+                                                                                    Organization Should be less than
+                                                                                    {{validateAdvisors(i,
+                                                                                    'organization')?.errors?.maxlength.requiredLength}}
+                                                                                    characters
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="text-center mb-4">
+                                            <a class="btn biolabBtn " href="javascript:void(0);"
+                                                (click)="addcompanyAdvisors()">
+                                                <strong>ADD</strong>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="accordionTLB" formArrayName="companyTechnicalTeams" class="mb-4">
+                            <div class="card">
+                                <div class="card-header" [id]="'heading_TLB'">
+                                    <h5 class="mb-0">
+                                        <a class="btn btn-link accordion-label" data-toggle="collapse"
+                                            [href]="'#collapse_TLB'" aria-expanded="false" id="techanical-accordion"
+                                            [attr.aria-controls]="'collapse_TLB'">
+                                            <strong>Technical/Laboratory/Business Team</strong>
+                                            <span class="pull-right">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div [id]="'collapse_TLB'" class="collapse" aria-labelledby="'heading_TLB'"
+                                    data-parent="#accordionTLB">
+                                    <div class="card-body">
+                                        <div id="accordion_sub_TLB">
+                                            <div
+                                                *ngFor="let child of getcompanyTechnicalTeams().controls; let i = index">
+                                                <div class="card">
+                                                    <div class="card-header" [id]="'headingTLB' + i">
+                                                        <h5 class="mb-0 d-flex">
+                                                            <a class="btn btn-link accordion-label techanical-accordion"
+                                                                data-toggle="collapse" [href]="'#collapse_TLB_'+i"
+                                                                aria-expanded="false"
+                                                                [attr.aria-controls]="'collapse_TLB_'+i">
+                                                                <strong>
+                                                                    {{form.value.companyTechnicalTeams[i].name || 'Team
+                                                                    Member'}}
+                                                                    {{form.value.companyTechnicalTeams[i].title ? ' | '
+                                                                    + form.value.companyTechnicalTeams[i].title : '' }}
+                                                                    {{form.value.companyTechnicalTeams[i].email ? ' | '
+                                                                    + form.value.companyTechnicalTeams[i].email : ''}}
+                                                                </strong>
+                                                                <span class="pull-right font-20">
+                                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                                </span>
+                                                            </a>
+                                                            <a class="btn btn-link">
+                                                                <i class="fa fa-trash-alt pull-right font-20"
+                                                                    aria-hidden="true"
+                                                                    (click)="removeCompanyTechnicalTeams(i, form.value.companyTechnicalTeams[i].id, 'technicals')"></i>
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+                                                    <div [id]="'collapse_TLB_'+i" class="collapse"
+                                                        [attr.aria-labelledby]="'headingTLB'+i"
+                                                        data-parent="#accordion_sub_TLB">
+                                                        <div class="card-body">
+                                                            <div class="card">
+                                                                <div class="card-body" [formGroupName]="i">
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Name</label>
+                                                                            <input type="text" formControlName="name"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateCompanyTechnicalTeams(i, 'name')?.errors }" />
+                                                                            <div *ngIf="submitted && validateCompanyTechnicalTeams(i, 'name')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="submitted && validateCompanyTechnicalTeams(i, 'name')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateCompanyTechnicalTeams(i, 'name')?.errors?.pattern">
+                                                                                    Invalid name</div>
+                                                                                <div
+                                                                                    *ngIf="validateCompanyTechnicalTeams(i, 'name')?.errors?.maxlength">
+                                                                                    Name Should be less than
+                                                                                    {{validateCompanyTechnicalTeams(i,
+                                                                                    'name')?.errors?.maxlength.requiredLength}}
+                                                                                    characters
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Title</label>
+                                                                            <input type="text" formControlName="title"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateCompanyTechnicalTeams(i, 'title')?.errors }" />
+                                                                            <div *ngIf="submitted && validateCompanyTechnicalTeams(i, 'title')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="submitted && validateCompanyTechnicalTeams(i, 'title')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateCompanyTechnicalTeams(i, 'title')?.errors?.pattern">
+                                                                                    Invalid Title</div>
+                                                                                <div
+                                                                                    *ngIf="validateCompanyTechnicalTeams(i, 'title')?.errors?.maxlength">
+                                                                                    Title Should be less than
+                                                                                    {{validateCompanyTechnicalTeams(i,
+                                                                                    'title')?.errors?.maxlength.requiredLength}}
+                                                                                    characters
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Email</label>
+                                                                            <input type="email" formControlName="email"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateCompanyTechnicalTeams(i, 'email')?.errors }" />
+                                                                            <div *ngIf="submitted && validateCompanyTechnicalTeams(i, 'email').errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="submitted && validateCompanyTechnicalTeams(i, 'email')?.errors?.required">
+                                                                                    This field is required
+                                                                                </div>
+                                                                                <div
+                                                                                    *ngIf="submitted && validateCompanyTechnicalTeams(i, 'email')?.errors?.pattern">
+                                                                                    Email must be a valid email address
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">Phone</label>
+                                                                            <input type="text" formControlName="phone"
+                                                                                class="form-control" min="10" max="15"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateCompanyTechnicalTeams(i, 'phone')?.errors }" />
+                                                                            <div *ngIf="submitted && validateCompanyTechnicalTeams(i, 'phone')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="validateCompanyTechnicalTeams(i, 'phone')?.errors?.required">
+                                                                                    Phone number is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateCompanyTechnicalTeams(i, 'phone')?.errors?.pattern || validateCompanyTechnicalTeams(i, 'phone')?.errors?.maxlength || validateCompanyTechnicalTeams(i, 'phone')?.errors?.minlength">
+                                                                                    Phone number must be between 10 and
+                                                                                    15 digits
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label class="form-label">LinkedIn
+                                                                                link</label>
+                                                                            <input type="text"
+                                                                                formControlName="linkedinLink"
+                                                                                class="form-control"
+                                                                                [ngClass]="{ 'is-invalid': submitted && validateCompanyTechnicalTeams(i, 'linkedinLink')?.errors }" />
+                                                                            <div *ngIf="submitted && validateCompanyTechnicalTeams(i, 'linkedinLink')?.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="validateCompanyTechnicalTeams(i, 'linkedinLink')?.errors?.required">
+                                                                                    This field is required</div>
+                                                                                <div
+                                                                                    *ngIf="validateCompanyTechnicalTeams(i, 'linkedinLink')?.errors?.pattern">
+                                                                                    nvalid link</div>
+                                                                                <div
+                                                                                    *ngIf="validateCompanyTechnicalTeams(i, 'linkedinLink')?.errors?.maxlength">
+                                                                                    Link Should be less than
+                                                                                    {{validateCompanyTechnicalTeams(i,
+                                                                                    'linkedinLink')?.errors?.maxlength.requiredLength}}
+                                                                                    characters
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-4 col col-9 col-md-4">
+                                                                            <label
+                                                                                class="form-label">Publications</label>
+                                                                            <input type="text"
+                                                                                formControlName="publications"
+                                                                                class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="form-group col-3 col col-9 col-md-3">
+                                                                            <label class="form-label">Joining as a
+                                                                                member?</label>
+                                                                            <select class="form-control"
+                                                                                formControlName="joiningAsMember">
+                                                                                <option [ngValue]="null" hidden
+                                                                                    selected>select</option>
+                                                                                <option [ngValue]="true">Yes</option>
+                                                                                <option [ngValue]="false">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-3 col col-9 col-md-3">
+                                                                            <label class="form-label">Laboratory POC for
+                                                                                Company?</label>
+                                                                            <select class="form-control"
+                                                                                formControlName="laboratoryExecutivePOC">
+                                                                                <option [ngValue]="null" hidden
+                                                                                    selected>select</option>
+                                                                                <option [ngValue]="true">Yes</option>
+                                                                                <option [ngValue]="false">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-3 col col-9 col-md-3">
+                                                                            <label class="form-label">Emergency POC for
+                                                                                Company?</label>
+                                                                            <select class="form-control"
+                                                                                formControlName="emergencyExecutivePOC">
+                                                                                <option [ngValue]="null" hidden
+                                                                                    selected>select</option>
+                                                                                <option [ngValue]="true">Yes</option>
+                                                                                <option [ngValue]="false">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group col-3 col col-9 col-md-3">
+                                                                            <label class="form-label">Purchasing POC for
+                                                                                Company?</label>
+                                                                            <select class="form-control"
+                                                                                formControlName="invoicingExecutivePOC">
+                                                                                <option [ngValue]="null" hidden
+                                                                                    selected>select</option>
+                                                                                <option [ngValue]="true">Yes</option>
+                                                                                <option [ngValue]="false">No</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="text-center mb-4">
+                                            <a class="btn biolabBtn" href="javascript:void(0);"
+                                                (click)="addcompanyTechnicalTeams()">
+                                                <strong>ADD</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-7">
+                                <label class="form-label"> Have any of your founders started a business in this industry
+                                    before?</label>
+                                <select formControlName="foundersBusinessIndustryBefore" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.foundersBusinessIndustryBefore.errors }">
+                                    <option [ngValue]="" disabled>select</option>
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false">No</option>
+                                </select>
+                                <div *ngIf="submitted && form.controls.foundersBusinessIndustryBefore.errors"
+                                    class="invalid-feedback">
+                                    <div
+                                        *ngIf="submitted && form.controls.foundersBusinessIndustryBefore?.errors?.required">
+                                        This field is required.</div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-5"
+                                *ngIf="form.controls.foundersBusinessIndustryBefore.value == true">
+                                <label class="form-label">Please provide names of business</label>
+                                <input type="text" formControlName="foundersBusinessIndustryName" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && submitted && (form.controls.foundersBusinessIndustryName.errors) }" />
+                                <div *ngIf="submitted && (form.controls.foundersBusinessIndustryName.errors)"
+                                    class="invalid-feedback">
+                                    <div *ngIf="form.controls.foundersBusinessIndustryName?.errors?.maxlength">Should be
+                                        less than
+                                        {{form.controls.foundersBusinessIndustryName?.errors?.maxlength.requiredLength}}
+                                        characters</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-7">
+                                <label class="form-label"> Does your company currently have any recognized partnerships
+                                    with academia?</label>
+                                <select formControlName="academiaPartnerships" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.academiaPartnerships.errors }">
+                                    <option [ngValue]="" disabled>select</option>
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false">No</option>
+                                </select>
+                                <div *ngIf="submitted && form.controls.academiaPartnerships.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.academiaPartnerships?.errors?.required">This
+                                        field is required.</div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-5"
+                                *ngIf="form.controls.academiaPartnerships.value == true">
+                                <label class="form-label"> Which institution/institutions?</label>
+                                <input type="text" formControlName="academiaPartnershipDetails" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && submitted && (form.controls.academiaPartnershipDetails.errors) }" />
+                                <div *ngIf="submitted && (form.controls.academiaPartnershipDetails.errors)"
+                                    class="invalid-feedback">
+                                    <div *ngIf="form.controls.academiaPartnershipDetails?.errors?.maxlength">Should be
+                                        less than
+                                        {{form.controls.academiaPartnershipDetails?.errors?.maxlength.requiredLength}}
+                                        characters</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-7">
+                                <label class="form-label"> Does your company currently have any recognized partnerships
+                                    with industry?</label>
+                                <select formControlName="industryPartnerships" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.industryPartnerships.errors }">
+                                    <option [ngValue]="" disabled>select</option>
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false">No</option>
+                                </select>
+                                <div *ngIf="submitted && form.controls.industryPartnerships.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.industryPartnerships?.errors?.required">This
+                                        field is required.</div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-5"
+                                *ngIf="form.controls.industryPartnerships.value == true">
+                                <label class="form-label">Which company/companies?</label>
+                                <input type="text" formControlName="industryPartnershipsDetails" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && submitted && (form.controls.industryPartnershipsDetails.errors) }" />
+                                <div *ngIf="submitted && (form.controls.industryPartnershipsDetails.errors)"
+                                    class="invalid-feedback">
+                                    <div *ngIf="form.controls.industryPartnershipsDetails?.errors?.maxlength">Should be
+                                        less than
+                                        {{form.controls.industryPartnershipsDetails?.errors?.maxlength.requiredLength}}
+                                        characters</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-7">
+                                <label class="form-label"> Total Employees?</label>
+                                <input type="number" formControlName="companySize" class="form-control" min="0"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.companySize.errors }" />
+                                <div *ngIf="submitted && form.controls.companySize.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.companySize?.errors?.required">This field is
+                                        required </div>
+                                    <div *ngIf="submitted && form.controls.companySize?.errors?.min">value should not be
+                                        less then {{form.controls.companySize?.errors?.min.min}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-7">
+                                <label class="form-label"> Would you like us to announce the fact that you’re joining us
+                                    on our social media accounts and newsletters?</label>
+                                <select formControlName="newsletters" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.industryPartnerships.errors }">
+                                    <option [ngValue]="" disabled>select</option>
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false">No</option>
+                                </select>
+                                <div *ngIf="submitted && form.controls.newsletters.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.newsletters?.errors?.required">This field is
+                                        required.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col col-12 col-md-12">
+                                <label class="form-label">What is your power statement (elevator pitch) about your
+                                    company? This will be used to give potential investors, collaborators, sponsors,
+                                    partners insight into who you are and what you do. Please limit the
+                                    most concise paragraph possible.</label>
+                                <textarea formControlName="elevatorPitch" class="form-control textAreaField"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.elevatorPitch.errors }"></textarea>
+
+                                <div *ngIf="submitted && form.controls.elevatorPitch.errors" class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.elevatorPitch?.errors?.required">This fieldis
+                                        required</div>
+                                    <div *ngIf="form.controls.elevatorPitch?.errors?.maxlength">Should be less than
+                                        {{form.controls.elevatorPitch?.errors?.maxlength.requiredLength}} characters
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- <div class=""> -->
+                        <!-- <div class="form-row form-group">
+                                <div class="form-group col col-12 col-md-12">
+                                    <label class="form-label"> Can we share your profile with inquiring investors/partners/sponsors/collaborators/industry? <br> For more information on BioLabs' sponsors and the benefits, please visit: <a href="https://www.biolabs.io/sponsors" target="_blank"> Sponsors | BioLabs </a> </label>
+                                </div>
+                                <div class="form-group col col-12 col-md-7">
+                                    <select formControlName="shareYourProfile" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && form.controls.shareYourProfile.errors }">
+                                    <option [ngValue]="" disabled>select</option>
+                                    <option [ngValue]="true">Yes</option>
+                                    <option [ngValue]="false">No</option>
+                                </select>
+                                </div>
+                                <div *ngIf="submitted && form.controls.shareYourProfile.errors"
+                                    class="invalid-feedback">
+                                    <div *ngIf="submitted && form.controls.shareYourProfile?.errors?.required">This field is required.</div>
+                                </div>
+                            </div>
+                            <div class="form-group col col-12 col-md-6"></div> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn biolabBtn mt-3" [disabled]="loading || isUploadingFile">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Update
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,88 @@
+table.dataTable tbody td thead {
+    font-size: 12px;
+}
+
+.invalid-feedback {
+    display: block;
+}
+.add-raw {
+    padding: 1px 10px;
+    /* margin: 4px -2px -14px -6px; */
+}
+.footer {
+    background-color: #969ca5;
+}
+
+thead {
+    background-color: #343a40;
+    color: white;
+}
+.table thead, .table th {
+    vertical-align: middle;
+  }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input {
+    width: 55%;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.width-100px {
+    width: 100px;
+}
+
+td {
+    overflow-wrap: break-word;
+}
+
+.table_legenda {
+    table-layout: fixed;
+    width: 100% !important;
+}
+
+table.dataTable .text-start {
+    text-align: start !important;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 14px;
+}
+.name{
+    width: 150px !important;
+}
+.type{
+    width: 135px !important;
+}
+.link{
+    width: 160 !important;
+}
+.start{
+    width: 150px !important;
+}
+.end{
+    width: 140px !important;
+}
+.agre{
+    width: 150 !important;
+}
+.action {
+    width: 55px !important;
+}
+::ng-deep ngb-datepicker {
+    width: auto !important;
+    overflow-y: hidden !important;
+    height: auto !important;
+  }

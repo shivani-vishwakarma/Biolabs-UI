@@ -1,0 +1,24 @@
+h5, h6{
+    color: rgba(0,0,0,.5);
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+/* .cursor-disbaled{
+    cursor: not-allowed !important;
+} */
+
+::ng-deep ngb-datepicker {
+    width: auto !important;
+    height: auto !important;
+    overflow: hidden;
+    /* overflow-y: scroll !important; */
+  }
+
+.align{
+    justify-content: center;
+}
+
+select option[disabled] { background-color: lightgray; border-color: black;}

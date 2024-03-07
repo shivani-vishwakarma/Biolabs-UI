@@ -1,0 +1,37 @@
+<div class="content-wrapper main">
+    <section>
+        <div class='d-flex justify-content-end mb-3'>
+            <a class="btn biolabBtn btnLen rounded-0 text-dark font-weight-bold border"
+                [ngClass]="{'biolabBtn': (!router.url.startsWith('/metrics/sitemetrics'))}" routerLink="/metrics/dashboard">BioLabs</a>
+            <a class="btn biolabBtn btnLen rounded-0 text-dark font-weight-bold border"
+                [ngClass]="{'biolabBtn': (router.url.startsWith('/metrics/sitemetrics'))}" routerLink="/metrics/sitemetrics">Site</a>
+        </div>
+    </section>
+</div>
+<div class="float-right">
+    <select [disabled]="!router.url.startsWith('/metrics/sitemetrics')" [(ngModel)]='selectedSite' name="dropdownOption" id="dropdownOption"
+    (change)="selectSite($event)" class='form-control'>
+    <option *ngFor="let site of sites; let i = index"
+         [value]="site.id">{{site.name}}
+    </option>
+</select>
+</div>
+<div *ngIf="!router.url.startsWith('/metrics/sitemetrics')" class="content-wrapper main">
+    <section>
+        <div>
+            <ul class="nav nav-tabs flex-row cus-tab tab-bar">
+                <li *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7 || viewCompanyDetails()"  class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/metrics/dashboard"
+                    routerLinkActive="active">Dashboard</a>
+                    <div class="eff-7"></div>
+                </li>
+                <li *ngIf="getRole() == 1 || getRole() == 2 || getRole() == 5 || getRole() == 6 || getRole() == 7 || viewCompanyDetails()"  class="nav-item tab">
+                    <a class="nav-link font-weight-bold" data-toggle="pill" href="#" routerLink="/metrics/worldwide"
+                        routerLinkActive="active">Worldwide Offering</a>
+                    <div class="eff-7"></div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<router-outlet></router-outlet>

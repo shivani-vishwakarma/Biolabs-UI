@@ -1,0 +1,368 @@
+/* 
+body {
+    background-color: #eee
+} */
+
+.chat-btn {
+    position: absolute;
+    right: 14px;
+    bottom: 30px;
+    cursor: pointer
+}
+
+.chat-btn .close {
+    display: none
+}
+
+.chat-btn i {
+    transition: all 0.9s ease
+}
+
+#check:checked~.chat-btn i {
+    display: block;
+    pointer-events: auto;
+    transform: rotate(180deg)
+}
+
+#check:checked~.chat-btn .comment {
+    display: none
+}
+
+.chat-btn i {
+    font-size: 22px;
+    color: #fff !important
+}
+
+.chat-btn {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    background-color: #0f9792;
+    color: #fff;
+    font-size: 22px;
+    border: none
+}
+
+.header {
+    padding: 13px;
+    background-color: #0f9792;
+    border-radius: 5px 5px 0px 0px;
+    margin-bottom: 10px;
+    color: #fff
+}
+
+.chat-form {
+    padding: 15px
+}
+
+.chat-form input, textarea, button {
+    margin-bottom: 10px
+}
+
+.chat-form textarea {
+    resize: none
+}
+
+.form-control:focus, .btn:focus {
+    box-shadow: none
+}
+
+#check {
+    display: none !important
+}
+
+/*below property are in use*/
+
+.member-col {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 150px;
+    text-overflow: ellipsis;
+}
+
+.fa-download {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+
+.wrap {
+    overflow-wrap: break-word;
+}
+
+/* new try */
+
+.image-upload>input {
+    display: none;
+}
+
+.image-upload-parent {
+    background-color: #e9ecef;
+}
+
+.image-upload img {
+    height: 300px;
+    width: auto;
+    cursor: pointer !important;
+    /*bject-fit: contain -  the image keeps its aspect ratio, but is resized to fit within the given dimension */
+    object-fit: contain;
+    /* object-fit: cover; */
+}
+
+.image-upload {
+    position: relative;
+    display: inline-block;
+}
+
+.image-upload-parent:hover:after {
+    cursor: pointer !important;
+    content: 'Change Image';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    background: url('/assets/images/icons/compose-solid.svg') center no-repeat;
+    background-size: 50px;
+    opacity: 0.4;
+}
+
+.image-upload-parent:hover img {
+    opacity: 0.4;
+}
+
+.bioBorder {
+    border: 3px solid #8080801f;
+    padding: 0px 10px;
+}
+
+.preview {
+    display: block;
+    text-align: center;
+}
+
+.viewImage {
+    background-color: #e9ecef;
+}
+
+.viewImage>img {
+    cursor: unset !important;
+}
+
+.pic {
+    margin-left: -15px;
+    border: 1px solid #dee2e6 !important;
+}
+
+.bot {
+    margin-bottom: -.5rem;
+}
+
+.borderheight {
+    border: 1px solid #dee2e6 !important;
+    height: 130px;
+}
+
+.status {
+    background-color: white;
+    margin: auto;
+    padding: 15px 15px 0px 15px;
+}
+
+.text {
+    word-break: break-word;
+}
+
+div.scroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.jumbotron {
+    position: relative;
+}
+
+.btnDiv {
+    width: 100%;
+    left: 0;
+    bottom: 40px;
+    position: absolute;
+}
+
+.btnconnect {
+    width: 200px;
+    position: relative;
+    margin: 100px 10px 10px 10px;
+    color: white !important;
+    bottom: 90px;
+}
+
+.textmsg {
+    width: 44.5pc;
+    height: 150px;
+}
+
+.modal-content {
+    width: 100% !important;
+    margin-top: 16.3pc !important;
+    /* margin-left: 18px !important; */
+}
+
+::ng-deep.modal-content{
+    width: 100% !important;
+    margin-top: 16.3pc !important;
+    /* margin-left: 18px !important; */
+}
+
+.clo {
+    width: 150px;
+    margin: 18px 1px 12px auto;
+}
+
+.confirmBtn {
+    width: 150px;
+    margin: 18px 0px 0px auto;
+    /* margin: -10px -120px 1px 161px; */
+}
+
+.modal-title {
+    margin: 5px auto 1px 9px;
+    font-size: 19px;
+}
+
+.emailIcon {
+    font-size: 33px;
+}
+
+textarea::placeholder {
+    color: gray;
+    font-style: italic;
+}
+
+.thank {
+    font-size: 40px;
+}
+
+.icon-animated {
+    width: 70px;
+    height: 40px;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.icon-animated .tick svg {
+    position: absolute;
+    left: 22px;
+    right: 0;
+    top: 6px;
+    bottom: 0;
+    fill: #fff;
+    width: 25px;
+    height: 52px;
+}
+
+.modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem 24.75rem !important;
+}
+
+.icon-animated-tick .circle {
+    fill: #60d154;
+    animation-fill-mode: forwards;
+    animation-name: circle-pulse;
+    animation-duration: 4s;
+    animation-iteration-count: 1;
+}
+
+.tick-leg1 {
+    fill: #fff;
+    animation-fill-mode: forwards;
+    animation-name: tick-swipe1;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    transform: scaleX(0);
+    transform-origin: left bottom;
+    opacity: 0;
+}
+
+.tick-leg2 {
+    fill: #fff;
+    animation-fill-mode: forwards;
+    animation-name: tick-swipe2;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    transform: scaleY(0);
+    transform-origin: right bottom;
+    opacity: 0;
+}
+
+@keyframes tick-swipe1 {
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.5;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
+@keyframes tick-swipe2 {
+    40% {
+        opacity: 0;
+    }
+
+    47% {
+        transform: scaleY(0.15);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+@keyframes circle-pulse {
+
+    0%,
+    25%,
+    75%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.tick {
+    width: 100%;
+    height: 100%;
+    transform: rotate(45deg) scale(0.8);
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.tick-holder {
+    transform: scale(0.6);
+}

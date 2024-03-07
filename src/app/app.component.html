@@ -1,0 +1,26 @@
+<div class="app-container">
+    <app-core-header></app-core-header>
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
+</div>
+<ngx-spinner></ngx-spinner>
+
+
+<ng-template #sessionModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Session expired</h4>
+        <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button> -->
+    </div>
+    <div class="modal-body">
+        <div class="fixed-centre pt-3"><strong> Do you want to continue the session ? </strong>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn biolabBtn" (click)="modal.close('Save click');cleanUp()">NO</button>
+        <button type="button" class="btn biolabBtn btn-del" (click)="refreshToken()">YES</button>
+    </div>
+</ng-template>

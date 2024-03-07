@@ -1,0 +1,211 @@
+.margin-right {
+  margin-right: 10px;
+}
+
+.product-name {
+  max-width: 200px;
+  min-width: 150px;
+}
+
+.description {
+  max-width: 400px;
+  min-width: 150px;
+}
+
+a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+}
+
+a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+
+.previous {
+  background-color: #f1f1f1;
+  color: black;
+}
+
+.next {
+  background-color: white;
+  color: #0f9792;
+}
+
+.size{
+  font-size: 2rem;
+}
+
+.arrow{
+  font-size: 30px;
+}
+.width-110px {
+  width: 110px;
+}
+
+.width-100px {
+  width: 100px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.width-85px {
+  width: 85px;
+}
+
+.width-60px {
+  width: 60px;
+}
+
+.width-50px {
+  width: 50px;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.footer {
+  background-color: #969ca5;
+}
+
+thead {
+  background-color: #343a40;
+  color: white;
+}
+
+.width-150 {
+  width: 150px;
+}
+
+.width-135 {
+  width: 135px;
+}
+.freeze{
+  margin-right: 150px;
+}
+.status{
+ margin-right: 220px;
+}
+
+/* added for table */
+
+.addRow {
+  background-color: #0f9792;
+  color: white;
+  line-height: 1.0;
+}
+
+:host ::ng-deep .dt-button {
+  border: 1px solid #1c948d !important;
+  background-color: #0f9792 !important;
+  line-height: 1.0 !important;
+  border: none !important;
+  color: white;
+}
+
+input[type="date"] {
+  font-size: 14px;
+  
+}
+
+table.dataTable tbody td thead{
+  font-size: 12px;
+}
+
+::ng-deep ngb-datepicker {
+  width: auto !important;
+  overflow-y: hidden !important;
+  height: auto !important;
+}
+/* ::ng-deep .dropdown-menu {
+  width: auto !important;
+  height: auto !important;
+} */
+  /* overflow-y: scroll !important; */
+
+.dataTable > thead > tr > th[class*="sort"]:before,
+.dataTable > thead > tr > th[class*="sort"]:after {
+    content: "" !important;
+}
+
+:host ::ng-deep .dt-button:hover {
+  border: 1px solid #1c948d!important;
+  background-color: #0f9792 !important;
+  line-height: 1.0 !important;
+  border: none !important;
+  color: black;
+}
+
+:host ::ng-deep .dropdown-menu {
+  display: block;
+  height: 13rem;
+  width: auto;
+  overflow: overlay;
+ }
+
+ .widthDate{
+  width: 90px;
+}
+
+/* input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+} */
+.no-spin::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+.no-spin {
+  -moz-appearance:textfield !important;
+}
+.container-fluid{
+  padding-right: 0px;
+  padding-left: 0px;
+}
+table.table-bordered.dataTable{
+  font-size: 12px;
+}
+.width{
+  width: 70px !important;
+}
+.height{
+  height: 27px;
+}
+.lenght{
+  height: 27px;
+  width: 88px;
+  margin-right: 97px;
+}
+.right{
+  margin-right: -60px;
+}
+.align1{
+  margin-right: 127px;
+}
+.align2{
+  margin-right: 130px;
+}
+.mralign{
+  margin-right: 9.4rem!important
+}
+.lockDate{
+  display: table-cell; 
+  padding-right: 1.9rem;
+}
+.lockDateList{
+  list-style: none; 
+  display: table;
+}
+.lockDateListItem{
+  display: table-row;
+}
